@@ -5,74 +5,108 @@
     <title>Windows PVH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
 
+<header class="p-3 text-bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+            </ul>
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
+                       aria-label="Search">
+            </form>
+
+            <div class="text-end">
+                <button type="button" class="btn btn-outline-light me-2">Login</button>
+                <button type="button" class="btn btn-warning">Sign-up</button>
+            </div>
+        </div>
+    </div>
+</header>
+
 <div class="container">
+    <div class="row">
+        <div class="col">
+            <table class="table table-dark table-striped">
 
-    <table class="table">
+                <!-- Заголовок таблицы -->
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Width</th>
+                    <th scope="col">Height</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Manufacturer</th>
+                    <th scope="col">Availability</th>
+                    <th scope="col">Info</th>
+                    <th scope="col">Delete</th>
+                </tr>
+                </thead>
 
-        <!-- Заголовок таблицы -->
-        <thead>
-        <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Model</th>
-            <th scope="col">Width</th>
-            <th scope="col">Height</th>
-            <th scope="col">Price</th>
-            <th scope="col">Manufacturer</th>
-            <th scope="col">Availability</th>
-            <th scope="col">Info</th>
-            <th scope="col">Delete</th>
-        </tr>
-        </thead>
+                <!-- Тело таблицы -->
+                <tbody>
+                <tr th:each="window : ${allWindows}">
+                    <td th:text="${window.id}"/>
+                    <td th:text="${window.model}"/>
+                    <td th:text="${window.width}"/>
+                    <td th:text="${window.height}"/>
+                    <td th:text="${window.price}"/>
+                    <td th:text="${window.manufacturer}"/>
+                    <td th:text="${window.availability}"/>
 
-        <!-- Тело таблицы -->
-        <tbody>
-        <tr th:each="window : ${allWindows}">
-            <td th:text="${window.id}"/>
-            <td th:text="${window.model}"/>
-            <td th:text="${window.width}"/>
-            <td th:text="${window.height}"/>
-            <td th:text="${window.price}"/>
-            <td th:text="${window.manufacturer}"/>
-            <td th:text="${window.availability}"/>
+                    <td><a th:href="@{/windowsPVH/info/{id}(id=${window.id})}">
+                        <button type="button" class="btn btn-warning">Info</button>
+                    </a></td>
 
-            <td><a th:href="@{/windowsPVH/info/{id}(id=${window.id})}">
-                <button type="button" class="btn btn-warning">Info</button>
-            </a></td>
+                    <td><a th:href="@{/windowsPVH/delete/{id}(id=${window.id})}">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a></td>
 
-            <td><a th:href="@{/windowsPVH/delete/{id}(id=${window.id})}">
-                <button type="button" class="btn btn-danger">Delete</button>
-            </a></td>
+                </tr>
+                </tbody>
 
-        </tr>
-        </tbody>
+            </table>
+        </div>
 
-    </table>
+        <!-- Форма сохранения -->
+        <div class="col">
 
+            <form th:align="center" method="post" th:action="@{/windowsPVH}" th:object="${newWindow}">
+                Model: <input type="text" th:field="*{model}"><br>
+                Width: <input type="number" th:field="*{width}"><br>
+                Height: <input type="number" th:field="*{height}"><br>
+                Price: <input type="number" th:field="*{price}"><br>
+                Manufacturer: <input type="text" th:field="*{manufacturer}"><br>
+
+                Availability:
+                <select th:field="*{availability}">
+                    <option value="1">true</option>
+                    <option value="0">false</option>
+                </select><br>
+
+                <button>Save</button>
+            </form>
+
+        </div>
+    </div>
 </div>
 
-<div class="row">
-
-    <form th:align="center" method="post" th:action="@{/windowsPVH}" th:object="${newWindow}">
-        Model: <input type="text" th:field="*{model}"><br>
-        Width: <input type="number" th:field="*{width}"><br>
-        Height: <input type="number" th:field="*{height}"><br>
-        Price: <input type="number" th:field="*{price}"><br>
-        Manufacturer: <input type="text" th:field="*{manufacturer}"><br>
-
-        Availability:
-        <select th:field="*{availability}">
-            <option value="1">true</option>
-            <option value="0">false</option>
-        </select><br>
-
-        <button>Save</button>
-    </form>
-
-</div>
-
+<footer id="sticky-footer" class="flex-shrink-0 py-4 bg-dark text-white-50">
+    <div class="container text-center">
+        <small>OknaPVH &copy; Rebkovets Danila</small>
+    </div>
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossorigin="anonymous"></script>
