@@ -1,13 +1,15 @@
 package com.tms.oknapvh.service.impl;
 
-import com.tms.oknapvh.model.WindowEntity;
+import com.tms.oknapvh.converter.WindowConverter;
+import com.tms.oknapvh.dto.WindowDto;
+import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.repository.WindowRepository;
 import com.tms.oknapvh.service.WindowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,39 +17,52 @@ public class WindowServiceImpl implements WindowService {
 
     private final WindowRepository repository;
 
+    private final WindowConverter converter;
+
     @Override
-    public List<WindowEntity> getAll() {
-        return repository.findAll();
+    public List<WindowDto> getAll() {
+        return repository.findAll()
+                .stream()
+                .map(converter::fromWindowEntityToWindowDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public WindowEntity save(WindowEntity window) {
-        return repository.save(window);
+    public WindowDto saveWindow(WindowDto windowDto) {
+        WindowEntity windowEntity = converter.fromWindowDtoToWindowEntity(windowDto);
+        repository.save(windowEntity);
+        return converter.fromWindowEntityToWindowDto(windowEntity);
     }
 
     @Override
-    public WindowEntity getById(Integer id) {
-        return repository.findById(id).orElse(null);
+    public WindowDto getById(Integer id) {
+        WindowEntity windowEntityFromDb = repository.findById(id).orElse(null);
+        if (windowEntityFromDb != null) {
+            return converter.fromWindowEntityToWindowDto(windowEntityFromDb);
+        }
+        return null;
     }
 
     @Override
-    public void delete(Integer id) {
-        repository.findById(id).ifPresent(repository::delete);
+    public void deleteWindow(Integer windowId) {
+        repository.deleteById(windowId);
     }
 
-    @Override
-    @Transactional
-    public WindowEntity update(WindowEntity window) {
-        var windowFromDB = repository.findById(window.getId()).orElseThrow(RuntimeException::new);
-
-        windowFromDB.setModel(window.getModel());
-        windowFromDB.setHeight(window.getHeight());
-        windowFromDB.setWidth(window.getWidth());
-        windowFromDB.setPrice(window.getPrice());
-        windowFromDB.setManufacturer(window.getManufacturer());
-        windowFromDB.setAvailability(window.isAvailability());
-
-        return windowFromDB;
-    }
+//    @Override
+//    @Transactional
+//    public WindowDto updateWindow(WindowDto windowDto) {
+//        WindowEntity windowEntityFromDb = repository.findById(windowDto.getId()).orElseThrow(RuntimeException::new);
+//
+//
+//
+//        windowEntityFromDb.setModel(windowDto.getModel());
+//        windowFromDB.setHeight(window.getHeight());
+//        windowFromDB.setWidth(window.getWidth());
+//        windowFromDB.setPrice(window.getPrice());
+//        windowFromDB.setManufacturer(window.getManufacturer());
+//        windowFromDB.setAvailability(window.isAvailability());
+//
+//        return windowFromDB;
+//    }
 
 }

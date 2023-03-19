@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Window update</title>
+</head>
+<body>
+
+<div class="container">
+
+  <form method="post" th:object="${window}" th:action="@{/windowsPVH/update/{id}(id=${window.id})}">
+
+    <input type="text" th:field="*{model}" th:value="${window.model}">
+    <input type="number" th:field="*{width}" th:value="${window.width}">
+    <input type="number" th:field="*{height}" th:value="${window.height}">
+    <input type="number" th:field="*{price}" th:value="${window.price}">
+    <input type="text" th:field="*{manufacturer}" th:value="${window.manufacturer}">
+
+    <select th:field="*{availability}" th:value="${window.availability}">
+      <option value="1">true</option>
+      <option value="0">false</option>
+    </select>
+
+    <button>Update</button>
+
+  </form>
+
+</div>
+
+</body>
+</html>

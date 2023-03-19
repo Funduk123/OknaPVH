@@ -1,4 +1,4 @@
-package com.tms.oknapvh.model;
+package com.tms.oknapvh.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,16 +20,22 @@ public class WindowEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column
     private String model;
 
+    @Column
     private Integer width;
 
+    @Column
     private Integer height;
 
+    @Column
     private Double price;
 
+    @Column
     private String manufacturer;
 
+    @Column
     private boolean availability;
 
 

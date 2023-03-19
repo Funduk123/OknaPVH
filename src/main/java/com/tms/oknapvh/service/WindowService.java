@@ -1,19 +1,19 @@
 package com.tms.oknapvh.service;
 
-import com.tms.oknapvh.model.WindowEntity;
+import com.tms.oknapvh.dto.WindowDto;
 
 import java.util.List;
 
 public interface WindowService {
 
-    List<WindowEntity> getAll();
+    List<WindowDto> getAll();
 
-    WindowEntity save(WindowEntity window);
+    WindowDto saveWindow(WindowDto windowDto);
 
-    WindowEntity getById(Integer id);
+    WindowDto getById(Integer windowId);
 
-    void delete(Integer id);
+    void deleteWindow(Integer windowId);
 
-    WindowEntity update(WindowEntity window);
+//    WindowDto updateWindow(WindowDto windowDto);
 
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Windows PVH</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+
+    <table class="table">
+
+        <!-- Заголовок таблицы -->
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Model</th>
+            <th scope="col">Width</th>
+            <th scope="col">Height</th>
+            <th scope="col">Price</th>
+            <th scope="col">Manufacturer</th>
+            <th scope="col">Availability</th>
+            <th scope="col">Info</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+
+        <!-- Тело таблицы -->
+        <tbody>
+        <tr th:each="window : ${allWindows}">
+            <td th:text="${window.id}"/>
+            <td th:text="${window.model}"/>
+            <td th:text="${window.width}"/>
+            <td th:text="${window.height}"/>
+            <td th:text="${window.price}"/>
+            <td th:text="${window.manufacturer}"/>
+            <td th:text="${window.availability}"/>
+
+            <td><a th:href="@{/windowsPVH/info/{id}(id=${window.id})}">
+                <button type="button" class="btn btn-warning">Info</button>
+            </a></td>
+
+            <td><a th:href="@{/windowsPVH/delete/{id}(id=${window.id})}">
+                <button type="button" class="btn btn-danger">Delete</button>
+            </a></td>
+
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+
+<div class="row">
+
+    <form th:align="center" method="post" th:action="@{/windowsPVH}" th:object="${newWindow}">
+        Model: <input type="text" th:field="*{model}"><br>
+        Width: <input type="number" th:field="*{width}"><br>
+        Height: <input type="number" th:field="*{height}"><br>
+        Price: <input type="number" th:field="*{price}"><br>
+        Manufacturer: <input type="text" th:field="*{manufacturer}"><br>
+
+        Availability:
+        <select th:field="*{availability}">
+            <option value="1">true</option>
+            <option value="0">false</option>
+        </select><br>
+
+        <button>Save</button>
+    </form>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+</body>
+</html>
