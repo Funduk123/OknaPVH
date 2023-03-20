@@ -1,6 +1,5 @@
 package com.tms.oknapvh.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,5 +24,7 @@ public class UserDto {
     private String phone;
 
     private String address;
+
+    private Role role;
 
 }

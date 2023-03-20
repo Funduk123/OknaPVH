@@ -1,7 +1,6 @@
 package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.UserDto;
-import com.tms.oknapvh.entity.UserEntity;
 import com.tms.oknapvh.exception.ValidationException;
 import com.tms.oknapvh.repository.UserRepository;
 import com.tms.oknapvh.converter.UserConverter;
@@ -25,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto saveUser(UserDto userDto) throws ValidationException {
         validateUserDto(userDto);
-        UserEntity userEntity = converter.fromUserDtoToUserEntity(userDto);
+        var userEntity = converter.fromUserDtoToUserEntity(userDto);
         repository.save(userEntity);
         return converter.fromUserEntityToUserDto(userEntity);
     }
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getByLogin(String login) {
-        UserEntity userEntityFromDb = repository.findByLogin(login);
+        var userEntityFromDb = repository.findByLogin(login);
         if (userEntityFromDb != null) {
             return converter.fromUserEntityToUserDto(userEntityFromDb);
         }

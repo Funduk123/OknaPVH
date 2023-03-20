@@ -8,7 +8,7 @@
 
 <div class="container">
 
-  <form method="post" th:object="${window}" th:action="@{/windowsPVH/update/{id}(id=${window.id})}">
+  <form method="post" th:object="${window}" th:action="@{/store/update/{id}(id=${window.id})}">
 
     <input type="text" th:field="*{model}" th:value="${window.model}">
     <input type="number" th:field="*{width}" th:value="${window.width}">

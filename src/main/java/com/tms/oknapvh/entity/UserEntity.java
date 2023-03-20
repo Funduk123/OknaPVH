@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Builder
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = @Index(unique = true, columnList = "login"))
 public class UserEntity {
 
     @Id
@@ -37,5 +37,8 @@ public class UserEntity {
 
     @Column
     private String address;
+
+    @Column
+    private Role role;
 
 }

@@ -2,7 +2,6 @@ package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.converter.WindowConverter;
 import com.tms.oknapvh.dto.WindowDto;
-import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.repository.WindowRepository;
 import com.tms.oknapvh.service.WindowService;
 import lombok.RequiredArgsConstructor;
@@ -29,14 +28,14 @@ public class WindowServiceImpl implements WindowService {
 
     @Override
     public WindowDto saveWindow(WindowDto windowDto) {
-        WindowEntity windowEntity = converter.fromWindowDtoToWindowEntity(windowDto);
+        var windowEntity = converter.fromWindowDtoToWindowEntity(windowDto);
         repository.save(windowEntity);
         return converter.fromWindowEntityToWindowDto(windowEntity);
     }
 
     @Override
     public WindowDto getById(Integer id) {
-        WindowEntity windowEntityFromDb = repository.findById(id).orElse(null);
+        var windowEntityFromDb = repository.findById(id).orElse(null);
         if (windowEntityFromDb != null) {
             return converter.fromWindowEntityToWindowDto(windowEntityFromDb);
         }
