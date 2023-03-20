@@ -2,8 +2,8 @@ package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.UserDto;
 import com.tms.oknapvh.exception.ValidationException;
+import com.tms.oknapvh.mapper.UserMapper;
 import com.tms.oknapvh.repository.UserRepository;
-import com.tms.oknapvh.converter.UserConverter;
 import com.tms.oknapvh.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,31 +19,28 @@ public class UserServiceImpl implements UserService {
 
 
     private final UserRepository repository;
-    private final UserConverter converter;
+    private final UserMapper mapper;
 
     @Override
     public UserDto saveUser(UserDto userDto) throws ValidationException {
         validateUserDto(userDto);
-        var userEntity = converter.fromUserDtoToUserEntity(userDto);
+        var userEntity = mapper.dtoToEntity(userDto);
         repository.save(userEntity);
-        return converter.fromUserEntityToUserDto(userEntity);
+        return mapper.entityToDto(userEntity);
     }
 
     @Override
     public List<UserDto> getAll() {
         return repository.findAll()
                 .stream()
-                .map(converter::fromUserEntityToUserDto)
+                .map(mapper::entityToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public UserDto getByLogin(String login) {
         var userEntityFromDb = repository.findByLogin(login);
-        if (userEntityFromDb != null) {
-            return converter.fromUserEntityToUserDto(userEntityFromDb);
-        }
-        return null;
+        return mapper.entityToDto(userEntityFromDb);
     }
 
     @Override
