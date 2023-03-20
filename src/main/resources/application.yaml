@@ -1,1 +1,14 @@
+server:
+  port: 8080
 
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  main:
+    allow-bean-definition-overriding: true

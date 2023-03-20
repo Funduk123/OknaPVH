@@ -1,0 +1,26 @@
+html,
+body {
+    height: 100%;
+}
+
+#page-content {
+    flex: 1 0 auto;
+}
+
+/* Other Classes for Page Styling */
+
+body {
+    display: grid;
+    min-height: 100%;
+    grid-template-rows: auto 1fr auto;
+    background: #808080;
+}
+
+table {
+    margin: 10px;
+    width: calc(50% - 20px);
+}
+
+form {
+    margin: 10px;
+}
