@@ -35,8 +35,9 @@ public class WindowServiceImpl implements WindowService {
 
     @Override
     public WindowDto getById(Integer id) {
-        var windowEntityFromDb = repository.findById(id).orElse(null);
-        return mapper.entityToDto(windowEntityFromDb);
+        return repository.findById(id)
+                .map(mapper::entityToDto)
+                .orElse(null);
     }
 
     @Override

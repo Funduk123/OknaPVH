@@ -41,8 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getByLogin(String login) {
-        var userEntityFromDb = repository.findByLogin(login);
-        return mapper.entityToDto(userEntityFromDb);
+        return repository.findByLogin(login)
+                .map(mapper::entityToDto)
+                .orElseThrow(null);
     }
 
     @Override
