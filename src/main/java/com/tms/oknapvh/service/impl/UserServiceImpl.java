@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getByLogin(String login) {
         return repository.findByLogin(login)
                 .map(mapper::entityToDto)
-                .orElseThrow(null);
+                .orElseThrow(RuntimeException::new);
     }
 
     @Override
