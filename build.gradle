@@ -30,6 +30,7 @@ dependencies {
     // SQL
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.hibernate:hibernate-jpamodelgen'
 
     // Security
 //    implementation 'org.springframework.boot:spring-boot-starter-security'

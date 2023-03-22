@@ -5,6 +5,7 @@ import com.tms.oknapvh.service.WindowService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,15 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class WindowController {
 
     private final WindowService service;
-
-    @GetMapping
-    public ModelAndView windowsPVH(@ModelAttribute(name = "newWindow") WindowDto windowDto) {
-        var allWindows = service.getAll();
-        var modelAndView = new ModelAndView("store.html");
-        modelAndView.addObject("allWindows", allWindows);
-        log.info("All windows");
-        return modelAndView;
-    }
 
     @PostMapping
     public String save(WindowDto windowDto) {
@@ -55,4 +47,11 @@ public class WindowController {
         return "redirect:/store";
     }
 
+    @GetMapping
+    public ModelAndView search(@ModelAttribute(name = "window") WindowDto windowDto) {
+        var allWindows = service.getBySpecification(windowDto);
+        var modelAndView = new ModelAndView("store.html");
+        modelAndView.addObject("foundWindows", allWindows);
+        return modelAndView;
+    }
 }

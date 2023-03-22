@@ -14,6 +14,6 @@ public interface WindowService {
 
     void deleteWindow(Integer windowId);
 
-//    WindowDto updateWindow(WindowDto windowDto);
+    List<WindowDto> getBySpecification(WindowDto windowDto);
 
 }

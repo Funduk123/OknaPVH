@@ -1,5 +1,4 @@
-html,
-body {
+html {
     height: 100%;
 }
 
@@ -7,9 +6,8 @@ body {
     flex: 1 0 auto;
 }
 
-/* Other Classes for Page Styling */
-
 body {
+    height: 100%;
     display: grid;
     min-height: 100%;
     grid-template-rows: auto 1fr auto;
@@ -22,5 +20,39 @@ table {
 }
 
 form {
-    margin: 10px;
+    width: 500px;
+    margin: auto;
+    padding: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type=text], input[type=number] {
+    width: 100%;
+    padding: 10px;
+}
+
+input[type=submit] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    appearance: none;
+}
+
+select::after {
+    content: "\25BC";
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }

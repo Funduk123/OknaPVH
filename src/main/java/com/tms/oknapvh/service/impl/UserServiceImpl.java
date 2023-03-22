@@ -18,7 +18,6 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-
     private final UserRepository repository;
     private final UserMapper mapper;
 
