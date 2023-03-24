@@ -21,33 +21,34 @@
                         <div class="col">
                             <form method="post" th:action="@{/store}" th:object="${window}">
                                 <div class="form-group">
-                                    <label for="model">Модель</label>
-                                    <input th:field="*{model}" type="text" class="form-control" id="model"
+                                    <label for="modelS">Модель</label>
+                                    <input th:field="*{model}" type="text" class="form-control" id="modelS"
                                            placeholder="Введите модель окна">
                                 </div>
                                 <div class="form-group">
-                                    <label for="width">Ширина</label>
-                                    <input th:field="*{width}" type="text" class="form-control" id="width"
+                                    <label for="widthS">Ширина</label>
+                                    <input th:field="*{width}" type="text" class="form-control" id="widthS"
                                            placeholder="Введите ширину окна">
                                 </div>
                                 <div class="form-group">
-                                    <label for="height">Высота</label>
-                                    <input th:field="*{height}" type="text" class="form-control" id="height"
+                                    <label for="heightS">Высота</label>
+                                    <input th:field="*{height}" type="text" class="form-control" id="heightS"
                                            placeholder="Введите высоту окна">
                                 </div>
                                 <div class="form-group">
-                                    <label for="price">Стоимость</label>
-                                    <input th:field="*{price}" type="text" class="form-control" id="price"
+                                    <label for="priceS">Стоимость</label>
+                                    <input th:field="*{price}" type="text" class="form-control" id="priceS"
                                            placeholder="Введите стоимость окна">
                                 </div>
                                 <div class="form-group">
-                                    <label for="manufacturer">Производитель</label>
-                                    <input th:field="*{manufacturer}" type="text" class="form-control" id="manufacturer"
+                                    <label for="manufacturerS">Производитель</label>
+                                    <input th:field="*{manufacturer}" type="text" class="form-control"
+                                           id="manufacturerS"
                                            placeholder="Введите производителя окна">
                                 </div>
                                 <div class="form-group">
-                                    <label for="availability">Наличие</label>
-                                    <select class="form-control" id="availability">
+                                    <label for="availabilityS">Наличие</label>
+                                    <select th:name="availability" class="form-control" id="availabilityS">
                                         <option value="1">В наличии</option>
                                         <option value="0">Под заказ</option>
                                     </select>
@@ -81,12 +82,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="manufacturer">Производитель</label>
-                                    <input th:field="*{manufacturer}" type="text" class="form-control" id="manufacturer"
+                                    <input  th:field="*{manufacturer}" type="text" class="form-control" id="manufacturer"
                                            placeholder="Введите производителя окна">
                                 </div>
                                 <div class="form-group">
                                     <label for="availability">Наличие</label>
-                                    <select class="form-control" id="availability">
+                                    <select th:name="availability" class="form-control" id="availability">
                                         <option value="1">В наличии</option>
                                         <option value="0">Под заказ</option>
                                     </select>
@@ -102,57 +103,40 @@
 
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6">
 
-                <table class="table table-dark table-striped">
-                    <tbody>
-                    <tr th:each="window : ${foundWindows}">
+            <table class="table table-dark table-striped">
+                <tbody>
+                <tr th:each="window : ${foundWindows}">
 
-                        <div class="col">
-                            <div class="card shadow-sm">
+                    <div class="card" style="width: 18rem;">
+                        <img src="/images/Одностворчатое глухое.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${window.model}"/>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" th:text="${window.width}"/>
+                            <li class="list-group-item" th:text="${window.height}"/>
+                            <li class="list-group-item" th:text="${window.price}"/>
+                            <li class="list-group-item" th:text="${window.manufacturer}"/>
+                            <li class="list-group-item" th:text="${window.availability}"/>
+                        </ul>
 
-                                <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                                    <rect width="100%" height="100%" fill="#55595c"></rect>
-                                    <text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                                </svg>
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
 
-                                <div class="card-body">
+                                <a th:href="@{/store/info/{id}(id=${window.id})}">
+                                    <button type="button" class="btn btn-warning">Заказать</button>
+                                </a>
 
-                                    Id: <p th:text="${window.id}"></p>
-                                    Model: <p th:text="${window.model}"></p>
-                                    Width: <p th:text="${window.width}"></p>
-                                    Height: <p th:text="${window.height}"></p>
-                                    Price: <p th:text="${window.price}"></p>
-                                    Manufacturer: <p th:text="${window.manufacturer}"></p>
-                                    Availability: <p th:text="${window.availability}"></p>
-
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                        </div>
-                                        <small class="text-muted">9 mins</small>
-                                    </div>
-
-                                </div>
+                                <a th:href="@{/store/delete/{id}(id=${window.id})}">
+                                    <button type="button" class="btn btn-danger">Удалить</button>
+                                </a>
                             </div>
                         </div>
-
-                        <!--            <td><a th:href="@{/store/info/{id}(id=${window.id})}">-->
-                        <!--                <button type="button" class="btn btn-warning">Info</button>-->
-                        <!--            </a></td>-->
-
-                        <!--            <td><a th:href="@{/store/delete/{id}(id=${window.id})}">-->
-                        <!--                <button type="button" class="btn btn-danger">Delete</button>-->
-                        <!--            </a></td>-->
-
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
+                    </div>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </main>

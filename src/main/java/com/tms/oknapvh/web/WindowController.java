@@ -17,6 +17,14 @@ public class WindowController {
 
     private final WindowService service;
 
+    @GetMapping
+    public ModelAndView search(@ModelAttribute(name = "window") WindowDto windowDto) {
+        var allWindows = service.getBySpecification(windowDto);
+        var modelAndView = new ModelAndView("store.html");
+        modelAndView.addObject("foundWindows", allWindows);
+        return modelAndView;
+    }
+
     @PostMapping
     public String save(WindowDto windowDto) {
         service.saveWindow(windowDto);
@@ -45,13 +53,5 @@ public class WindowController {
         service.saveWindow(windowDto);
         log.info("Update window");
         return "redirect:/store";
-    }
-
-    @GetMapping
-    public ModelAndView search(@ModelAttribute(name = "window") WindowDto windowDto) {
-        var allWindows = service.getBySpecification(windowDto);
-        var modelAndView = new ModelAndView("store.html");
-        modelAndView.addObject("foundWindows", allWindows);
-        return modelAndView;
     }
 }

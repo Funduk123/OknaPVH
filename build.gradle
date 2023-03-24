@@ -32,7 +32,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.hibernate:hibernate-jpamodelgen'
 
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '8.5.13'
+    implementation 'org.flywaydb:flyway-core'
 
 
     // Security
