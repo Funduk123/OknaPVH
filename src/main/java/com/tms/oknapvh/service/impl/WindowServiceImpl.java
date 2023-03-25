@@ -89,6 +89,9 @@ public class WindowServiceImpl implements WindowService {
                 listCond.add(equalManufacturer);
             }
 
+                Predicate equalAvailability = builder.equal(root.get(WindowEntity_.AVAILABILITY), windowEntity.isAvailability());
+                listCond.add(equalAvailability);
+
             return builder.and(listCond.toArray(new Predicate[]{}));
         };
     }

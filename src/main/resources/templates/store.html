@@ -40,6 +40,14 @@
                         <input th:field="*{manufacturer}" type="text" class="form-control" id="manufacturer"
                                placeholder="Введите производителя окна">
                     </div>
+                    <div class="form-group">
+                        <label for="availability">Наличие</label>
+                        <select th:name="availability" th:field="*{availability}" class="form-control"
+                                id="availability">
+                            <option value="1">В наличии</option>
+                            <option value="0">Под заказ</option>
+                        </select>
+                    </div>
                     <button type="submit" class="mt-1 btn btn-primary">Поиск</button>
                 </form>
             </div>
