@@ -3,10 +3,11 @@ package com.tms.oknapvh.service.impl;
 import com.tms.oknapvh.dto.WindowDto;
 import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.entity.WindowEntity_;
-import com.tms.oknapvh.mapper.WindowMapper;
+import com.tms.oknapvh.mapper.MyMapper;
 import com.tms.oknapvh.repository.WindowRepository;
 import com.tms.oknapvh.service.WindowService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class WindowServiceImpl implements WindowService {
 
     private final WindowRepository repository;
 
-    private final WindowMapper mapper;
+    private final MyMapper mapper;
 
     @Override
     public List<WindowDto> getAll() {
@@ -50,7 +51,7 @@ public class WindowServiceImpl implements WindowService {
         repository.deleteById(windowId);
     }
 
-    public List<WindowDto> getBySpecification(WindowDto windowDto) {
+    public List<WindowDto> getBySomething(WindowDto windowDto) {
         Specification<WindowEntity> specification = createSpecification(windowDto);
         return repository.findAll(specification)
                 .stream()
@@ -64,7 +65,7 @@ public class WindowServiceImpl implements WindowService {
 
             List<Predicate> listCond = new ArrayList<>();
 
-            if (windowEntity.getModel() != null && !windowEntity.getModel().isBlank()) {
+            if (StringUtils.isNotBlank(windowEntity.getModel())) {
                 Predicate equalModel = builder.equal(root.get(WindowEntity_.MODEL), windowEntity.getModel());
                 listCond.add(equalModel);
             }
@@ -84,7 +85,7 @@ public class WindowServiceImpl implements WindowService {
                 listCond.add(equalPrice);
             }
 
-            if (windowEntity.getManufacturer() != null && !windowEntity.getManufacturer().isBlank()) {
+            if (StringUtils.isNotBlank(windowEntity.getManufacturer())) {
                 Predicate equalManufacturer = builder.equal(root.get(WindowEntity_.MANUFACTURER), windowEntity.getManufacturer());
                 listCond.add(equalManufacturer);
             }

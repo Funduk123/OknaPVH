@@ -26,7 +26,7 @@ public class WindowController {
 
     @GetMapping("/search")
     public ModelAndView search(@ModelAttribute(name = "window") WindowDto windowDto) {
-        var allWindows = service.getBySpecification(windowDto);
+        var allWindows = service.getBySomething(windowDto);
         var modelAndView = new ModelAndView("search.html");
         modelAndView.addObject("foundWindows", allWindows);
         return modelAndView;

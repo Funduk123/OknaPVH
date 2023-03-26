@@ -2,7 +2,7 @@ package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.UserDto;
 import com.tms.oknapvh.exception.ValidationException;
-import com.tms.oknapvh.mapper.UserMapper;
+import com.tms.oknapvh.mapper.MyMapper;
 import com.tms.oknapvh.repository.UserRepository;
 import com.tms.oknapvh.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import static java.util.Objects.isNull;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
-    private final UserMapper mapper;
+    private final MyMapper mapper;
 
     @Override
     public UserDto saveUser(UserDto userDto) throws ValidationException {
