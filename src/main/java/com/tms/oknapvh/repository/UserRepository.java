@@ -1,10 +1,14 @@
 package com.tms.oknapvh.repository;
 
 import com.tms.oknapvh.entity.UserEntity;
+import com.tms.oknapvh.entity.WindowEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+import java.util.Optional;
 
-    UserEntity findByLogin(String login);
+public interface UserRepository extends JpaRepository<UserEntity, Integer>, JpaSpecificationExecutor<UserEntity> {
+
+    Optional<UserEntity> findByLogin(String login);
 
 }

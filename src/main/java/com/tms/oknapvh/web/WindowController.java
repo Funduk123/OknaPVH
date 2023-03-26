@@ -17,29 +17,44 @@ public class WindowController {
     private final WindowService service;
 
     @GetMapping
-    public ModelAndView windowsPVH(@ModelAttribute(name = "newWindow") WindowDto windowDto) {
+    public ModelAndView mainPage(@ModelAttribute(name = "window") WindowDto windowDto) {
         var allWindows = service.getAll();
         var modelAndView = new ModelAndView("store.html");
         modelAndView.addObject("allWindows", allWindows);
-        log.info("All windows");
         return modelAndView;
     }
 
-    @PostMapping
+    @GetMapping("/search")
+    public ModelAndView search(@ModelAttribute(name = "window") WindowDto windowDto) {
+        var allWindows = service.getBySomething(windowDto);
+        var modelAndView = new ModelAndView("search.html");
+        modelAndView.addObject("foundWindows", allWindows);
+        return modelAndView;
+    }
+
+    @GetMapping("/redactor")
+    public ModelAndView redactor(@ModelAttribute(name = "newWindow") WindowDto windowDto) {
+        var allWindows = service.getAll();
+        var modelAndView = new ModelAndView("redactor.html");
+        modelAndView.addObject("allWindows", allWindows);
+        return modelAndView;
+    }
+
+    @PostMapping("/redactor")
     public String save(WindowDto windowDto) {
         service.saveWindow(windowDto);
         log.info("Save window: " + windowDto);
-        return "redirect:/store";
+        return "redirect:/store/redactor";
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/redactor/delete/{id}")
     public String delete(@PathVariable(name = "id") Integer id) {
         service.deleteWindow(id);
         log.info("Delete window by id: " + id);
-        return "redirect:/store";
+        return "redirect:/store/redactor";
     }
 
-    @GetMapping("/info/{id}")
+    @GetMapping("/redactor/update/{id}")
     public ModelAndView info(@PathVariable(name = "id") Integer id) {
         var windowDto = service.getById(id);
         var modelAndView = new ModelAndView("update.html");
@@ -48,11 +63,10 @@ public class WindowController {
         return modelAndView;
     }
 
-    @PostMapping("/update/{id}")
+    @PostMapping("/redactor/update/{id}")
     public String update(@PathVariable(name = "id") Integer id, WindowDto windowDto) {
         service.saveWindow(windowDto);
         log.info("Update window");
-        return "redirect:/store";
+        return "redirect:/store/redactor";
     }
-
 }
