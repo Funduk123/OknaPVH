@@ -32,16 +32,16 @@
                     <div class="form-group">
                         <label for="type">Тип окна</label>
                         <select th:field="*{type}" class="form-control" id="type">
-                            <option value="Одностворчатое глухое">Одностворчатое глухое</option>
-                            <option value="Одностворчатое поворотно-откидное">Одностворчатое поворотно-откидное</option>
-                            <option value="Двустворчатое глухое">Двустворчатое глухое</option>
-                            <option value="Двустворчатое с одной поворотно-откидной">Двустворчатое с одной
-                                поворотно-откидной
+                            <option value="1-0">Одностворчатое глухое</option>
+                            <option value="1-1">Одностворчатое поворотно-откидное</option>
+                            <option value="2-0">Двустворчатое глухое</option>
+                            <option value="2-1">Двустворчатое глухое
+                                поворотно-откидное
                             </option>
-                            <option value="Трёхстворчатое с одной поворотно-откидной створкой">Трёхстворчатое с одной
+                            <option value="3-1">Трёхстворчатое с
                                 поворотно-откидной створкой
                             </option>
-                            <option value="Трёхстворчатое с двумя поворотно-откидными створками">Трёхстворчатое с двумя
+                            <option value="3-2">Трёхстворчатое с двумя
                                 поворотно-откидными створками
                             </option>
                         </select>
@@ -105,8 +105,7 @@
                     <tbody>
                     <tr th:each="window : ${allWindows}">
 
-                        <div class="card" style="width: 18rem;">
-                            <img src="/images/Одностворчатое глухое.jpg" class="card-img-top" alt="...">
+                        <div class="card" style="width: 24rem;">
 
                             <div th:replace="fragment/window-card :: window-card"></div>
 

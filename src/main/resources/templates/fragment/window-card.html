@@ -1,4 +1,7 @@
 <div th:fragment="window-card">
+
+    <img th:src="'/images/' + ${window.type} + '.jpg'" class="img-fluid" alt="...">
+
     <div class="card-body">
         <h5 class="card-title"
             th:text="'Окно ПВХ ' + ${window.type} + ' ' + ${window.mountingWidth} + ' (' + ${window.width} + 'x' + ${window.height} + ')'"/>
