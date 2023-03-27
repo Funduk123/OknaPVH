@@ -13,42 +13,13 @@
 <main class="flex-grow-1">
     <div class="container">
         <div class="row">
+
             <div class="col-md-3">
                 <form method="get" th:action="@{/store/search}" th:object="${window}">
-                    <div class="form-group">
-                        <label for="model">Модель</label>
-                        <input th:field="*{model}" type="text" class="form-control" id="model"
-                               placeholder="Введите модель окна">
-                    </div>
-                    <div class="form-group">
-                        <label for="width">Ширина</label>
-                        <input th:field="*{width}" type="text" class="form-control" id="width"
-                               placeholder="Введите ширину окна">
-                    </div>
-                    <div class="form-group">
-                        <label for="height">Высота</label>
-                        <input th:field="*{height}" type="text" class="form-control" id="height"
-                               placeholder="Введите высоту окна">
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Стоимость</label>
-                        <input th:field="*{price}" type="text" class="form-control" id="price"
-                               placeholder="Введите стоимость окна">
-                    </div>
-                    <div class="form-group">
-                        <label for="manufacturer">Производитель</label>
-                        <input th:field="*{manufacturer}" type="text" class="form-control" id="manufacturer"
-                               placeholder="Введите производителя окна">
-                    </div>
-                    <div class="form-group">
-                        <label for="availability">Наличие</label>
-                        <select th:name="availability" th:field="*{availability}" class="form-control"
-                                id="availability">
-                            <option value="1">В наличии</option>
-                            <option value="0">Под заказ</option>
-                        </select>
-                    </div>
+
+                    <div th:replace="fragment/window-form-fields :: window-form-fields"></div>
                     <button type="submit" class="mt-1 btn btn-primary">Поиск</button>
+
                 </form>
             </div>
 
@@ -59,16 +30,8 @@
 
                         <div class="card" style="width: 18rem;">
                             <img src="/images/Одностворчатое глухое.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title" th:text="${window.model}"/>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item" th:text="${window.width}"/>
-                                <li class="list-group-item" th:text="${window.height}"/>
-                                <li class="list-group-item" th:text="${window.price}"/>
-                                <li class="list-group-item" th:text="${window.manufacturer}"/>
-                                <li class="list-group-item" th:text="${window.availability}"/>
-                            </ul>
+
+                            <div th:replace="fragment/window-card :: window-card"></div>
 
                             <div class="card-body d-flex justify-content-between align-items-center">
                                 <div class="btn-group">

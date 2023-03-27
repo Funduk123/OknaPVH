@@ -6,88 +6,130 @@
     <meta charset="UTF-8">
     <title>Редактирование</title>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 
 <div th:replace="fragment/header :: header"></div>
 
-<div class="row py-lg-5 container mx-auto text-center py-3 col-lg-4 col-md-8">
-    <div class="row">
+<main class="flex-grow-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
 
-        <form method="post" th:action="@{/store/redactor}" th:object="${newWindow}">
-            <div class="form-group">
-                <label for="modelS">Модель</label>
-                <input th:field="*{model}" type="text" class="form-control" id="modelS"
-                       placeholder="Введите модель окна">
-            </div>
-            <div class="form-group">
-                <label for="widthS">Ширина</label>
-                <input th:field="*{width}" type="text" class="form-control" id="widthS"
-                       placeholder="Введите ширину окна">
-            </div>
-            <div class="form-group">
-                <label for="heightS">Высота</label>
-                <input th:field="*{height}" type="text" class="form-control" id="heightS"
-                       placeholder="Введите высоту окна">
-            </div>
-            <div class="form-group">
-                <label for="priceS">Стоимость</label>
-                <input th:field="*{price}" type="text" class="form-control" id="priceS"
-                       placeholder="Введите стоимость окна">
-            </div>
-            <div class="form-group">
-                <label for="manufacturerS">Производитель</label>
-                <input th:field="*{manufacturer}" type="text" class="form-control"
-                       id="manufacturerS"
-                       placeholder="Введите производителя окна">
-            </div>
-            <div class="form-group">
-                <label for="availabilityS">Наличие</label>
-                <select th:name="availability" th:field="*{availability}" class="form-control"
-                        id="availabilityS">
-                    <option value="1">В наличии</option>
-                    <option value="0">Под заказ</option>
-                </select>
-            </div>
-            <button type="submit" class="mt-2 btn btn-primary">Сохранить окно ПВХ</button>
-        </form>
-    </div>
-</div>
+                <form method="post" th:action="@{/store/redactor}" th:object="${newWindow}">
 
-<div class="col-md row justify-content-center">
-    <table class="table table-dark table-striped">
-        <tbody>
-        <tr th:each="window : ${allWindows}">
-
-            <div class="card" style="width: 18rem;">
-                <img src="/images/Одностворчатое глухое.jpg" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title" th:text="${window.model}"/>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item" th:text="${window.width}"/>
-                    <li class="list-group-item" th:text="${window.height}"/>
-                    <li class="list-group-item" th:text="${window.price}"/>
-                    <li class="list-group-item" th:text="${window.manufacturer}"/>
-                    <li class="list-group-item" th:text="${window.availability}"/>
-                </ul>
-
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-
-                        <a th:href="@{/store/redactor/update/{id}(id=${window.id})}">
-                            <button type="button" class="btn btn-warning">Изменить</button>
-                        </a>
-
-                        <a th:href="@{/store/redactor/delete/{id}(id=${window.id})}">
-                            <button type="button" class="btn btn-danger">Удалить</button>
-                        </a>
+                    <div class="form-group">
+                        <label for="width">Ширина</label>
+                        <input th:field="*{width}" type="text" class="form-control" id="width"
+                               placeholder="Введите ширину окна">
                     </div>
-                </div>
+
+                    <div class="form-group">
+                        <label for="height">Высота</label>
+                        <input th:field="*{height}" type="text" class="form-control" id="height"
+                               placeholder="Введите высоту окна">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type">Тип окна</label>
+                        <select th:field="*{type}" class="form-control" id="type">
+                            <option value="Одностворчатое глухое">Одностворчатое глухое</option>
+                            <option value="Одностворчатое поворотно-откидное">Одностворчатое поворотно-откидное</option>
+                            <option value="Двустворчатое глухое">Двустворчатое глухое</option>
+                            <option value="Двустворчатое с одной поворотно-откидной">Двустворчатое с одной
+                                поворотно-откидной
+                            </option>
+                            <option value="Трёхстворчатое с одной поворотно-откидной створкой">Трёхстворчатое с одной
+                                поворотно-откидной створкой
+                            </option>
+                            <option value="Трёхстворчатое с двумя поворотно-откидными створками">Трёхстворчатое с двумя
+                                поворотно-откидными створками
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lamination">Ламинация</label>
+                        <select th:field="*{lamination}" class="form-control" id="lamination">
+                            <option value="Нет">Нет</option>
+                            <option value="Одна сторона">Одна сторона</option>
+                            <option value="Две стороны">Две стороны</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mountingWidth">Монтажная ширина</label>
+                        <select th:field="*{mountingWidth}" class="form-control" id="mountingWidth">
+                            <option value="58">58</option>
+                            <option value="70">70</option>
+                            <option value="76">76</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cameras">Количество камер</label>
+                        <select th:field="*{cameras}" class="form-control" id="cameras">
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="manufacturer">Производство</label>
+                        <select th:field="*{manufacturer}" class="form-control" id="manufacturer">
+                            <option value="Беларусь">Беларусь</option>
+                            <option value="Россия">Россия</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="availability">Наличие</label>
+                        <select th:field="*{availability}" class="form-control" id="availability">
+                            <option value="В наличии">В наличии</option>
+                            <option value="Под заказ">Под заказ</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Стоимость</label>
+                        <input th:field="*{price}" type="text" class="form-control" id="price"
+                               placeholder="Введите стоимость окна в рублях">
+                    </div>
+
+                    <button type="submit" class="mt-2 btn btn-primary">Сохранить окно ПВХ</button>
+                </form>
+
             </div>
-        </tr>
-        </tbody>
-    </table>
-</div>
+
+            <div class="col-md row justify-content-center">
+                <table class="table table-dark table-striped">
+                    <tbody>
+                    <tr th:each="window : ${allWindows}">
+
+                        <div class="card" style="width: 18rem;">
+                            <img src="/images/Одностворчатое глухое.jpg" class="card-img-top" alt="...">
+
+                            <div th:replace="fragment/window-card :: window-card"></div>
+
+                            <div class="card-body d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+
+                                    <a th:href="@{/store/redactor/update/{id}(id=${window.id})}">
+                                        <button type="button" class="btn btn-warning">Изменить</button>
+                                    </a>
+
+                                    <a th:href="@{/store/redactor/delete/{id}(id=${window.id})}">
+                                        <button type="button" class="btn btn-danger">Удалить</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
 
 <div th:replace="fragment/footer :: footer"></div>
 

@@ -3,7 +3,7 @@ package com.tms.oknapvh.service.impl;
 import com.tms.oknapvh.dto.WindowDto;
 import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.entity.WindowEntity_;
-import com.tms.oknapvh.mapper.MyMapper;
+import com.tms.oknapvh.mapper.WindowMapper;
 import com.tms.oknapvh.repository.WindowRepository;
 import com.tms.oknapvh.service.WindowService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class WindowServiceImpl implements WindowService {
 
     private final WindowRepository repository;
 
-    private final MyMapper mapper;
+    private final WindowMapper mapper;
 
     @Override
     public List<WindowDto> getAll() {
@@ -65,11 +65,6 @@ public class WindowServiceImpl implements WindowService {
 
             List<Predicate> listCond = new ArrayList<>();
 
-            if (StringUtils.isNotBlank(windowEntity.getModel())) {
-                Predicate equalModel = builder.equal(root.get(WindowEntity_.MODEL), windowEntity.getModel());
-                listCond.add(equalModel);
-            }
-
             if (windowEntity.getWidth() != null) {
                 Predicate equalWidth = builder.equal(root.get(WindowEntity_.WIDTH), windowEntity.getWidth());
                 listCond.add(equalWidth);
@@ -78,6 +73,26 @@ public class WindowServiceImpl implements WindowService {
             if (windowEntity.getHeight() != null) {
                 Predicate equalHeight = builder.equal(root.get(WindowEntity_.HEIGHT), windowEntity.getHeight());
                 listCond.add(equalHeight);
+            }
+
+            if (StringUtils.isNotBlank(windowEntity.getType())) {
+                Predicate equalType = builder.equal(root.get(WindowEntity_.TYPE), windowEntity.getType());
+                listCond.add(equalType);
+            }
+
+            if (StringUtils.isNotBlank(windowEntity.getLamination())) {
+                Predicate equalLamination = builder.equal(root.get(WindowEntity_.LAMINATION), windowEntity.getLamination());
+                listCond.add(equalLamination);
+            }
+
+            if (windowEntity.getMountingWidth() != null) {
+                Predicate equalMountingWidth = builder.equal(root.get(WindowEntity_.MOUNTING_WIDTH), windowEntity.getMountingWidth());
+                listCond.add(equalMountingWidth);
+            }
+
+            if (windowEntity.getCameras() != null) {
+                Predicate equalCameras = builder.equal(root.get(WindowEntity_.CAMERAS), windowEntity.getCameras());
+                listCond.add(equalCameras);
             }
 
             if (windowEntity.getPrice() != null) {
@@ -90,9 +105,10 @@ public class WindowServiceImpl implements WindowService {
                 listCond.add(equalManufacturer);
             }
 
-                Predicate equalAvailability = builder.equal(root.get(WindowEntity_.AVAILABILITY), windowEntity.isAvailability());
+            if (StringUtils.isNotBlank(windowEntity.getAvailability())) {
+                Predicate equalAvailability = builder.equal(root.get(WindowEntity_.AVAILABILITY), windowEntity.getAvailability());
                 listCond.add(equalAvailability);
-
+            }
             return builder.and(listCond.toArray(new Predicate[]{}));
         };
     }

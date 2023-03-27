@@ -1,0 +1,90 @@
+<div th:fragment="window-form-fields">
+
+    <div class="form-group">
+        <label for="price">Стоимость</label>
+        <input th:field="*{price}" th:value="${window.price}" type="number" class="form-control"
+               id="price"
+               placeholder="Введите стоимость окна">
+    </div>
+
+    <div class="form-group">
+        <label for="height">Высота</label>
+        <input th:field="*{height}" th:value="${window.height}" type="number" class="form-control"
+               id="height"
+               placeholder="Введите высоту окна">
+    </div>
+
+    <div class="form-group">
+        <label for="width">Ширина</label>
+        <input th:field="*{width}" th:value="${window.width}" type="number" class="form-control"
+               id="width"
+               placeholder="Введите ширину окна">
+    </div>
+
+    <div class="form-group">
+        <label for="type">Тип окна</label>
+        <select th:field="*{type}" th:value="${window.type}" class="form-control"
+                id="type">
+            <option value="" selected>Не выбрано</option>
+            <option value="Одностворчатое глухое">Одностворчатое глухое</option>
+            <option value="Одностворчатое поворотно-откидное">Одностворчатое поворотно-откидное</option>
+            <option value="Двустворчатое глухое">Двустворчатое глухое</option>
+            <option value="Двустворчатое с одной поворотно-откидной">Двустворчатое с одной поворотно-откидной</option>
+            <option value="Трёхстворчатое с одной поворотно-откидной створкой">Трёхстворчатое с одной поворотно-откидной створкой</option>
+            <option value="Трёхстворчатое с двумя поворотно-откидными створками">Трёхстворчатое с двумя поворотно-откидными створками</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="lamination">Ламинация</label>
+        <select th:field="*{lamination}" th:value="${window.lamination}" class="form-control"
+                id="lamination">
+            <option value="" selected>Не выбрано</option>
+            <option value="Нет">Нет</option>
+            <option value="Одна сторона">Одна сторона</option>
+            <option value="Две стороны">Две стороны</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="mountingWidth">Монтажная ширина</label>
+        <select th:field="*{mountingWidth}" th:value="${window.mountingWidth}" class="form-control"
+                id="mountingWidth">
+            <option value="" selected>Не выбрано</option>
+            <option value="58">58</option>
+            <option value="70">70</option>
+            <option value="76">76</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="cameras">Количество камер</label>
+        <select th:field="*{cameras}" th:value="${window.cameras}" class="form-control"
+                id="cameras">
+            <option value="" selected>Не выбрано</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="manufacturer">Производство</label>
+        <select th:field="*{manufacturer}" th:value="${window.manufacturer}" class="form-control"
+                id="manufacturer">
+            <option value="" selected>Не выбрано</option>
+            <option value="Беларусь">Беларусь</option>
+            <option value="Россия">Россия</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="availability">Наличие</label>
+        <select th:field="*{availability}" th:value="${window.availability}" class="form-control"
+                id="availability">
+            <option value="" selected>Не выбрано</option>
+            <option value="В наличии">В наличии</option>
+            <option value="Под заказ">Под заказ</option>
+        </select>
+    </div>
+
+</div>

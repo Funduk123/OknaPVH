@@ -1,0 +1,19 @@
+<div th:fragment="window-card">
+    <div class="card-body">
+        <h5 class="card-title"
+            th:text="'Окно ПВХ ' + ${window.type} + ' ' + ${window.mountingWidth} + ' (' + ${window.width} + 'x' + ${window.height} + ')'"/>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item" th:text="'Ширина: ' + ${window.width} + ' мм'"/>
+        <li class="list-group-item" th:text="'Высота: ' + ${window.height} + ' мм'"/>
+        <li class="list-group-item" th:text="'Тип окна: ' + ${window.type}"/>
+        <li class="list-group-item" th:text="'Ламинация: ' + ${window.lamination}"/>
+        <li class="list-group-item" th:text="'Монтажная ширина: ' + ${window.mountingWidth} + ' мм'"/>
+        <li class="list-group-item" th:text="'Количество камер: ' + ${window.cameras}"/>
+        <li class="list-group-item" th:text="'Производство: ' + ${window.manufacturer}"/>
+        <li class="list-group-item" th:text="${window.availability}"/>
+        <li class="list-group-item text-center"><h5 class="card-title" th:text="${window.price} + ' руб.'"/></li>
+    </ul>
+
+</div>
+
