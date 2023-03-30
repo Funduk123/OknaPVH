@@ -28,9 +28,9 @@ public class OrderController {
         return modelAndView;
     }
 
-    @PostMapping("/admin-orders/{type}")
-    public String buy(@PathVariable String type) {
-        service.createOrder(type);
+    @PostMapping("/admin-orders/{id}")
+    public String buy(@PathVariable UUID id) {
+        service.createOrder(id);
         return "redirect:/store";
     }
 

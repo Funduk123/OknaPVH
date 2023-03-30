@@ -4,6 +4,7 @@ import com.tms.oknapvh.dto.WindowDto;
 import com.tms.oknapvh.entity.WindowEntity;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface WindowService {
 
@@ -11,9 +12,9 @@ public interface WindowService {
 
     WindowEntity saveWindow(WindowDto windowDto);
 
-//    WindowDto getByType(String type);
+    void deleteWindow(UUID id);
 
-    void deleteWindow(String type);
+    WindowDto getById(UUID id);
 
     List<WindowDto> getBySomething(WindowDto windowDto);
 

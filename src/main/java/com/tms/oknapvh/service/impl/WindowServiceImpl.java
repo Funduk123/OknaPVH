@@ -8,19 +8,15 @@ import com.tms.oknapvh.repositories.WindowRepository;
 import com.tms.oknapvh.service.WindowService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static java.util.Comparator.comparingInt;
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toCollection;
 
 @Service
 @RequiredArgsConstructor
@@ -40,11 +36,19 @@ public class WindowServiceImpl implements WindowService {
     }
 
     @Override
-    public List<WindowDto> getAllWithoutOrder() {
-        List<WindowEntity> allWithoutOrder = repository.findAllWithoutOrder();
-        System.out.println(allWithoutOrder);
+    public WindowDto getById(UUID id) {
+        return repository.findById(id)
+                .map(mapper::entityToDto)
+                .orElseThrow(RuntimeException::new);
+    }
 
-        return allWithoutOrder.stream().map(mapper::entityToDto).collect(Collectors.toList());
+
+    @Override
+    public List<WindowDto> getAllWithoutOrder() {
+        return repository.findAllWithoutOrder()
+                .stream()
+                .map(mapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -53,17 +57,9 @@ public class WindowServiceImpl implements WindowService {
         return repository.save(windowEntity);
     }
 
-//    @Override
-//    public WindowDto getById(UUID id) {
-//        return repository.findById(id)
-//                .map(mapper::entityToDto)
-//                .orElseThrow(RuntimeException::new);
-//    }
-
     @Override
-    @Transactional
-    public void deleteWindow(String type) {
-        repository.deleteWindowByType(type);
+    public void deleteWindow(UUID id) {
+        repository.deleteById(id);
     }
 
     public List<WindowDto> getBySomething(WindowDto windowDto) {

@@ -1,12 +1,14 @@
 package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.OrderDto;
+import com.tms.oknapvh.dto.WindowDto;
 import com.tms.oknapvh.entity.OrderEntity;
 import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.mapper.OrderMapper;
 import com.tms.oknapvh.repositories.OrderRepository;
 import com.tms.oknapvh.repositories.WindowRepository;
 import com.tms.oknapvh.service.OrderService;
+import com.tms.oknapvh.service.WindowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,7 +26,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository repository;
 
-    private final WindowRepository windowRepository;
+    private final WindowService windowService;
 
     private final OrderMapper mapper;
 
@@ -39,27 +42,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderEntity createOrder(String type) {
+    public OrderEntity createOrder(UUID id) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        String dateAndTime = LocalDateTime.now().format(formatter);
+        var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        var dateAndTime = LocalDateTime.now().format(formatter);
 
-        List<WindowEntity> windowsByType = windowRepository.findByType(type); // с типом и без заказа
+        var window = windowService.getById(id);
 
-        WindowEntity window = windowsByType.get(0); // первое свободное окно в списке
+        var orderEntity = new OrderEntity();
 
-        UUID window_id = window.getId(); // id первого свободного окна в списке
+        orderEntity.setUserId(UUID.randomUUID()); // ДОБАВИТЬ ID РЕАЛЬНОГО ЮЗЕРА
 
-        OrderDto orderDto = new OrderDto();
+        orderEntity.setWindow_id(window.getId());
+        orderEntity.setPrice(window.getPrice());
+        orderEntity.setDateAndTime(dateAndTime);
+        orderEntity.setStatus("Обработка");
 
-        orderDto.setUserId(UUID.randomUUID()); // ДОБАВИТЬ ID РЕАЛЬНОГО ЮЗЕРА
-
-        orderDto.setWindow_id(window_id);
-        orderDto.setPrice(window.getPrice());
-        orderDto.setDateAndTime(dateAndTime);
-        orderDto.setStatus("Обработка");
-
-        var orderEntity = mapper.dtoToEntity(orderDto);
         return repository.save(orderEntity);
     }
 

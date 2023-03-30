@@ -1,6 +1,7 @@
 package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.UserDto;
+import com.tms.oknapvh.entity.UserEntity;
 import com.tms.oknapvh.exception.ValidationException;
 import com.tms.oknapvh.mapper.UserMapper;
 import com.tms.oknapvh.repositories.UserRepository;
@@ -24,11 +25,10 @@ public class UserServiceImpl implements UserService {
     private final UserMapper mapper;
 
     @Override
-    public UserDto saveUser(UserDto userDto) throws ValidationException {
+    public UserEntity saveUser(UserDto userDto) throws ValidationException {
         validateUserDto(userDto);
         var userEntity = mapper.dtoToEntity(userDto);
-        repository.save(userEntity);
-        return mapper.entityToDto(userEntity);
+        return repository.save(userEntity);
     }
 
     @Override

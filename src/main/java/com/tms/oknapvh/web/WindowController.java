@@ -49,21 +49,21 @@ public class WindowController {
         return "redirect:/store/redactor";
     }
 
-    @GetMapping("/redactor/delete/{type}")
-    public String delete(@PathVariable(name = "type") String type) {
-        service.deleteWindow(type);
-        log.info("Delete window by type: " + type);
+    @GetMapping("/redactor/delete/{id}")
+    public String delete(@PathVariable(name = "id") UUID id) {
+        service.deleteWindow(id);
+        log.info("Delete window by id: " + id);
         return "redirect:/store/redactor";
     }
 
-//    @GetMapping("/redactor/update/{type}")
-//    public ModelAndView update(@PathVariable(name = "type") String type) {
-//        var windowDto = service.getById(type);
-//        var modelAndView = new ModelAndView("update.html");
-//        modelAndView.addObject("window", windowDto);
-//        log.info("Go to update window by type: " + type);
-//        return modelAndView;
-//    }
+    @GetMapping("/redactor/update/{id}")
+    public ModelAndView update(@PathVariable(name = "id") UUID id) {
+        var windowDto = service.getById(id);
+        var modelAndView = new ModelAndView("update.html");
+        modelAndView.addObject("window", windowDto);
+        log.info("Go to update window by id: " + id);
+        return modelAndView;
+    }
 
     @PostMapping("/redactor/update/{id}")
     public String update(@PathVariable(name = "id") UUID id, WindowDto windowDto) {

@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.OneToMany;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +30,6 @@ public class UserDto {
 
     private Role role;
 
-    @OneToMany
     private List<OrderDto> orders;
 
 }

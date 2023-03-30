@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -24,31 +25,22 @@ public class WindowEntity {
     )
     private UUID id;
 
-    @Column
     private Integer width;
 
-    @Column
     private Integer height;
 
-    @Column
     private String type;
 
-    @Column
     private String lamination;
 
-    @Column
     private Integer mountingWidth;
 
-    @Column
     private Integer cameras;
 
-    @Column
     private Integer price;
 
-    @Column
     private String manufacturer;
 
-    @Column
     private String availability;
 
 }

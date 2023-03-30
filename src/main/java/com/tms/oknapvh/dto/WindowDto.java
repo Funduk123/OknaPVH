@@ -11,6 +11,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class WindowDto {
 
+    private UUID id;
+
     private Integer width;
 
     private Integer height;

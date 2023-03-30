@@ -11,6 +11,4 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID> {
 
     List<OrderEntity> findAllByUserId(UUID id);
 
-//    List<OrderEntity> findAllByWindow_id(UUID id);
-
 }

@@ -11,7 +11,7 @@ public interface OrderService {
 
     List<OrderDto> getAll();
 
-    OrderEntity createOrder(String type);
+    OrderEntity createOrder(UUID id);
 
     OrderDto getById(UUID orderId);
 
