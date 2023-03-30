@@ -26,16 +26,16 @@
         <select th:field="*{type}" th:value="${window.type}" class="form-control"
                 id="type">
             <option value="" selected>Не выбрано</option>
-            <option value="1-0">Одностворчатое глухое</option>
-            <option value="1-1">Одностворчатое поворотно-откидное</option>
-            <option value="2-0">Двустворчатое глухое</option>
-            <option value="2-1">Двустворчатое глухое
+            <option value="Одностворчатое глухое">Одностворчатое глухое</option>
+            <option value="Одностворчатое поворотно-откидное">Одностворчатое поворотно-откидное</option>
+            <option value="Двустворчатое глухое">Двустворчатое глухое</option>
+            <option value="Двустворчатое глухое поворотно-откидное">Двустворчатое глухое
                 поворотно-откидное
             </option>
-            <option value="3-1">Трёхстворчатое с
+            <option value="Трёхстворчатое с поворотно-откидной створкой">Трёхстворчатое с
                 поворотно-откидной створкой
             </option>
-            <option value="3-2">Трёхстворчатое с двумя
+            <option value="Трёхстворчатое с двумя поворотно-откидными створками">Трёхстворчатое с двумя
                 поворотно-откидными створками
             </option>
         </select>
@@ -80,16 +80,6 @@
             <option value="" selected>Не выбрано</option>
             <option value="Беларусь">Беларусь</option>
             <option value="Россия">Россия</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="availability">Наличие</label>
-        <select th:field="*{availability}" th:value="${window.availability}" class="form-control"
-                id="availability">
-            <option value="" selected>Не выбрано</option>
-            <option value="В наличии">В наличии</option>
-            <option value="Под заказ">Под заказ</option>
         </select>
     </div>
 

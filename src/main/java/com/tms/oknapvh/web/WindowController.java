@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/store")
 @RequiredArgsConstructor
@@ -18,8 +20,16 @@ public class WindowController {
 
     @GetMapping
     public ModelAndView mainPage(@ModelAttribute(name = "window") WindowDto windowDto) {
-        var allWindows = service.getAll();
+        var allWindowsByType = service.getAllWithoutOrder();
         var modelAndView = new ModelAndView("store.html");
+        modelAndView.addObject("allWindowsByType", allWindowsByType);
+        return modelAndView;
+    }
+
+    @GetMapping("/redactor")
+    public ModelAndView redactor(@ModelAttribute(name = "newWindow") WindowDto windowDto) {
+        var allWindows = service.getAll();
+        var modelAndView = new ModelAndView("redactor.html");
         modelAndView.addObject("allWindows", allWindows);
         return modelAndView;
     }
@@ -32,14 +42,6 @@ public class WindowController {
         return modelAndView;
     }
 
-    @GetMapping("/redactor")
-    public ModelAndView redactor(@ModelAttribute(name = "newWindow") WindowDto windowDto) {
-        var allWindows = service.getAll();
-        var modelAndView = new ModelAndView("redactor.html");
-        modelAndView.addObject("allWindows", allWindows);
-        return modelAndView;
-    }
-
     @PostMapping("/redactor")
     public String save(WindowDto windowDto) {
         service.saveWindow(windowDto);
@@ -47,24 +49,24 @@ public class WindowController {
         return "redirect:/store/redactor";
     }
 
-    @GetMapping("/redactor/delete/{id}")
-    public String delete(@PathVariable(name = "id") Integer id) {
-        service.deleteWindow(id);
-        log.info("Delete window by id: " + id);
+    @GetMapping("/redactor/delete/{type}")
+    public String delete(@PathVariable(name = "type") String type) {
+        service.deleteWindow(type);
+        log.info("Delete window by type: " + type);
         return "redirect:/store/redactor";
     }
 
-    @GetMapping("/redactor/update/{id}")
-    public ModelAndView info(@PathVariable(name = "id") Integer id) {
-        var windowDto = service.getById(id);
-        var modelAndView = new ModelAndView("update.html");
-        modelAndView.addObject("window", windowDto);
-        log.info("Info about window by id: " + id);
-        return modelAndView;
-    }
+//    @GetMapping("/redactor/update/{type}")
+//    public ModelAndView update(@PathVariable(name = "type") String type) {
+//        var windowDto = service.getById(type);
+//        var modelAndView = new ModelAndView("update.html");
+//        modelAndView.addObject("window", windowDto);
+//        log.info("Go to update window by type: " + type);
+//        return modelAndView;
+//    }
 
     @PostMapping("/redactor/update/{id}")
-    public String update(@PathVariable(name = "id") Integer id, WindowDto windowDto) {
+    public String update(@PathVariable(name = "id") UUID id, WindowDto windowDto) {
         service.saveWindow(windowDto);
         log.info("Update window");
         return "redirect:/store/redactor";

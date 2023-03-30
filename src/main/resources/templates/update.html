@@ -18,6 +18,14 @@
                 <form method="post" th:object="${window}" th:action="@{/store/redactor/update/{id}(id=${window.id})}">
 
                     <div th:replace="fragment/window-form-fields :: window-form-fields"></div>
+                    <div class="form-group">
+                        <label for="availability">Наличие</label>
+                        <select th:field="*{availability}" th:value="${window.availability}" class="form-control"
+                                id="availability">
+                            <option value="В наличии">В наличии</option>
+                            <option value="Под заказ">Под заказ</option>
+                        </select>
+                    </div>
                     <button type="submit" class="mt-1 btn btn-primary">Обновить</button>
 
                 </form>

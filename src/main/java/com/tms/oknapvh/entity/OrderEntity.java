@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -13,8 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "windows")
-public class WindowEntity {
+@Table(name = "orders", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"window_id"})
+})
+public class OrderEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -24,31 +27,14 @@ public class WindowEntity {
     )
     private UUID id;
 
-    @Column
-    private Integer width;
+    private UUID userId;
 
-    @Column
-    private Integer height;
+    private UUID window_id;
 
-    @Column
-    private String type;
-
-    @Column
-    private String lamination;
-
-    @Column
-    private Integer mountingWidth;
-
-    @Column
-    private Integer cameras;
-
-    @Column
     private Integer price;
 
-    @Column
-    private String manufacturer;
+    private String dateAndTime;
 
-    @Column
-    private String availability;
+    private String status;
 
 }

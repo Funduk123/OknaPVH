@@ -5,13 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.OneToMany;
+import java.util.List;
+import java.util.UUID;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
 
-    private Integer id;
+    private UUID id;
 
     private String name;
 
@@ -26,5 +30,8 @@ public class UserDto {
     private String address;
 
     private Role role;
+
+    @OneToMany
+    private List<OrderDto> orders;
 
 }

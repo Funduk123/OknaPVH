@@ -2,15 +2,15 @@ package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.UserDto;
 import com.tms.oknapvh.exception.ValidationException;
-import com.tms.oknapvh.mapper.MapperConfig;
 import com.tms.oknapvh.mapper.UserMapper;
-import com.tms.oknapvh.repository.UserRepository;
+import com.tms.oknapvh.repositories.UserRepository;
 import com.tms.oknapvh.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
@@ -20,6 +20,7 @@ import static java.util.Objects.isNull;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+
     private final UserMapper mapper;
 
     @Override
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Integer userId) {
+    public void deleteUser(UUID userId) {
         repository.deleteById(userId);
     }
 

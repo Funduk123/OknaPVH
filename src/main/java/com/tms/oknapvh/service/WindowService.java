@@ -1,6 +1,7 @@
 package com.tms.oknapvh.service;
 
 import com.tms.oknapvh.dto.WindowDto;
+import com.tms.oknapvh.entity.WindowEntity;
 
 import java.util.List;
 
@@ -8,12 +9,14 @@ public interface WindowService {
 
     List<WindowDto> getAll();
 
-    WindowDto saveWindow(WindowDto windowDto);
+    WindowEntity saveWindow(WindowDto windowDto);
 
-    WindowDto getById(Integer windowId);
+//    WindowDto getByType(String type);
 
-    void deleteWindow(Integer windowId);
+    void deleteWindow(String type);
 
     List<WindowDto> getBySomething(WindowDto windowDto);
+
+    List<WindowDto> getAllWithoutOrder();
 
 }

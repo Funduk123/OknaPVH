@@ -4,6 +4,7 @@ import com.tms.oknapvh.dto.UserDto;
 import com.tms.oknapvh.exception.ValidationException;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
 
@@ -13,6 +14,6 @@ public interface UserService {
 
     UserDto getByLogin(String login);
 
-    void deleteUser(Integer userId);
+    void deleteUser(UUID userId);
 
 }

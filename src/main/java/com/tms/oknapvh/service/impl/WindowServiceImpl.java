@@ -4,17 +4,23 @@ import com.tms.oknapvh.dto.WindowDto;
 import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.entity.WindowEntity_;
 import com.tms.oknapvh.mapper.WindowMapper;
-import com.tms.oknapvh.repository.WindowRepository;
+import com.tms.oknapvh.repositories.WindowRepository;
 import com.tms.oknapvh.service.WindowService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.List;
+import javax.transaction.Transactional;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparingInt;
+import static java.util.stream.Collectors.collectingAndThen;
+import static java.util.stream.Collectors.toCollection;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +31,7 @@ public class WindowServiceImpl implements WindowService {
     private final WindowMapper mapper;
 
     @Override
+    @Transactional
     public List<WindowDto> getAll() {
         return repository.findAll()
                 .stream()
@@ -33,22 +40,30 @@ public class WindowServiceImpl implements WindowService {
     }
 
     @Override
-    public WindowDto saveWindow(WindowDto windowDto) {
+    public List<WindowDto> getAllWithoutOrder() {
+        List<WindowEntity> allWithoutOrder = repository.findAllWithoutOrder();
+        System.out.println(allWithoutOrder);
+
+        return allWithoutOrder.stream().map(mapper::entityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public WindowEntity saveWindow(WindowDto windowDto) {
         var windowEntity = mapper.dtoToEntity(windowDto);
-        repository.save(windowEntity);
-        return mapper.entityToDto(windowEntity);
+        return repository.save(windowEntity);
     }
 
-    @Override
-    public WindowDto getById(Integer id) {
-        return repository.findById(id)
-                .map(mapper::entityToDto)
-                .orElseThrow(RuntimeException::new);
-    }
+//    @Override
+//    public WindowDto getById(UUID id) {
+//        return repository.findById(id)
+//                .map(mapper::entityToDto)
+//                .orElseThrow(RuntimeException::new);
+//    }
 
     @Override
-    public void deleteWindow(Integer windowId) {
-        repository.deleteById(windowId);
+    @Transactional
+    public void deleteWindow(String type) {
+        repository.deleteWindowByType(type);
     }
 
     public List<WindowDto> getBySomething(WindowDto windowDto) {
