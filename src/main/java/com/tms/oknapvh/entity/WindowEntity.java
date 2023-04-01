@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -42,5 +41,8 @@ public class WindowEntity {
     private String manufacturer;
 
     private String availability;
+
+    @OneToOne(mappedBy = "window_id", cascade = CascadeType.ALL)
+    private OrderEntity order;
 
 }

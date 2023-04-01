@@ -13,9 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "orders", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"window_id"})
-})
+@Table(name = "orders")
 public class OrderEntity {
 
     @Id
@@ -28,12 +26,15 @@ public class OrderEntity {
 
     private UUID userId;
 
-    private UUID window_id;
-
     private Integer price;
 
     private String dateAndTime;
 
-    private String status;
+    private String status = "Обработка";
+
+    @OneToOne
+    @JoinColumn(name = "window_id")
+    private WindowEntity window_id;
+
 
 }

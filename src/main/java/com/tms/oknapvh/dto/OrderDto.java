@@ -1,5 +1,6 @@
 package com.tms.oknapvh.dto;
 
+import com.tms.oknapvh.entity.WindowEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,12 +16,12 @@ public class OrderDto {
 
     private UUID userId;
 
-    private UUID window_id;
+    private WindowEntity window_id;
 
     private Integer price;
 
     private String dateAndTime;
 
-    private String status;
+    private String status = "Обработка";
 
 }

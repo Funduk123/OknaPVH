@@ -8,10 +8,10 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-<div th:replace="fragment/header :: header"></div>
+<div th:replace="fragment/admin-header :: header"></div>
 
 <div class="container">
-    <table class="table table-dark table-striped">
+    <table class="table table-dark table-striped text-center">
         <thead>
         <tr>
             <th>ID заказа</th>
@@ -19,15 +19,33 @@
             <th>ID окна</th>
             <th>Дата и время заказа</th>
             <th>Статус заказа</th>
+            <th>Выбрать новый статус</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="order : ${allOrders}">
             <td th:text="${order.id}"/>
             <td th:text="${order.userId}"/>
-            <td th:text="${order.window_id}"/>
+            <td th:text="${order.window_id.getId()}"/>
             <td th:text="${order.dateAndTime}"/>
             <td th:text="${order.status}"/>
+            <td>
+                <form th:action="@{'/store/orders/status/' + ${order.id}}" method="post">
+                    <select name="status">
+                        <option value="Обработка" selected>Обработка</option>
+                        <option value="Принят">Принят</option>
+                        <option value="В работе">В работе</option>
+                        <option value="Завершен">Завершен</option>
+                    </select>
+                    <button type="submit">Изменить статус</button>
+                </form>
+            </td>
+            <td>
+                <form method="post" th:action="@{/store/orders/delete/{id}(id=${order.id})}">
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -24,25 +24,18 @@ public class UserEntity {
     )
     private UUID id;
 
-    @Column
     private String name;
 
-    @Column
     private String login;
 
-    @Column
     private String password;
 
-    @Column
     private String email;
 
-    @Column
     private String phone;
 
-    @Column
     private String address;
 
-    @Column
     private Role role;
 
 }

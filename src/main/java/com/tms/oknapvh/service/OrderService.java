@@ -3,7 +3,6 @@ package com.tms.oknapvh.service;
 import com.tms.oknapvh.dto.OrderDto;
 import com.tms.oknapvh.entity.OrderEntity;
 
-
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +15,8 @@ public interface OrderService {
     OrderDto getById(UUID orderId);
 
     void deleteOrder(UUID orderId);
+
+    OrderEntity updateStatusById(UUID id, String status);
 
     List<OrderDto> getByUserId(UUID id);
 

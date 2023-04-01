@@ -1,6 +1,7 @@
 package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.WindowDto;
+import com.tms.oknapvh.entity.OrderEntity;
 import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.entity.WindowEntity_;
 import com.tms.oknapvh.mapper.WindowMapper;
@@ -11,12 +12,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
-import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,28 +27,10 @@ public class WindowServiceImpl implements WindowService {
     private final WindowMapper mapper;
 
     @Override
-    @Transactional
-    public List<WindowDto> getAll() {
-        return repository.findAll()
-                .stream()
-                .map(mapper::entityToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public WindowDto getById(UUID id) {
         return repository.findById(id)
                 .map(mapper::entityToDto)
                 .orElseThrow(RuntimeException::new);
-    }
-
-
-    @Override
-    public List<WindowDto> getAllWithoutOrder() {
-        return repository.findAllWithoutOrder()
-                .stream()
-                .map(mapper::entityToDto)
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -62,66 +44,58 @@ public class WindowServiceImpl implements WindowService {
         repository.deleteById(id);
     }
 
-    public List<WindowDto> getBySomething(WindowDto windowDto) {
+    public List<WindowEntity> getBySomething(WindowDto windowDto) {
         Specification<WindowEntity> specification = createSpecification(windowDto);
-        return repository.findAll(specification)
-                .stream()
-                .map(mapper::entityToDto)
-                .collect(Collectors.toList());
+        return repository.findAll(specification);
     }
 
     private Specification<WindowEntity> createSpecification(WindowDto windowDto) {
         var windowEntity = mapper.dtoToEntity(windowDto);
         return (root, query, builder) -> {
 
-            List<Predicate> listCond = new ArrayList<>();
+            Predicate predicate = builder.conjunction();
 
             if (windowEntity.getWidth() != null) {
-                Predicate equalWidth = builder.equal(root.get(WindowEntity_.WIDTH), windowEntity.getWidth());
-                listCond.add(equalWidth);
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.WIDTH), windowEntity.getWidth()));
             }
 
             if (windowEntity.getHeight() != null) {
-                Predicate equalHeight = builder.equal(root.get(WindowEntity_.HEIGHT), windowEntity.getHeight());
-                listCond.add(equalHeight);
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.HEIGHT), windowEntity.getHeight()));
             }
 
             if (StringUtils.isNotBlank(windowEntity.getType())) {
-                Predicate equalType = builder.equal(root.get(WindowEntity_.TYPE), windowEntity.getType());
-                listCond.add(equalType);
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.TYPE), windowEntity.getType()));
             }
 
             if (StringUtils.isNotBlank(windowEntity.getLamination())) {
-                Predicate equalLamination = builder.equal(root.get(WindowEntity_.LAMINATION), windowEntity.getLamination());
-                listCond.add(equalLamination);
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.LAMINATION), windowEntity.getLamination()));
             }
 
             if (windowEntity.getMountingWidth() != null) {
-                Predicate equalMountingWidth = builder.equal(root.get(WindowEntity_.MOUNTING_WIDTH), windowEntity.getMountingWidth());
-                listCond.add(equalMountingWidth);
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.MOUNTING_WIDTH), windowEntity.getMountingWidth()));
             }
 
             if (windowEntity.getCameras() != null) {
-                Predicate equalCameras = builder.equal(root.get(WindowEntity_.CAMERAS), windowEntity.getCameras());
-                listCond.add(equalCameras);
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.CAMERAS), windowEntity.getCameras()));
             }
 
             if (windowEntity.getPrice() != null) {
-                Predicate equalPrice = builder.equal(root.get(WindowEntity_.PRICE), windowEntity.getPrice());
-                listCond.add(equalPrice);
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.PRICE), windowEntity.getPrice()));
             }
 
             if (StringUtils.isNotBlank(windowEntity.getManufacturer())) {
-                Predicate equalManufacturer = builder.equal(root.get(WindowEntity_.MANUFACTURER), windowEntity.getManufacturer());
-                listCond.add(equalManufacturer);
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.MANUFACTURER), windowEntity.getManufacturer()));
             }
 
             if (StringUtils.isNotBlank(windowEntity.getAvailability())) {
-                Predicate equalAvailability = builder.equal(root.get(WindowEntity_.AVAILABILITY), windowEntity.getAvailability());
-                listCond.add(equalAvailability);
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.AVAILABILITY), windowEntity.getAvailability()));
             }
-            return builder.and(listCond.toArray(new Predicate[]{}));
+
+            Join<WindowEntity, OrderEntity> orderJoin = root.join("order", JoinType.LEFT);
+            return builder.and(
+                    predicate,
+                    builder.isNull(orderJoin.get("id"))
+            );
         };
     }
-
 }
