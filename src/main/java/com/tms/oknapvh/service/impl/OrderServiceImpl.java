@@ -2,6 +2,8 @@ package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.OrderDto;
 import com.tms.oknapvh.entity.OrderEntity;
+import com.tms.oknapvh.entity.OrderStatus;
+import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.mapper.OrderMapper;
 import com.tms.oknapvh.repositories.OrderRepository;
 import com.tms.oknapvh.repositories.WindowRepository;
@@ -26,7 +28,6 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderMapper mapper;
 
-
     @Override
     @Transactional
     public List<OrderDto> getAll() {
@@ -38,12 +39,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderEntity createOrder(UUID id) {
+    public OrderEntity createOrder(WindowEntity window) {
 
         var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         var dateAndTime = LocalDateTime.now().format(formatter);
-
-        var window = windowRepository.findById(id).orElseThrow(RuntimeException::new);
 
         var orderEntity = new OrderEntity();
 
@@ -73,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
         windowRepository.deleteById(windowId);
     }
 
-    public OrderEntity updateStatusById(UUID id, String status) {
+    public OrderEntity updateStatusById(UUID id, OrderStatus status) {
         OrderEntity order = repository.findById(id).orElseThrow(RuntimeException::new);
         order.setStatus(status);
         return repository.save(order);
@@ -87,11 +86,4 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<OrderDto> getByWindowId(UUID id) {
-        return repository.findAllByUserId(id)
-                .stream()
-                .map(mapper::entityToDto)
-                .collect(Collectors.toList());
-    }
 }

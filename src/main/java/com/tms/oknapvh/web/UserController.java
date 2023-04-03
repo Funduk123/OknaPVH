@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public UserEntity save(@RequestBody UserDto userDto) throws ValidationException {
+    public UserDto save(@RequestBody UserDto userDto) throws ValidationException {
         log.info("Save user: " + userDto);
         return service.saveUser(userDto);
     }

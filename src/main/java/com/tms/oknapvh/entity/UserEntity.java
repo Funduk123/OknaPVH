@@ -36,6 +36,6 @@ public class UserEntity {
 
     private String address;
 
-    private Role role;
+    private UserRole userRole;
 
 }

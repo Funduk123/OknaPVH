@@ -1,5 +1,6 @@
 package com.tms.oknapvh.dto;
 
+import com.tms.oknapvh.entity.OrderStatus;
 import com.tms.oknapvh.entity.WindowEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +23,6 @@ public class OrderDto {
 
     private String dateAndTime;
 
-    private String status = "Обработка";
+    private OrderStatus status = OrderStatus.NEW;
 
 }

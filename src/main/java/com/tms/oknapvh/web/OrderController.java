@@ -1,6 +1,10 @@
 package com.tms.oknapvh.web;
 
+import com.tms.oknapvh.dto.WindowDto;
+import com.tms.oknapvh.entity.OrderStatus;
+import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.service.OrderService;
+import com.tms.oknapvh.service.WindowService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,6 +20,8 @@ import java.util.UUID;
 public class OrderController {
 
     private final OrderService service;
+
+    private final WindowService windowService;
 
     @GetMapping("/admin-orders")
     public ModelAndView getAdminOrders() {
@@ -33,14 +39,14 @@ public class OrderController {
         return modelAndView;
     }
 
-    @PostMapping("/orders/{id}")
-    public String createOrder(@PathVariable UUID id) {
-        service.createOrder(id);
+    @PostMapping("/orders")
+    public String createOrder(@ModelAttribute("windowForOrder") WindowEntity window) {
+        service.createOrder(window);
         return "redirect:/store";
     }
 
     @PostMapping("/orders/status/{id}")
-    public String updateStatus(@PathVariable UUID id, @RequestParam String status) {
+    public String updateStatus(@PathVariable UUID id, @RequestParam OrderStatus status) {
         service.updateStatusById(id, status);
         return "redirect:/store/admin-orders";
     }

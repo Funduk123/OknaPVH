@@ -1,6 +1,6 @@
 package com.tms.oknapvh.dto;
 
-import com.tms.oknapvh.entity.Role;
+import com.tms.oknapvh.entity.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +28,7 @@ public class UserDto {
 
     private String address;
 
-    private Role role;
+    private UserRole userRole;
 
     private List<OrderDto> orders;
 

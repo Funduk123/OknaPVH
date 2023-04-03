@@ -30,7 +30,7 @@ public class OrderEntity {
 
     private String dateAndTime;
 
-    private String status = "Обработка";
+    private OrderStatus status = OrderStatus.NEW;
 
     @OneToOne
     @JoinColumn(name = "window_id")

@@ -25,10 +25,11 @@ public class UserServiceImpl implements UserService {
     private final UserMapper mapper;
 
     @Override
-    public UserEntity saveUser(UserDto userDto) throws ValidationException {
+    public UserDto saveUser(UserDto userDto) throws ValidationException {
         validateUserDto(userDto);
         var userEntity = mapper.dtoToEntity(userDto);
-        return repository.save(userEntity);
+        repository.save(userEntity);
+        return mapper.entityToDto(userEntity);
     }
 
     @Override
