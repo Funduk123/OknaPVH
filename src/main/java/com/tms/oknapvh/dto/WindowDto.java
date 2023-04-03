@@ -4,23 +4,31 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class WindowDto {
 
-    private Integer id;
-
-    private String model;
+    private UUID id;
 
     private Integer width;
 
     private Integer height;
 
-    private Double price;
+    private String type;
+
+    private String lamination;
+
+    private Integer mountingWidth;
+
+    private Integer cameras;
+
+    private Integer price;
 
     private String manufacturer;
 
-    private boolean availability;
+    private String availability;
 
 }

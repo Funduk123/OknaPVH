@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OknaPvhApplication {
+public class FutureWindowApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OknaPvhApplication.class, args);
+        SpringApplication.run(FutureWindowApplication.class, args);
     }
 
 }

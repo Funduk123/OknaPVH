@@ -1,9 +1,12 @@
 package com.tms.oknapvh.dto;
 
-import com.tms.oknapvh.entity.Role;
+import com.tms.oknapvh.entity.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.UUID;
 
 
 @Data
@@ -11,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDto {
 
-    private Integer id;
+    private UUID id;
 
     private String name;
 
@@ -25,6 +28,8 @@ public class UserDto {
 
     private String address;
 
-    private Role role;
+    private UserRole userRole;
+
+    private List<OrderDto> orders;
 
 }

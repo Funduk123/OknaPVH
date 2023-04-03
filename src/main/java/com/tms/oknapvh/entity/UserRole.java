@@ -1,8 +1,9 @@
 package com.tms.oknapvh.entity;
 
-public enum Role {
+public enum UserRole {
 
     USER,
+
     ADMIN
 
 }

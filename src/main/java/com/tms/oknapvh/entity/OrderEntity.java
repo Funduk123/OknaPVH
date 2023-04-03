@@ -13,8 +13,8 @@ import java.util.UUID;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "windows")
-public class WindowEntity {
+@Table(name = "orders")
+public class OrderEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -24,25 +24,17 @@ public class WindowEntity {
     )
     private UUID id;
 
-    private Integer width;
-
-    private Integer height;
-
-    private String type;
-
-    private String lamination;
-
-    private Integer mountingWidth;
-
-    private Integer cameras;
+    private UUID userId;
 
     private Integer price;
 
-    private String manufacturer;
+    private String dateAndTime;
 
-    private String availability;
+    private OrderStatus status = OrderStatus.NEW;
 
-    @OneToOne(mappedBy = "window_id", cascade = CascadeType.ALL)
-    private OrderEntity order;
+    @OneToOne
+    @JoinColumn(name = "window_id")
+    private WindowEntity window_id;
+
 
 }
