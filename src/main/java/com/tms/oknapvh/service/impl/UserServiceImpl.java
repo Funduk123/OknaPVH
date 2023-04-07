@@ -2,7 +2,6 @@ package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.UserDto;
 import com.tms.oknapvh.entity.UserEntity;
-import com.tms.oknapvh.exception.ValidationException;
 import com.tms.oknapvh.mapper.UserMapper;
 import com.tms.oknapvh.repositories.UserRepository;
 import com.tms.oknapvh.service.UserService;
@@ -14,8 +13,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.isNull;
-
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -25,11 +22,9 @@ public class UserServiceImpl implements UserService {
     private final UserMapper mapper;
 
     @Override
-    public UserDto saveUser(UserDto userDto) throws ValidationException {
-        validateUserDto(userDto);
-        var userEntity = mapper.dtoToEntity(userDto);
-        repository.save(userEntity);
-        return mapper.entityToDto(userEntity);
+    public UserDto saveUser(UserEntity user) {
+        repository.save(user);
+        return mapper.entityToDto(user);
     }
 
     @Override
@@ -42,8 +37,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getByLogin(String login) {
-        return repository.findByLogin(login)
+    public UserDto getByLogin(String username) {
+        return repository.findByUsername(username)
                 .map(mapper::entityToDto)
                 .orElseThrow(RuntimeException::new);
     }
@@ -51,15 +46,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(UUID userId) {
         repository.deleteById(userId);
-    }
-
-    private void validateUserDto(UserDto userDto) throws ValidationException {
-        if (isNull(userDto)) {
-            throw new ValidationException("Object user is null");
-        }
-        if (isNull(userDto.getLogin()) || userDto.getLogin().isEmpty()) {
-            throw new ValidationException("Login is empty");
-        }
     }
 
 }

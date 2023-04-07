@@ -3,6 +3,7 @@ package com.tms.oknapvh.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -42,7 +43,8 @@ public class WindowEntity {
 
     private String availability;
 
-    @OneToOne(mappedBy = "window_id", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "window")
+    @ToString.Exclude
     private OrderEntity order;
 
 }

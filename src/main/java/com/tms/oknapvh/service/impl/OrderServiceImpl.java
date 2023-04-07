@@ -1,14 +1,16 @@
 package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.OrderDto;
+import com.tms.oknapvh.dto.WindowDto;
 import com.tms.oknapvh.entity.OrderEntity;
 import com.tms.oknapvh.entity.OrderStatus;
-import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.mapper.OrderMapper;
 import com.tms.oknapvh.repositories.OrderRepository;
+import com.tms.oknapvh.repositories.UserRepository;
 import com.tms.oknapvh.repositories.WindowRepository;
 import com.tms.oknapvh.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,68 +24,93 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderRepository repository;
+    private final OrderRepository orderRepository;
 
     private final WindowRepository windowRepository;
 
-    private final OrderMapper mapper;
+    private final OrderMapper orderMapper;
+
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
     public List<OrderDto> getAll() {
-        return repository.findAll()
+        return orderRepository.findAll()
                 .stream()
-                .map(mapper::entityToDto)
+                .map(orderMapper::entityToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public OrderEntity createOrder(WindowEntity window) {
+    public OrderEntity createOrder(WindowDto window) {
 
         var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         var dateAndTime = LocalDateTime.now().format(formatter);
 
         var orderEntity = new OrderEntity();
 
-        orderEntity.setUserId(UUID.randomUUID()); // ДОБАВИТЬ ID РЕАЛЬНОГО ЮЗЕРА
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        var username = authentication.getName();
+
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        orderEntity.setUser(user);
 
         orderEntity.setPrice(window.getPrice());
         orderEntity.setDateAndTime(dateAndTime);
-        orderEntity.setWindow_id(window);
 
-        return repository.save(orderEntity);
+        var windowEntity = windowRepository.findById(window.getId()).orElseThrow(RuntimeException::new);
+        orderEntity.setWindow(windowEntity);
+
+        return orderRepository.save(orderEntity);
     }
 
     @Override
     public OrderDto getById(UUID orderId) {
-        return repository.findById(orderId)
-                .map(mapper::entityToDto)
+        return orderRepository.findById(orderId)
+                .map(orderMapper::entityToDto)
                 .orElseThrow(RuntimeException::new);
     }
 
     @Override
     public void deleteOrder(UUID orderId) {
-        var windowId = repository.findById(orderId)
-                .orElseThrow(RuntimeException::new)
-                .getWindow_id().getId();
+        var order = orderRepository.findById(orderId).orElseThrow(RuntimeException::new);
+        var status = order.getStatus();
+        var window = order.getWindow();
+        switch (status) {
+            case COMPLETED -> {
+                orderRepository.delete(order);
+                windowRepository.delete(window);
+            }
+            case CANCELLED -> orderRepository.delete(order);
+            case NEW, ACCEPTED -> throw new RuntimeException();
 
-        repository.deleteById(orderId);
-        windowRepository.deleteById(windowId);
+        }
     }
 
     public OrderEntity updateStatusById(UUID id, OrderStatus status) {
-        OrderEntity order = repository.findById(id).orElseThrow(RuntimeException::new);
+        var order = orderRepository.findById(id).orElseThrow(RuntimeException::new);
         order.setStatus(status);
-        return repository.save(order);
+        return orderRepository.save(order);
     }
 
     @Override
     public List<OrderDto> getByUserId(UUID id) {
-        return repository.findAllByUserId(id)
+        return orderRepository.findAllByUserId(id)
                 .stream()
-                .map(mapper::entityToDto)
+                .map(orderMapper::entityToDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void cancellationOrder(UUID id) {
+        var order = orderRepository.findById(id).orElseThrow(RuntimeException::new);
+        order.setStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
+    }
+
 
 }

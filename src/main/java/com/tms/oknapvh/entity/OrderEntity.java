@@ -3,6 +3,7 @@ package com.tms.oknapvh.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -24,8 +25,6 @@ public class OrderEntity {
     )
     private UUID id;
 
-    private UUID userId;
-
     private Integer price;
 
     private String dateAndTime;
@@ -34,7 +33,11 @@ public class OrderEntity {
 
     @OneToOne
     @JoinColumn(name = "window_id")
-    private WindowEntity window_id;
+    private WindowEntity window;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
 
 }

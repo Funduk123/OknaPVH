@@ -1,14 +1,14 @@
 package com.tms.oknapvh.service;
 
 import com.tms.oknapvh.dto.UserDto;
-import com.tms.oknapvh.exception.ValidationException;
+import com.tms.oknapvh.entity.UserEntity;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
 
-    UserDto saveUser(UserDto userDto) throws ValidationException;
+    UserDto saveUser(UserEntity user);
 
     List<UserDto> getAll();
 

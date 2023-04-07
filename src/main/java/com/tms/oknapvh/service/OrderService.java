@@ -13,7 +13,7 @@ public interface OrderService {
 
     List<OrderDto> getAll();
 
-    OrderEntity createOrder(WindowEntity window);
+    OrderEntity createOrder(WindowDto window);
 
     OrderDto getById(UUID orderId);
 
@@ -22,5 +22,7 @@ public interface OrderService {
     OrderEntity updateStatusById(UUID id, OrderStatus status);
 
     List<OrderDto> getByUserId(UUID id);
+
+    void cancellationOrder(UUID id);
 
 }

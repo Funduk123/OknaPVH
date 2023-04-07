@@ -16,17 +16,13 @@ public class UserDto {
 
     private UUID id;
 
-    private String name;
-
-    private String login;
+    private String username;
 
     private String password;
 
     private String email;
 
     private String phone;
-
-    private String address;
 
     private UserRole userRole;
 

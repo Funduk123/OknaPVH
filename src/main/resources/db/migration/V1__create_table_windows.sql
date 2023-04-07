@@ -1,7 +1,6 @@
 create table windows
 (
-    id             uuid not null
-        primary key,
+    id             uuid primary key,
     availability   varchar(255),
     cameras        integer,
     height         integer,
@@ -13,15 +12,25 @@ create table windows
     width          integer
 );
 
+create table persons
+(
+    id       uuid primary key,
+    auth     integer,
+    email    varchar(255),
+    password varchar(255),
+    phone    varchar(255),
+    username varchar(255) unique
+);
+
 create table orders
-  (
-      id            uuid not null
-          primary key,
-      date_and_time varchar(255),
-      price         integer,
-      status        varchar(255),
-      user_id       uuid,
-      window_id     uuid
-          constraint fk302cnft8qioh32cy764kkdlnk
-              references windows
-  );
+(
+    id            uuid primary key,
+    date_and_time varchar(255),
+    price         integer,
+    status        varchar(255),
+    user_id       uuid,
+    window_id     uuid,
+    FOREIGN KEY (user_id) REFERENCES persons (id),
+    FOREIGN KEY (window_id) REFERENCES windows (id)
+);
+

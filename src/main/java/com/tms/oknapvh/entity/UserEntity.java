@@ -1,20 +1,24 @@
 package com.tms.oknapvh.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 
 @Entity
-@Table(name = "persons", indexes = @Index(unique = true, columnList = "login"))
-public class UserEntity {
+@Table(name = "persons", indexes = @Index(unique = true, columnList = "username"))
+public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -24,9 +28,7 @@ public class UserEntity {
     )
     private UUID id;
 
-    private String name;
-
-    private String login;
+    private String username;
 
     private String password;
 
@@ -34,8 +36,35 @@ public class UserEntity {
 
     private String phone;
 
-    private String address;
+    private UserRole auth = UserRole.USER;
 
-    private UserRole userRole;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (auth != null) {
+            return List.of(new SimpleGrantedAuthority(auth.toString()));
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }
