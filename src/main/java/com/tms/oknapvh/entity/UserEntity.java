@@ -30,6 +30,10 @@ public class UserEntity implements UserDetails {
 
     private String username;
 
+    private String firstName;
+
+    private String lastName;
+
     private String password;
 
     private String email;

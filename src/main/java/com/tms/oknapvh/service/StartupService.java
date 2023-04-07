@@ -15,24 +15,24 @@ public class StartupService {
 
     private final UserRepository repository;
 
-//    @PostConstruct
-//    public void init() {
-//
-//        var user = UserEntity.builder()
-//                .id(UUID.randomUUID())
-//                .username("user")
-//                .password("user")
-//                .auth(UserRole.USER)
-//                .build();
-//
-//        var admin = UserEntity.builder()
-//                .id(UUID.randomUUID())
-//                .username("admin")
-//                .password("admin")
-//                .auth(UserRole.ADMIN)
-//                .build();
-//
-//        repository.save(user);
-//        repository.save(admin);
-//    }
+    @PostConstruct
+    public void init() {
+
+        var user = UserEntity.builder()
+                .id(UUID.randomUUID())
+                .username("user")
+                .password("user")
+                .auth(UserRole.USER)
+                .build();
+
+        var admin = UserEntity.builder()
+                .id(UUID.randomUUID())
+                .username("admin")
+                .password("admin")
+                .auth(UserRole.ADMIN)
+                .build();
+
+        repository.save(user);
+        repository.save(admin);
+    }
 }

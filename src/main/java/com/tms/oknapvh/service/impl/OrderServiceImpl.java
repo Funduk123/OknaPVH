@@ -69,10 +69,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto getById(UUID orderId) {
-        return orderRepository.findById(orderId)
-                .map(orderMapper::entityToDto)
-                .orElseThrow(RuntimeException::new);
+    public OrderEntity getById(UUID orderId) {
+        return orderRepository.findById(orderId).orElseThrow(RuntimeException::new);
     }
 
     @Override

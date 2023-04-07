@@ -1,7 +1,6 @@
 package com.tms.oknapvh.dto;
 
 import com.tms.oknapvh.entity.OrderStatus;
-import com.tms.oknapvh.entity.WindowEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

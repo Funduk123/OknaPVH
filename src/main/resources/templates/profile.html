@@ -8,7 +8,11 @@
                 <table class="table">
                     <tbody>
                     <tr>
-                        <th scope="row">Имя пользователя</th>
+                        <th scope="row">Фамилия, имя</th>
+                        <td th:text="${user.lastName} + ' ' + ${user.firstName}"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Логин</th>
                         <td th:text="${user.username}"></td>
                     </tr>
                     <tr>
