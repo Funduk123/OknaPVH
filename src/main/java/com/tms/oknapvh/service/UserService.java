@@ -1,18 +1,19 @@
 package com.tms.oknapvh.service;
 
 import com.tms.oknapvh.dto.UserDto;
-import com.tms.oknapvh.exception.ValidationException;
+import com.tms.oknapvh.entity.UserEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
-    UserDto saveUser(UserDto userDto) throws ValidationException;
+    void saveUser(UserDto user);
 
     List<UserDto> getAll();
 
-    UserDto getByLogin(String login);
+    UserEntity getByLogin(String login);
 
     void deleteUser(UUID userId);
 

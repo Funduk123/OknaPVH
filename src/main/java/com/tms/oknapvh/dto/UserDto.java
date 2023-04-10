@@ -16,19 +16,19 @@ public class UserDto {
 
     private UUID id;
 
-    private String name;
-
-    private String login;
-
-    private String password;
+    private String username;
 
     private String email;
 
+    private String password;
+
     private String phone;
 
-    private String address;
+    private String firstName;
 
-    private UserRole userRole;
+    private String lastName;
+
+    private String auth;
 
     private List<OrderDto> orders;
 

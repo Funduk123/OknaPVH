@@ -1,21 +1,36 @@
 <div th:fragment="window-card">
-
     <img th:src="'/images/' + ${window.type} + '.jpg'" class="img-fluid" alt="...">
+    <div th:replace="fragment/window-card :: card"></div>
+</div>
 
+<div th:fragment="window-card-details">
+    <div class="card mb-3" style="max-width: 90%;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img th:src="'/images/' + ${window.type} + '.jpg'" class="img-fluid" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div th:replace="fragment/window-card :: card"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:fragment="card">
     <div class="card-body">
         <h5 class="card-title"
-            th:text="'Окно ПВХ ' + ${window.type} + ' ' + ${window.mountingWidth} + ' (' + ${window.width} + 'x' + ${window.height} + ')'"/>
+            th:text="'Окно ПВХ ' + ${window.type} + ' ' + ${window.mountingWidth} + ' (' + ${window.width} + 'x' + ${window.height} + ')'"></h5>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item" th:text="'Ширина: ' + ${window.width} + ' мм'"/>
-        <li class="list-group-item" th:text="'Высота: ' + ${window.height} + ' мм'"/>
-        <li class="list-group-item" th:text="'Тип окна: ' + ${window.type}"/>
-        <li class="list-group-item" th:text="'Ламинация: ' + ${window.lamination}"/>
-        <li class="list-group-item" th:text="'Монтажная ширина: ' + ${window.mountingWidth} + ' мм'"/>
-        <li class="list-group-item" th:text="'Количество камер: ' + ${window.cameras}"/>
-        <li class="list-group-item" th:text="'Производство: ' + ${window.manufacturer}"/>
-        <li class="list-group-item" th:text="${window.availability}"/>
-        <li class="list-group-item text-center"><h5 class="card-title" th:text="${window.price} + ' руб.'"/></li>
+        <li class="list-group-item" th:text="'Ширина: ' + ${window.width} + ' мм'"></li>
+        <li class="list-group-item" th:text="'Высота: ' + ${window.height} + ' мм'"></li>
+        <li class="list-group-item" th:text="'Тип окна: ' + ${window.type}"></li>
+        <li class="list-group-item" th:text="'Ламинация: ' + ${window.lamination}"></li>
+        <li class="list-group-item" th:text="'Монтажная ширина: ' + ${window.mountingWidth} + ' мм'"></li>
+        <li class="list-group-item" th:text="'Количество камер: ' + ${window.cameras}"></li>
+        <li class="list-group-item" th:text="'Производство: ' + ${window.manufacturer}"></li>
+        <li class="list-group-item" th:text="${window.availability}"></li>
+        <li class="list-group-item text-center"><h5 class="card-title" th:text="${window.price} + ' руб.'"></h5></li>
     </ul>
-
 </div>
+

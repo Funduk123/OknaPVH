@@ -2,7 +2,6 @@ package com.tms.oknapvh.web;
 
 import com.tms.oknapvh.dto.UserDto;
 import com.tms.oknapvh.entity.UserEntity;
-import com.tms.oknapvh.exception.ValidationException;
 import com.tms.oknapvh.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,15 +26,15 @@ public class UserController {
     }
 
     @GetMapping("/byLogin/{login}")
-    public UserDto getByLogin(@PathVariable(name = "login") String login) {
+    public UserEntity getByLogin(@PathVariable(name = "login") String login) {
         log.info("Find user by login: " + login);
         return service.getByLogin(login);
     }
 
     @PostMapping("/save")
-    public UserDto save(@RequestBody UserDto userDto) throws ValidationException {
-        log.info("Save user: " + userDto);
-        return service.saveUser(userDto);
+    public void save(@RequestBody UserDto user) {
+        log.info("Save user: " + user);
+        service.saveUser(user);
     }
 
     @DeleteMapping("/delete/{id}")

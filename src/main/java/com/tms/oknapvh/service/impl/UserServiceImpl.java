@@ -2,19 +2,17 @@ package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.UserDto;
 import com.tms.oknapvh.entity.UserEntity;
-import com.tms.oknapvh.exception.ValidationException;
 import com.tms.oknapvh.mapper.UserMapper;
 import com.tms.oknapvh.repositories.UserRepository;
 import com.tms.oknapvh.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-
-import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
@@ -25,27 +23,20 @@ public class UserServiceImpl implements UserService {
     private final UserMapper mapper;
 
     @Override
-    public UserDto saveUser(UserDto userDto) throws ValidationException {
-        validateUserDto(userDto);
-        var userEntity = mapper.dtoToEntity(userDto);
-        repository.save(userEntity);
-        return mapper.entityToDto(userEntity);
+    public void saveUser(UserDto user) {
+        repository.save(mapper.dtoToEntity(user));
     }
 
     @Override
     @Transactional
     public List<UserDto> getAll() {
-        return repository.findAll()
-                .stream()
-                .map(mapper::entityToDto)
-                .collect(Collectors.toList());
+        return mapper.usersEntityToDto(repository.findAll());
     }
 
     @Override
-    public UserDto getByLogin(String login) {
-        return repository.findByLogin(login)
-                .map(mapper::entityToDto)
-                .orElseThrow(RuntimeException::new);
+    public UserEntity getByLogin(String username) {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Override
@@ -53,13 +44,9 @@ public class UserServiceImpl implements UserService {
         repository.deleteById(userId);
     }
 
-    private void validateUserDto(UserDto userDto) throws ValidationException {
-        if (isNull(userDto)) {
-            throw new ValidationException("Object user is null");
-        }
-        if (isNull(userDto.getLogin()) || userDto.getLogin().isEmpty()) {
-            throw new ValidationException("Login is empty");
-        }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
     }
-
 }

@@ -14,6 +14,6 @@ public interface WindowService {
 
     WindowDto getById(UUID id);
 
-    List<WindowEntity> getMatches(WindowDto windowDto);
+    List<WindowDto> getMatches(WindowDto windowDto);
 
 }

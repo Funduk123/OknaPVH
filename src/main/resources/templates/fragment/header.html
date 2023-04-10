@@ -1,0 +1,57 @@
+<div th:fragment="header">
+    <!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org"
+          xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+              crossorigin="anonymous">
+        <meta charset="UTF-8">
+        <title>FutureWindow</title>
+    </head>
+    <body class="d-flex flex-column min-vh-100">
+
+    <header class="p-3 text-bg-dark mb-3">
+        <div>
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="/store" class="nav-link px-2 text-white">Главная</a></li>
+                        <li><a href="#" class="nav-link px-2 text-white">Ассортимент</a></li>
+                        <li><a href="#" class="nav-link px-2 text-white">Отзывы</a></li>
+                        <li><a href="#" class="nav-link px-2 text-white">О нас</a></li>
+                        <li><a href="#" class="nav-link px-2 text-white">Контакты</a></li>
+
+                        <li><a th:href="@{/store/redactor}" sec:authorize="hasRole('ADMIN')">
+                            <button class="btn btn-primary" type="submit">Редактирование</button>
+                        </a></li>
+
+                        <li><a th:href="@{/store/orders}" sec:authorize="hasRole('ADMIN')">
+                            <button class="btn btn-warning" type="submit">Список заказов</button>
+                        </a></li>
+                    </ul>
+
+                    <div sec:authorize="hasAnyRole('USER', 'ADMIN')" class="text-end">
+                        <form method="get" th:action="@{/store/profile}" class="d-inline-block">
+                            <button type="submit" class="btn btn-warning">Личный кабинет</button>
+                        </form>
+                        <form method="post" th:action="@{/store/logout}" class="d-inline-block">
+                            <button type="submit" class="btn btn-outline-light me-2">Выход</button>
+                        </form>
+                    </div>
+
+                    <div sec:authorize="hasRole('ANONYMOUS')" class="text-end">
+                        <form method="get" th:action="@{/store/sign-in}" class="d-inline-block">
+                            <button type="submit" class="btn btn-outline-light me-2">Вход</button>
+                        </form>
+                        <form method="get" th:action="@{/store/register}" class="d-inline-block">
+                            <button type="submit" class="btn btn-warning">Регистрация</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+</div>

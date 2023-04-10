@@ -24,8 +24,6 @@ public class OrderEntity {
     )
     private UUID id;
 
-    private UUID userId;
-
     private Integer price;
 
     private String dateAndTime;
@@ -34,7 +32,11 @@ public class OrderEntity {
 
     @OneToOne
     @JoinColumn(name = "window_id")
-    private WindowEntity window_id;
+    private WindowEntity window;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
 
 }

@@ -34,9 +34,9 @@ dependencies {
     implementation 'org.flywaydb:flyway-core'
 
     // Security
-//    implementation 'org.springframework.boot:spring-boot-starter-security'
-//    implementation 'org.springframework.boot:spring-boot-starter-validation'
-//    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
     // Actuator
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -51,6 +51,7 @@ dependencies {
 
     // Others
     implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 tasks.named('test') {

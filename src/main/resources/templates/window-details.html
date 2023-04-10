@@ -1,0 +1,26 @@
+<div th:replace="fragment/header :: header"></div>
+
+<main class="flex-grow-1">
+    <div class="container">
+
+        <div th:replace="fragment/window-card :: window-card-details"></div>
+
+        <div class="btn-group">
+            <form method="post" th:action="@{/store/orders}">
+                <input type="hidden" th:name="id" th:value="${window.id}"/>
+                <input type="hidden" th:name="width" th:value="${window.width}"/>
+                <input type="hidden" th:name="height" th:value="${window.height}"/>
+                <input type="hidden" th:name="type" th:value="${window.type}"/>
+                <input type="hidden" th:name="lamination" th:value="${window.lamination}"/>
+                <input type="hidden" th:name="mountingWidth" th:value="${window.mountingWidth}"/>
+                <input type="hidden" th:name="cameras" th:value="${window.cameras}"/>
+                <input type="hidden" th:name="manufacturer" th:value="${window.manufacturer}"/>
+                <input type="hidden" th:name="availability" th:value="${window.availability}"/>
+                <input type="hidden" th:name="price" th:value="${window.price}"/>
+                <button type="submit" class="btn btn-success btn-lg">Заказать</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<div th:replace="fragment/footer :: footer"></div>
