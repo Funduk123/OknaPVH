@@ -1,7 +1,6 @@
 package com.tms.oknapvh.web;
 
 import com.tms.oknapvh.dto.WindowDto;
-import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.service.WindowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -33,7 +32,7 @@ public class MainController {
 
     @GetMapping("/search")
     public ModelAndView search(@ModelAttribute(name = "window") WindowDto windowDto) {
-        List<WindowEntity> windowsByMatches = windowService.getMatches(windowDto);
+        List<WindowDto> windowsByMatches = windowService.getMatches(windowDto);
         ModelAndView modelAndView = new ModelAndView("search.html");
         modelAndView.addObject("foundWindows", windowsByMatches);
         return modelAndView;

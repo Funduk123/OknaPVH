@@ -11,6 +11,7 @@ import com.tms.oknapvh.repositories.WindowRepository;
 import com.tms.oknapvh.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,7 +19,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +35,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public List<OrderDto> getAll() {
-        return orderRepository.findAll()
-                .stream()
-                .map(orderMapper::entityToDto)
-                .collect(Collectors.toList());
+        return orderMapper.ordersEntityToDto(orderRepository.findAll());
     }
 
     @Override
@@ -55,14 +52,16 @@ public class OrderServiceImpl implements OrderService {
         var username = authentication.getName();
 
         var user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         orderEntity.setUser(user);
 
         orderEntity.setPrice(window.getPrice());
         orderEntity.setDateAndTime(dateAndTime);
 
-        var windowEntity = windowRepository.findById(window.getId()).orElseThrow(RuntimeException::new);
+        var windowEntity = windowRepository.findById(window.getId())
+                .orElseThrow(RuntimeException::new);
+
         orderEntity.setWindow(windowEntity);
 
         return orderRepository.save(orderEntity);
@@ -85,7 +84,6 @@ public class OrderServiceImpl implements OrderService {
             }
             case CANCELLED -> orderRepository.delete(order);
             case NEW, ACCEPTED -> throw new RuntimeException();
-
         }
     }
 
@@ -97,18 +95,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDto> getByUserId(UUID id) {
-        return orderRepository.findAllByUserId(id)
-                .stream()
-                .map(orderMapper::entityToDto)
-                .collect(Collectors.toList());
+        return orderMapper.ordersEntityToDto(orderRepository.findAllByUserId(id));
     }
 
     @Override
+    @Transactional
     public void cancellationOrder(UUID id) {
         var order = orderRepository.findById(id).orElseThrow(RuntimeException::new);
         order.setStatus(OrderStatus.CANCELLED);
-        orderRepository.save(order);
     }
-
 
 }

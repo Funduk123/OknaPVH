@@ -20,13 +20,15 @@ public class UserDto {
 
     private String email;
 
+    private String password;
+
     private String phone;
 
     private String firstName;
 
     private String lastName;
 
-    private UserRole userRole;
+    private String auth;
 
     private List<OrderDto> orders;
 

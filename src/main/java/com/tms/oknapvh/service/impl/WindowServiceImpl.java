@@ -44,9 +44,9 @@ public class WindowServiceImpl implements WindowService {
         repository.deleteById(id);
     }
 
-    public List<WindowEntity> getMatches(WindowDto windowDto) {
+    public List<WindowDto> getMatches(WindowDto windowDto) {
         Specification<WindowEntity> specification = createSpecification(windowDto);
-        return repository.findAll(specification);
+        return mapper.windowsEntityToDto(repository.findAll(specification));
     }
 
     private Specification<WindowEntity> createSpecification(WindowDto windowDto) {

@@ -26,15 +26,15 @@ public class UserController {
     }
 
     @GetMapping("/byLogin/{login}")
-    public UserDto getByLogin(@PathVariable(name = "login") String login) {
+    public UserEntity getByLogin(@PathVariable(name = "login") String login) {
         log.info("Find user by login: " + login);
         return service.getByLogin(login);
     }
 
     @PostMapping("/save")
-    public UserDto save(@RequestBody UserEntity user) {
+    public void save(@RequestBody UserDto user) {
         log.info("Save user: " + user);
-        return service.saveUser(user);
+        service.saveUser(user);
     }
 
     @DeleteMapping("/delete/{id}")

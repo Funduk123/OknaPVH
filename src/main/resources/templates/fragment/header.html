@@ -23,16 +23,16 @@
                         <li><a href="#" class="nav-link px-2 text-white">О нас</a></li>
                         <li><a href="#" class="nav-link px-2 text-white">Контакты</a></li>
 
-                        <li><a th:href="@{/store/redactor}" sec:authorize="hasAuthority('ADMIN')">
+                        <li><a th:href="@{/store/redactor}" sec:authorize="hasRole('ADMIN')">
                             <button class="btn btn-primary" type="submit">Редактирование</button>
                         </a></li>
 
-                        <li><a th:href="@{/store/orders}" sec:authorize="hasAuthority('ADMIN')">
+                        <li><a th:href="@{/store/orders}" sec:authorize="hasRole('ADMIN')">
                             <button class="btn btn-warning" type="submit">Список заказов</button>
                         </a></li>
                     </ul>
 
-                    <div sec:authorize="hasAnyAuthority('USER', 'ADMIN')" class="text-end">
+                    <div sec:authorize="hasAnyRole('USER', 'ADMIN')" class="text-end">
                         <form method="get" th:action="@{/store/profile}" class="d-inline-block">
                             <button type="submit" class="btn btn-warning">Личный кабинет</button>
                         </form>

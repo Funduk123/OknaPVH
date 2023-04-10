@@ -40,12 +40,12 @@ public class UserEntity implements UserDetails {
 
     private String phone;
 
-    private UserRole auth = UserRole.USER;
+    private String auth;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (auth != null) {
-            return List.of(new SimpleGrantedAuthority(auth.toString()));
+            return List.of(new SimpleGrantedAuthority(auth));
         } else {
             return null;
         }

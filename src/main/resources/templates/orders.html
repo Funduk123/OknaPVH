@@ -3,7 +3,7 @@
 <main class="flex-grow-1">
     <div class="container">
 
-        <div sec:authorize="hasAuthority('ADMIN')">
+        <div sec:authorize="hasRole('ADMIN')">
             <h2>Все заказы</h2>
             <table class="table table-dark table-striped">
                 <thead>
@@ -43,7 +43,7 @@
             </table>
         </div>
 
-        <div sec:authorize="hasAuthority('USER')">
+        <div sec:authorize="hasRole('USER')">
             <h2>Мои заказы</h2>
             <table class="table table-dark table-striped">
                 <thead>
