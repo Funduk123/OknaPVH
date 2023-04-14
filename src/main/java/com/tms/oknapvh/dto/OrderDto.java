@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -16,9 +17,9 @@ public class OrderDto {
 
     private Integer price;
 
-    private String dateAndTime;
+    private LocalDateTime dateAndTime;
 
-    private OrderStatus status = OrderStatus.NEW;
+    private OrderStatus status;
 
     private WindowDto window;
 

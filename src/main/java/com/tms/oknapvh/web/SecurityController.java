@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/store")
 @RequiredArgsConstructor
-@Slf4j
 public class SecurityController {
 
     private final UserService service;
@@ -28,7 +27,7 @@ public class SecurityController {
     public String registration(@ModelAttribute("user") UserDto user) {
         String password = user.getPassword();
         user.setPassword(passwordEncoder.encode(password));
-        user.setAuth("ROLE_" + UserRole.USER);
+        user.setAuth(UserRole.ROLE_USER.name());
         service.saveUser(user);
         return "login.html";
     }

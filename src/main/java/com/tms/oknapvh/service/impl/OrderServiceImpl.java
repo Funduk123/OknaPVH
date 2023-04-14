@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,36 +39,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderEntity createOrder(WindowDto window) {
-
-        var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        var dateAndTime = LocalDateTime.now().format(formatter);
-
-        var orderEntity = new OrderEntity();
+    public void createOrder(WindowDto window) {
 
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-
         var username = authentication.getName();
-
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-        orderEntity.setUser(user);
-
-        orderEntity.setPrice(window.getPrice());
-        orderEntity.setDateAndTime(dateAndTime);
 
         var windowEntity = windowRepository.findById(window.getId())
                 .orElseThrow(RuntimeException::new);
 
         orderEntity.setWindow(windowEntity);
 
-        return orderRepository.save(orderEntity);
-    }
-
-    @Override
-    public OrderEntity getById(UUID orderId) {
-        return orderRepository.findById(orderId).orElseThrow(RuntimeException::new);
+        orderRepository.save(orderEntity);
     }
 
     @Override
@@ -78,19 +60,20 @@ public class OrderServiceImpl implements OrderService {
         var status = order.getStatus();
         var window = order.getWindow();
         switch (status) {
-            case COMPLETED -> {
+            case "COMPLETED" -> {
                 orderRepository.delete(order);
                 windowRepository.delete(window);
             }
-            case CANCELLED -> orderRepository.delete(order);
-            case NEW, ACCEPTED -> throw new RuntimeException();
+            case "CANCELLED" -> orderRepository.delete(order);
+            case "NEW", "ACCEPTED" -> throw new RuntimeException();
         }
     }
 
-    public OrderEntity updateStatusById(UUID id, OrderStatus status) {
+    @Override
+    public void updateStatusById(UUID id, String status) {
         var order = orderRepository.findById(id).orElseThrow(RuntimeException::new);
         order.setStatus(status);
-        return orderRepository.save(order);
+        orderRepository.save(order);
     }
 
     @Override
@@ -102,7 +85,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void cancellationOrder(UUID id) {
         var order = orderRepository.findById(id).orElseThrow(RuntimeException::new);
-        order.setStatus(OrderStatus.CANCELLED);
+        order.setStatus(OrderStatus.CANCELLED.name());
     }
 
 }

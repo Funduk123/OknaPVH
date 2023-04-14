@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,9 +33,9 @@ public class WindowServiceImpl implements WindowService {
     }
 
     @Override
-    public WindowEntity saveWindow(WindowDto windowDto) {
+    public void saveWindow(WindowDto windowDto) {
         var windowEntity = mapper.dtoToEntity(windowDto);
-        return repository.save(windowEntity);
+        repository.save(windowEntity);
     }
 
     @Override
@@ -45,7 +44,7 @@ public class WindowServiceImpl implements WindowService {
     }
 
     public List<WindowDto> getMatches(WindowDto windowDto) {
-        Specification<WindowEntity> specification = createSpecification(windowDto);
+        var specification = createSpecification(windowDto);
         return mapper.windowsEntityToDto(repository.findAll(specification));
     }
 
@@ -53,7 +52,7 @@ public class WindowServiceImpl implements WindowService {
         var windowEntity = mapper.dtoToEntity(windowDto);
         return (root, query, builder) -> {
 
-            Predicate predicate = builder.conjunction();
+            var predicate = builder.conjunction();
 
             if (windowEntity.getWidth() != null) {
                 predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.WIDTH), windowEntity.getWidth()));
