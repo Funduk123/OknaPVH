@@ -10,18 +10,18 @@
                     <div class="form-group">
                         <label for="width">Ширина</label>
                         <input th:field="*{width}" type="text" class="form-control" id="width"
-                               placeholder="Введите ширину окна">
+                               placeholder="Введите ширину окна" required>
                     </div>
 
                     <div class="form-group">
                         <label for="height">Высота</label>
                         <input th:field="*{height}" type="text" class="form-control" id="height"
-                               placeholder="Введите высоту окна">
+                               placeholder="Введите высоту окна" required>
                     </div>
 
                     <div class="form-group">
                         <label for="type">Тип окна</label>
-                        <select th:field="*{type}" class="form-control" id="type">
+                        <select th:field="*{type}" class="form-control" id="type" required>
                             <option value="Одностворчатое глухое">Одностворчатое глухое</option>
                             <option value="Одностворчатое поворотно-откидное">Одностворчатое поворотно-откидное</option>
                             <option value="Двустворчатое глухое">Двустворчатое глухое</option>
@@ -39,7 +39,7 @@
 
                     <div class="form-group">
                         <label for="lamination">Ламинация</label>
-                        <select th:field="*{lamination}" class="form-control" id="lamination">
+                        <select th:field="*{lamination}" class="form-control" id="lamination" required>
                             <option value="Нет">Нет</option>
                             <option value="Одна сторона">Одна сторона</option>
                             <option value="Две стороны">Две стороны</option>
@@ -48,7 +48,7 @@
 
                     <div class="form-group">
                         <label for="mountingWidth">Монтажная ширина</label>
-                        <select th:field="*{mountingWidth}" class="form-control" id="mountingWidth">
+                        <select th:field="*{mountingWidth}" class="form-control" id="mountingWidth" required>
                             <option value="58">58</option>
                             <option value="70">70</option>
                             <option value="76">76</option>
@@ -57,7 +57,7 @@
 
                     <div class="form-group">
                         <label for="cameras">Количество камер</label>
-                        <select th:field="*{cameras}" class="form-control" id="cameras">
+                        <select th:field="*{cameras}" class="form-control" id="cameras" required>
                             <option value="3">3</option>
                             <option value="4">4</option>
                         </select>
@@ -65,7 +65,7 @@
 
                     <div class="form-group">
                         <label for="manufacturer">Производство</label>
-                        <select th:field="*{manufacturer}" class="form-control" id="manufacturer">
+                        <select th:field="*{manufacturer}" class="form-control" id="manufacturer" required>
                             <option value="Беларусь">Беларусь</option>
                             <option value="Россия">Россия</option>
                         </select>
@@ -73,7 +73,7 @@
 
                     <div class="form-group">
                         <label for="availability">Наличие</label>
-                        <select th:field="*{availability}" class="form-control" id="availability">
+                        <select th:field="*{availability}" class="form-control" id="availability" required>
                             <option value="В наличии">В наличии</option>
                             <option value="Под заказ">Под заказ</option>
                         </select>
@@ -82,7 +82,7 @@
                     <div class="form-group">
                         <label for="price">Стоимость</label>
                         <input th:field="*{price}" type="text" class="form-control" id="price"
-                               placeholder="Введите стоимость окна в рублях">
+                               placeholder="Введите стоимость окна в рублях" required>
                     </div>
 
                     <button type="submit" class="mt-2 btn btn-primary">Сохранить окно ПВХ</button>
@@ -94,7 +94,7 @@
                 <table class="table table-dark table-striped">
                     <tbody>
                     <tr th:each="window : ${windowsWithoutOrder}">
-                        <div class="card" style="width: 24rem;">
+                        <div class="card" style="width: 18rem;">
 
                             <div th:replace="fragment/window-card :: window-card"></div>
 

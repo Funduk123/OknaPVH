@@ -2,8 +2,6 @@ package com.tms.oknapvh.service;
 
 import com.tms.oknapvh.dto.OrderDto;
 import com.tms.oknapvh.dto.WindowDto;
-import com.tms.oknapvh.entity.OrderEntity;
-import com.tms.oknapvh.entity.OrderStatus;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,13 +10,11 @@ public interface OrderService {
 
     List<OrderDto> getAll();
 
-    OrderEntity createOrder(WindowDto window);
-
-    OrderEntity getById(UUID orderId);
+    void createOrder(WindowDto window);
 
     void deleteOrder(UUID orderId);
 
-    OrderEntity updateStatusById(UUID id, OrderStatus status);
+    void updateStatusById(UUID id, String status);
 
     List<OrderDto> getByUserId(UUID id);
 

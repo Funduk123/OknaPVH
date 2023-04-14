@@ -1,16 +1,19 @@
 package com.tms.oknapvh.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 
 @Entity
 @Table(name = "orders")
@@ -26,9 +29,9 @@ public class OrderEntity {
 
     private Integer price;
 
-    private String dateAndTime;
+    private LocalDateTime dateAndTime;
 
-    private OrderStatus status = OrderStatus.NEW;
+    private String status;
 
     @OneToOne
     @JoinColumn(name = "window_id")

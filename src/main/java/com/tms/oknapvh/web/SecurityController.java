@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/store")
 @RequiredArgsConstructor
-@Slf4j
 public class SecurityController {
 
     private final UserService service;
