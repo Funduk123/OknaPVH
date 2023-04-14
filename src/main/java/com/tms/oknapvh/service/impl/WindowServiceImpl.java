@@ -48,6 +48,11 @@ public class WindowServiceImpl implements WindowService {
         return mapper.windowsEntityToDto(repository.findAll(specification));
     }
 
+    @Override
+    public List<WindowDto> getByType(String type) {
+        return mapper.windowsEntityToDto(repository.findByType(type));
+    }
+
     private Specification<WindowEntity> createSpecification(WindowDto windowDto) {
         var windowEntity = mapper.dtoToEntity(windowDto);
         return (root, query, builder) -> {

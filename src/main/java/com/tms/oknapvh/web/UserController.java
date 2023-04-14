@@ -22,10 +22,9 @@ public class UserController {
         return service.getAll();
     }
 
-    @GetMapping("/byLogin/{login}")
-    public UserEntity getByLogin(@PathVariable(name = "login") String login) {
-        log.info("Find user by login: " + login);
-        return service.getByLogin(login);
+    @PostMapping("/byLogin")
+    public String getByLogin(@RequestParam("username") String login) {
+        return "redirect:/store/profile/" + login;
     }
 
     @PostMapping("/save")

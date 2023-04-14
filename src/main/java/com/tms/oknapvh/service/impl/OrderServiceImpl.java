@@ -49,7 +49,13 @@ public class OrderServiceImpl implements OrderService {
         var windowEntity = windowRepository.findById(window.getId())
                 .orElseThrow(RuntimeException::new);
 
-        orderEntity.setWindow(windowEntity);
+        var orderEntity = OrderEntity.builder()
+                .user(user)
+                .dateAndTime(LocalDateTime.now())
+                .price(window.getPrice())
+                .status(OrderStatus.NEW.name())
+                .window(windowEntity)
+                .build();
 
         orderRepository.save(orderEntity);
     }
