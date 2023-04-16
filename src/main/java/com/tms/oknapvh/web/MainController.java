@@ -51,6 +51,11 @@ public class MainController {
         var window = windowService.getById(id);
         var modelAndView = new ModelAndView("window-details.html");
         modelAndView.addObject("window", window);
+
+        var type = window.getType();
+        var reviewsByWindowType = reviewService.getReviewsByWindowType(type);
+        modelAndView.addObject("reviewsByWindowType", reviewsByWindowType);
+
         return modelAndView;
     }
 
@@ -59,6 +64,30 @@ public class MainController {
         var modelAndView = new ModelAndView("profile.html");
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         modelAndView.addObject("user", authentication.getPrincipal());
+        return modelAndView;
+    }
+
+    @GetMapping("/profile/{username}")
+    public ModelAndView userProfile(@PathVariable String username) {
+        var user = (UserEntity) userService.loadUserByUsername(username);
+        var modelAndView = new ModelAndView("user-profile.html");
+        modelAndView.addObject("user", user);
+        return modelAndView;
+    }
+
+    @GetMapping("/search/{windowType}")
+    public ModelAndView searchByType(@ModelAttribute(name = "window") WindowDto windowDto, @PathVariable String windowType) {
+        var windowsByType = windowService.getByType(windowType);
+        var modelAndView = new ModelAndView("search.html");
+        modelAndView.addObject("foundWindows", windowsByType);
+        return modelAndView;
+    }
+
+    @GetMapping("/users-list")
+    public ModelAndView showAllUsers() {
+        List<UserDto> users = userService.getAll();
+        var modelAndView = new ModelAndView("users-list.html");
+        modelAndView.addObject("users", users);
         return modelAndView;
     }
 
