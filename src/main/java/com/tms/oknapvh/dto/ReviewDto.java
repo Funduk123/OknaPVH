@@ -18,7 +18,7 @@ public class ReviewDto {
 
     private String text;
 
-    private LocalDateTime dateAndTime = LocalDateTime.now();
+    private LocalDateTime dateAndTime;
 
     private Integer rating;
 

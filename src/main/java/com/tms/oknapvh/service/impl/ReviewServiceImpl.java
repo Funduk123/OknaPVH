@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ReviewDto> getReviewsByWindowType(String windowType) {
         var allByWindowType = reviewRepository.findAllByWindowType(windowType);
-        return reviewMapper.ordersEntityToDto(allByWindowType);
+        return reviewMapper.reviewsEntityToDto(allByWindowType);
     }
 
     @Override
@@ -32,6 +33,7 @@ public class ReviewServiceImpl implements ReviewService {
         var username = authentication.getName();
         var newReview = reviewMapper.dtoToEntity(reviewDto);
         newReview.setAuthor(username);
+        newReview.setDateAndTime(LocalDateTime.now());
         reviewRepository.save(newReview);
     }
 

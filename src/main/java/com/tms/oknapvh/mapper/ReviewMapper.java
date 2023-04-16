@@ -11,7 +11,7 @@ public interface ReviewMapper {
 
     ReviewDto entityToDto(ReviewEntity reviewEntity);
 
-    List<ReviewDto> ordersEntityToDto(List<ReviewEntity> reviews);
+    List<ReviewDto> reviewsEntityToDto(List<ReviewEntity> reviews);
 
     ReviewEntity dtoToEntity(ReviewDto reviewDto);
 
