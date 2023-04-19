@@ -32,9 +32,14 @@ public class UserController {
         service.saveUser(user);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable(name = "id") UUID id) {
-        service.deleteUser(id);
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable(name = "id") UUID id, Principal principal) {
+        var currentUsername = principal.getName();
+        var username = service.getById(id).getUsername();
+        var check = service.check(username, currentUsername);
+        if (!check) {
+            service.deleteUser(id);
+        }
+        return "redirect:/store/users-list";
     }
-
 }

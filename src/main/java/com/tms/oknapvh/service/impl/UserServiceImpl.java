@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getByLogin(String username) {
-        return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public UserEntity getByUsername(String username) {
+        return repository.findByUsername(username).orElse(null);
+        // null для LoginController, 35 строка
     }
 
     @Override
@@ -45,8 +45,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean check(String username, String currentUsername) {
+        return username.equals(currentUsername);
+    }
+
+    @Override
+    public UserEntity getById(UUID userId) {
+        return repository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 }

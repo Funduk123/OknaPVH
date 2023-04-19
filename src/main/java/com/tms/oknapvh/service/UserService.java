@@ -13,8 +13,12 @@ public interface UserService extends UserDetailsService {
 
     List<UserDto> getAll();
 
-    UserEntity getByLogin(String login);
+    UserEntity getByUsername(String username);
 
     void deleteUser(UUID userId);
+
+    boolean check(String username, String currentUsername);
+
+    UserEntity getById(UUID userId);
 
 }
