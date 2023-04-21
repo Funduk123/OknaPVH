@@ -9,11 +9,9 @@ import java.util.UUID;
 
 public interface UserService extends UserDetailsService {
 
-    void saveUser(UserDto user);
+    void saveUser(UserDto userDto);
 
     List<UserDto> getAll();
-
-    UserEntity getByUsername(String username);
 
     void deleteUser(UUID userId);
 

@@ -4,6 +4,9 @@ import com.tms.oknapvh.dto.OrderDto;
 import com.tms.oknapvh.dto.WindowDto;
 import com.tms.oknapvh.entity.OrderEntity;
 import com.tms.oknapvh.entity.OrderStatus;
+import com.tms.oknapvh.exception.InvalidOrderStatusException;
+import com.tms.oknapvh.exception.OrderNotFoundException;
+import com.tms.oknapvh.exception.WindowNotFoundException;
 import com.tms.oknapvh.mapper.OrderMapper;
 import com.tms.oknapvh.repositories.OrderRepository;
 import com.tms.oknapvh.repositories.UserRepository;
@@ -39,12 +42,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void createOrder(WindowDto window) {
+    public void createOrder(WindowDto windowDto) {
 
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var username = authentication.getName();
         var user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
         var windowEntity = windowRepository.findById(window.getId())
                 .orElseThrow(RuntimeException::new);
@@ -52,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
         var orderEntity = OrderEntity.builder()
                 .user(user)
                 .dateAndTime(LocalDateTime.now())
-                .price(window.getPrice())
+                .price(windowDto.getPrice())
                 .status(OrderStatus.NEW.name())
                 .window(windowEntity)
                 .build();
@@ -67,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
         var window = order.getWindow();
         switch (status) {
             case "COMPLETED" -> {
-                orderRepository.delete(order);
+                orderRepository.delete(orderEntity);
                 windowRepository.delete(window);
             }
             case "CANCELLED" -> orderRepository.delete(order);
@@ -83,8 +86,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getByUserId(UUID id) {
-        return orderMapper.ordersEntityToDto(orderRepository.findAllByUserId(id));
+    public List<OrderDto> getByUserId(UUID userId) {
+        return orderMapper.ordersEntityToDto(orderRepository.findAllByUserId(userId));
     }
 
     @Override

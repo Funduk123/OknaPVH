@@ -3,7 +3,7 @@
 <main class="flex-grow-1">
     <div class="container">
 
-        <div sec:authorize="hasRole('ADMIN')">
+        <div sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')">
             <h2>Все заказы</h2>
             <table class="table table-dark table-striped text-center">
                 <thead>
@@ -30,7 +30,7 @@
                                 <option th:each="status : ${T(com.tms.oknapvh.entity.OrderStatus).values()}"
                                         th:value="${status}" th:text="${status}"></option>
                             </select>
-                            <button type="submit">Изменить статус</button>
+                            <button type="submit" class="btn btn-warning">Изменить статус</button>
                         </form>
                     </td>
                     <td>

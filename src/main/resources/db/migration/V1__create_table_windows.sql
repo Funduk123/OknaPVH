@@ -46,5 +46,5 @@ CREATE TABLE reviews
     window_type   varchar(255)
 );
 
-INSERT INTO persons (id, auth, username, password) VALUES ('8cd52649-7312-484e-8e72-a6f6ead03bf7', 'ROLE_ADMIN', 'admin', '$2a$10$DseYg5Iln5y0KtYsBbsAUOHwgeIHQoLEc9kktoLg0kF0CaNTOIarm');
+INSERT INTO persons (id, auth, username, password) VALUES ('8cd52649-7312-484e-8e72-a6f6ead03bf7', 'ROLE_SUPER_ADMIN', 'admin', '$2a$10$DseYg5Iln5y0KtYsBbsAUOHwgeIHQoLEc9kktoLg0kF0CaNTOIarm');
 INSERT INTO persons (id, auth, username, password) VALUES ('b86e3cdf-ffe2-4aa0-bf37-2285abb1fed1', 'ROLE_USER', 'user', '$2a$10$j9cQhua64iX/8aI6Hgy4WOx.9av1jTjnsRtJNt.GuvVZcmku8kQhu');

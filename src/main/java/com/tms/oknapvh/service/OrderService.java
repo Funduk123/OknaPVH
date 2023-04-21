@@ -10,14 +10,14 @@ public interface OrderService {
 
     List<OrderDto> getAll();
 
-    void createOrder(WindowDto window);
+    void createOrder(WindowDto windowDto);
 
     void deleteOrder(UUID orderId);
 
-    void updateStatusById(UUID id, String status);
+    void updateStatusById(UUID orderId, String orderStatus);
 
-    List<OrderDto> getByUserId(UUID id);
+    List<OrderDto> getByUserId(UUID userId);
 
-    void cancellationOrder(UUID id);
+    void cancellationOrder(UUID orderId);
 
 }

@@ -28,20 +28,20 @@
                         <li><a href="#" class="nav-link px-2 text-white">О нас</a></li>
                         <li><a href="#" class="nav-link px-2 text-white">Контакты</a></li>
 
-                        <li><a th:href="@{/store/redactor}" sec:authorize="hasRole('ADMIN')">
+                        <li><a th:href="@{/store/redactor}" sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')">
                             <button class="btn btn-primary" type="submit">Редактирование</button>
                         </a></li>
 
-                        <li><a th:href="@{/store/orders}" sec:authorize="hasRole('ADMIN')">
+                        <li><a th:href="@{/store/orders}" sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')">
                             <button class="btn btn-warning" type="submit">Список заказов</button>
                         </a></li>
 
-                        <li><a th:href="@{/store/users-list}" sec:authorize="hasRole('ADMIN')">
+                        <li><a th:href="@{/store/users-list}" sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')">
                             <button class="btn btn-primary" type="submit">Список пользователей</button>
                         </a></li>
                     </ul>
 
-                    <div sec:authorize="hasAnyRole('USER', 'ADMIN')" class="text-end">
+                    <div sec:authorize="hasAnyRole('USER', 'ADMIN', 'SUPER_ADMIN')" class="text-end">
                         <form method="get" th:action="@{/store/profile}" class="d-inline-block">
                             <button type="submit" class="btn btn-warning">Личный кабинет</button>
                         </form>

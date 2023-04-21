@@ -28,17 +28,17 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public void save(@RequestBody UserDto user) {
-        service.saveUser(user);
+    public void save(@RequestBody UserDto userDto) {
+        service.saveUser(userDto);
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable(name = "id") UUID id, Principal principal) {
+    public String delete(@PathVariable(name = "id") UUID userId, Principal principal) {
         var currentUsername = principal.getName();
-        var username = service.getById(id).getUsername();
+        var username = service.getById(userId).getUsername();
         var check = service.check(username, currentUsername);
         if (!check) {
-            service.deleteUser(id);
+            service.deleteUser(userId);
         }
         return "redirect:/store/users-list";
     }

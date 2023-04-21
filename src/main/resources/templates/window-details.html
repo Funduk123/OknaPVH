@@ -73,7 +73,7 @@
                 </div>
             </div>
 
-            <div class="col-4" sec:authorize="hasAnyRole('USER', 'ADMIN')">
+            <div class="col-4" sec:authorize="hasAnyRole('USER', 'ADMIN', 'SUPER_ADMIN')">
                 <form th:action="@{/store/reviews/{id}(id=${window.id})}" th:object="${review}" method="post">
                     <div class="form-group">
                         <p th:text="'Тип окна: ' + ${window.type}"></p>
@@ -89,7 +89,7 @@
                             <label for="star-3" title="Оценка «3»"></label>
                             <input type="radio" id="star-2" name="rating" value="2">
                             <label for="star-2" title="Оценка «2»"></label>
-                            <input type="radio" id="star-1" name="rating" value="1" required>
+                            <input type="radio" id="star-1" name="rating" value="1" checked>
                             <label for="star-1" title="Оценка «1»"></label>
                         </div>
                     </div>

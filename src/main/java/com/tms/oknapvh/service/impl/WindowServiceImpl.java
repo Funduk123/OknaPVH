@@ -4,6 +4,7 @@ import com.tms.oknapvh.dto.WindowDto;
 import com.tms.oknapvh.entity.OrderEntity;
 import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.entity.WindowEntity_;
+import com.tms.oknapvh.exception.WindowNotFoundException;
 import com.tms.oknapvh.mapper.WindowMapper;
 import com.tms.oknapvh.repositories.WindowRepository;
 import com.tms.oknapvh.service.WindowService;
@@ -26,8 +27,8 @@ public class WindowServiceImpl implements WindowService {
     private final WindowMapper mapper;
 
     @Override
-    public WindowDto getById(UUID id) {
-        return repository.findById(id)
+    public WindowDto getById(UUID windowId) {
+        return repository.findById(windowId)
                 .map(mapper::entityToDto)
                 .orElseThrow(RuntimeException::new);
     }
@@ -39,8 +40,8 @@ public class WindowServiceImpl implements WindowService {
     }
 
     @Override
-    public void deleteWindow(UUID id) {
-        repository.deleteById(id);
+    public void deleteWindow(UUID windowId) {
+        repository.deleteById(windowId);
     }
 
     public List<WindowDto> getMatches(WindowDto windowDto) {
@@ -49,8 +50,8 @@ public class WindowServiceImpl implements WindowService {
     }
 
     @Override
-    public List<WindowDto> getByType(String type) {
-        return mapper.windowsEntityToDto(repository.findByType(type));
+    public List<WindowDto> getByType(String windowType) {
+        return mapper.windowsEntityToDto(repository.findByType(windowType));
     }
 
     private Specification<WindowEntity> createSpecification(WindowDto windowDto) {

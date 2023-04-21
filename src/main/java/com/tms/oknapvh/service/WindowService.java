@@ -9,12 +9,12 @@ public interface WindowService {
 
     void saveWindow(WindowDto windowDto);
 
-    void deleteWindow(UUID id);
+    void deleteWindow(UUID windowId);
 
-    WindowDto getById(UUID id);
+    WindowDto getById(UUID windowId);
 
     List<WindowDto> getMatches(WindowDto windowDto);
 
-    List<WindowDto> getByType(String type);
+    List<WindowDto> getByType(String windowType);
 
 }

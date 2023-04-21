@@ -2,6 +2,7 @@ package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.UserDto;
 import com.tms.oknapvh.entity.UserEntity;
+import com.tms.oknapvh.exception.UserNotFoundException;
 import com.tms.oknapvh.mapper.UserMapper;
 import com.tms.oknapvh.repositories.UserRepository;
 import com.tms.oknapvh.service.UserService;
@@ -34,12 +35,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getByUsername(String username) {
-        return repository.findByUsername(username).orElse(null);
-        // null для LoginController, 35 строка
-    }
-
-    @Override
     public void deleteUser(UUID userId) {
         repository.deleteById(userId);
     }
@@ -56,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         return repository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }

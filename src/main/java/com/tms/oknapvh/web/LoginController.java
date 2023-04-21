@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController {
 
     @GetMapping("/sign-in")
-    public ModelAndView login(@RequestParam(value = "error", required = false) String error) {
+    public ModelAndView signIn(@RequestParam(value = "error", required = false) String error) {
         var modelAndView = new ModelAndView();
         if (error != null) {
             modelAndView.addObject("error", "Неверный логин или пароль");

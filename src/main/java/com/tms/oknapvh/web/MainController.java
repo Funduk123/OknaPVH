@@ -46,14 +46,14 @@ public class MainController {
     }
 
     @GetMapping("/window-details/{id}")
-    public ModelAndView details(@PathVariable(name = "id") UUID id) {
+    public ModelAndView details(@PathVariable(name = "id") UUID windowId) {
 
-        var window = windowService.getById(id);
+        var windowDto = windowService.getById(windowId);
         var modelAndView = new ModelAndView("window-details.html");
-        modelAndView.addObject("window", window);
+        modelAndView.addObject("window", windowDto);
 
-        var type = window.getType();
-        var reviewsByWindowType = reviewService.getReviewsByWindowType(type);
+        var windowType = windowDto.getType();
+        var reviewsByWindowType = reviewService.getReviewsByWindowType(windowType);
         modelAndView.addObject("reviewsByWindowType", reviewsByWindowType);
 
         return modelAndView;
