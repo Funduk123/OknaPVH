@@ -49,8 +49,8 @@ public class OrderServiceImpl implements OrderService {
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
-        var windowEntity = windowRepository.findById(window.getId())
-                .orElseThrow(RuntimeException::new);
+        var windowEntity = windowRepository.findById(windowDto.getId())
+                .orElseThrow(() -> new WindowNotFoundException(windowDto.getId()));
 
         var orderEntity = OrderEntity.builder()
                 .user(user)
@@ -65,23 +65,25 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrder(UUID orderId) {
-        var order = orderRepository.findById(orderId).orElseThrow(RuntimeException::new);
-        var status = order.getStatus();
-        var window = order.getWindow();
+        var orderEntity = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        var status = orderEntity.getStatus();
+        var window = orderEntity.getWindow();
         switch (status) {
             case "COMPLETED" -> {
                 orderRepository.delete(orderEntity);
                 windowRepository.delete(window);
             }
-            case "CANCELLED" -> orderRepository.delete(order);
-            case "NEW", "ACCEPTED" -> throw new RuntimeException();
+            case "CANCELLED" -> orderRepository.delete(orderEntity);
+            case "NEW", "ACCEPTED", "IN_PROGRESS" -> throw new InvalidOrderStatusException(status);
         }
     }
 
     @Override
-    public void updateStatusById(UUID id, String status) {
-        var order = orderRepository.findById(id).orElseThrow(RuntimeException::new);
-        order.setStatus(status);
+    public void updateStatusById(UUID orderId, String orderStatus) {
+        var order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        order.setStatus(orderStatus);
         orderRepository.save(order);
     }
 
@@ -92,8 +94,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void cancellationOrder(UUID id) {
-        var order = orderRepository.findById(id).orElseThrow(RuntimeException::new);
+    public void cancellationOrder(UUID orderId) {
+        var order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
         order.setStatus(OrderStatus.CANCELLED.name());
     }
 

@@ -30,7 +30,7 @@ public class WindowServiceImpl implements WindowService {
     public WindowDto getById(UUID windowId) {
         return repository.findById(windowId)
                 .map(mapper::entityToDto)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new WindowNotFoundException(windowId));
     }
 
     @Override

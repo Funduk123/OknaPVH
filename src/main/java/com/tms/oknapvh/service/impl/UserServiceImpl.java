@@ -40,6 +40,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void updateAuthById(UUID userId, String auth) {
+        var userEntity = repository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        userEntity.setAuth(auth);
+        repository.save(userEntity);
+    }
+
+    @Override
     public boolean check(String username, String currentUsername) {
         return username.equals(currentUsername);
     }
@@ -47,12 +55,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity getById(UUID userId) {
         return repository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) {
         return repository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь " + username + " не найден"));
     }
 }

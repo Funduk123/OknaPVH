@@ -15,6 +15,8 @@ public interface UserService extends UserDetailsService {
 
     void deleteUser(UUID userId);
 
+    void updateAuthById(UUID userId, String auth);
+
     boolean check(String username, String currentUsername);
 
     UserEntity getById(UUID userId);

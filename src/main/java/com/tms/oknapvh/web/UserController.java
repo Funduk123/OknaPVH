@@ -42,4 +42,10 @@ public class UserController {
         }
         return "redirect:/store/users-list";
     }
+
+    @PostMapping("/updateAuth/{id}")
+    public String updateStatus(@PathVariable(name = "id") UUID userId, @RequestParam String auth) {
+        service.updateAuthById(userId, auth);
+        return "redirect:/store/users-list";
+    }
 }
