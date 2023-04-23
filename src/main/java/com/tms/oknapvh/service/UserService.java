@@ -21,4 +21,8 @@ public interface UserService extends UserDetailsService {
 
     UserEntity getById(UUID userId);
 
+    void updatePassword(String email, String password);
+
+    void changePassword(String username, String oldPassword, String newPassword);
+
 }

@@ -23,6 +23,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper mapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public void saveUser(UserDto user) {
         repository.save(mapper.dtoToEntity(user));
@@ -56,6 +58,25 @@ public class UserServiceImpl implements UserService {
     public UserEntity getById(UUID userId) {
         return repository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
+    @Override
+    @Transactional
+    public void updatePassword(String email, String newPassword) {
+        var user = repository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundByEmailException(email));
+        user.setPassword(passwordEncoder.encode(newPassword));
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(String username, String oldPassword, String newPassword) {
+        var user = (UserEntity) loadUserByUsername(username);
+        if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        } else {
+            throw new InvalidUserPasswordException();
+        }
     }
 
     @Override

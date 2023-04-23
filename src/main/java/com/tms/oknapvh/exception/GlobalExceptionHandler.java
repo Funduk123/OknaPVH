@@ -15,6 +15,14 @@ public class GlobalExceptionHandler {
         return modelAndView;
     }
 
+    @ExceptionHandler(UserNotFoundByEmailException.class)
+    public ModelAndView handleUserNotFoundByEmailException(UserNotFoundByEmailException exc) {
+        var modelAndView = new ModelAndView("error.html");
+        modelAndView.addObject("userNotFoundByEmailException", exc.getMessage());
+        modelAndView.addObject("email", exc.getEmail());
+        return modelAndView;
+    }
+
     @ExceptionHandler(InvalidOrderStatusException.class)
     public ModelAndView handleInvalidOrderStatusException(InvalidOrderStatusException exc) {
         var modelAndView = new ModelAndView("error.html");
@@ -35,6 +43,24 @@ public class GlobalExceptionHandler {
         var modelAndView = new ModelAndView("error.html");
         modelAndView.addObject("windowNotFoundException", exc.getMessage());
         modelAndView.addObject("userId", exc.getWindowId());
+        return modelAndView;
+    }
+
+    @ExceptionHandler(InvalidUserPasswordException.class)
+    public ModelAndView handleInvalidUserPasswordException(InvalidUserPasswordException exc) {
+        var modelAndView = new ModelAndView("change-password.html");
+        modelAndView.addObject("invalidOldPasswordException", exc.getMessage());
+        return modelAndView;
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ModelAndView handleConstraintViolationException(ConstraintViolationException ex) {
+        ModelAndView modelAndView = new ModelAndView("change-password.html");
+        String message = ex.getConstraintViolations().stream()
+                .map(ConstraintViolation::getMessage)
+                .findFirst()
+                .orElse(ex.getMessage());
+        modelAndView.addObject("invalidNewPasswordException", message);
         return modelAndView;
     }
 

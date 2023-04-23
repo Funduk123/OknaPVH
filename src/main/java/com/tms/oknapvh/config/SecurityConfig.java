@@ -33,13 +33,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .logoutUrl("/store/logout")
-                .addLogoutHandler((request, response, authentication) -> {
-                    try {
-                        response.sendRedirect("/store");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
+                .and()
+                .rememberMe()
+                .key("uniqueAndSecret")
+                .tokenValiditySeconds(86400) // 1 день
                 .and()
                 .httpBasic();
     }
