@@ -64,4 +64,11 @@ public class GlobalExceptionHandler {
         return modelAndView;
     }
 
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ModelAndView handleUsernameNotFoundException(UsernameNotFoundException exc) {
+        var modelAndView = new ModelAndView("error.html");
+        modelAndView.addObject("usernameNotFoundException", exc.getMessage());
+        return modelAndView;
+    }
+
 }

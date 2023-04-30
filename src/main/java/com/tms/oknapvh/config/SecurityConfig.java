@@ -24,6 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/store/orders/**", "/store/profile/").authenticated()
                 .antMatchers("/store/redactor/**", "/store/users-list").hasAnyRole("ADMIN", "SUPER_ADMIN")
                 .and()
+                .csrf().disable()
                 .formLogin()
                 .loginPage("/store/sign-in")
                 .loginProcessingUrl("/store/sign-in")
