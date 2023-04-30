@@ -23,7 +23,7 @@ public class RegisterControllerTest {
 
     @Test
     @WithAnonymousUser
-    public void showRegistrationForm() throws Exception {
+    public void testShowRegistrationForm() throws Exception {
         mockMvc.perform(get("/store/register"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("registration.html"));
@@ -32,7 +32,7 @@ public class RegisterControllerTest {
     @Test
     @WithAnonymousUser
     @Transactional
-    public void testRegistration() throws Exception {
+    public void testRegistration_Success() throws Exception {
         var user = new UserDto();
         user.setUsername("testUsername");
         user.setFirstName("testFirstName");
@@ -49,7 +49,7 @@ public class RegisterControllerTest {
 
     @Test
     @WithAnonymousUser
-    void registrationWithErrors() throws Exception {
+    void testRegistration_WithErrors() throws Exception {
         UserDto user = new UserDto();
         user.setUsername("");
 
