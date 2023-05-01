@@ -60,6 +60,7 @@ public class ReviewControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void getAllReviews() throws Exception {
         var allReviews = reviewRepository.findAll();
         mockMvc.perform(get("/store/all-reviews"))
@@ -70,6 +71,8 @@ public class ReviewControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = {"ADMIN", "SUPER_ADMIN"})
+    @Transactional
     public void deleteReview() throws Exception {
 
         var windowType = "Одностворчатое глухое";

@@ -55,18 +55,18 @@ public class UserControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "user")
+    @WithMockUser(roles = {"USER", "ADMIN", "SUPER_ADMIN"})
     public void testShowProfile() throws Exception {
-        var username = getContext().getAuthentication().getName();
-        var user = userRepository.findByUsername(username).orElse(null);
 
-        assert user != null;
+        var user = new UserEntity();
+        user.setUsername("test");
+        user.setPassword("test");
+
         mockMvc.perform(get("/store/profile").with(user(user)))
                 .andExpect(status().isOk())
                 .andExpect(view().name("profile.html"))
                 .andExpect(model().attributeExists("user"))
                 .andExpect(model().attribute("user", user));
-
     }
 
     @Test
@@ -133,6 +133,16 @@ public class UserControllerTest {
                 .andExpect(redirectedUrl("/store/users-list"));
 
         assertEquals("ROLE_ADMIN", userEntity.getAuth());
+    }
+
+    @Test
+    @WithMockUser(roles = {"SUPER_ADMIN"})
+    public void testUpdateStatus_ThrowUserNotFoundException() throws Exception {
+        mockMvc.perform(post("/store/user/updateAuth/{id}", UUID.randomUUID()).param("auth", "ROLE_ADMIN"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error.html"))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof UserNotFoundException))
+                .andExpect(result -> assertEquals("Пользователь не найден", result.getResolvedException().getMessage()));
     }
 
     @Test

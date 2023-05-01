@@ -36,12 +36,12 @@ public class PasswordController {
     public String resetPassword(@RequestParam("email") String email) {
 
         // Генерация нового пароля
-        String newPassword = RandomString.make(8);
+        var newPassword = RandomString.make(8);
 
         // Подготовка и асинхронная отправка письма с паролем (без задержки на странице)
         CompletableFuture.runAsync(() -> {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message);
+            var message = mailSender.createMimeMessage();
+            var helper = new MimeMessageHelper(message);
             try {
                 helper.setFrom("danik-rebkovets@mail.ru");
                 helper.setTo(email);
@@ -79,14 +79,38 @@ public class PasswordController {
         return modelAndView;
     }
 
-    @GetMapping("/help")
-    public String showHelpForm() {
-        return "help.html";
-    }
-
-    @PostMapping("/help")
-    public String help() {
-        return "redirect:/store/help";
-    }
+//    @GetMapping("/support")
+//    public String showSupportPage() {
+//        return "help.html";
+//    }
+//
+//    @PostMapping("/support")
+//    public ModelAndView sendMessage(@RequestParam String message) {
+//        ModelAndView modelAndView = new ModelAndView("help.html");
+//
+//        var authentication = getContext().getAuthentication();
+//
+//        var user = (UserEntity) authentication.getPrincipal();
+//        var email = user.getEmail();
+//
+//        var mailMessage = new SimpleMailMessage();
+//        mailMessage.setTo("danik-rebkovets@mail.ru");
+//        mailMessage.setFrom(email);
+//        mailMessage.setSubject("Сообщение от пользователя: " + user.getUsername());
+//        mailMessage.setText(message);
+//        mailSender.send(mailMessage);
+//
+////        CompletableFuture.runAsync(() -> {
+////            SimpleMailMessage mailMessage1 = new SimpleMailMessage();
+////            mailMessage1.setTo("danik-rebkovets@mail.ru");
+////            mailMessage1.setFrom(email);
+////            mailMessage1.setSubject("Сообщение от пользователя: " + user.getUsername());
+////            mailMessage1.setText(message);
+////            mailSender.send(mailMessage1);
+////        });
+//
+//        modelAndView.addObject("successMessage", "Ваше сообщение успешно отправлено!");
+//        return modelAndView;
+//    }
 
 }
