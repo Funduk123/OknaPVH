@@ -26,9 +26,19 @@
                     </tbody>
                 </table>
 
-                <a th:href="@{/store/my-orders}">
-                    <button class="btn btn-success" type="submit">Мои заказы</button>
-                </a>
+                <div class="row mb-4">
+                    <div class="col d-flex justify-content-center" sec:authorize="hasRole('USER')">
+                        <a th:href="@{/store/my-orders}">
+                            <button class="btn btn-success" type="submit">Мои заказы</button>
+                        </a>
+                    </div>
+
+                    <div class="col">
+                        <a th:href="@{/store/change-password}">
+                            <button class="btn btn-primary" type="submit">Изменить пароль</button>
+                        </a>
+                    </div>
+                </div>
 
             </div>
         </div>

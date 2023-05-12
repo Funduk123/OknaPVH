@@ -15,6 +15,6 @@ public interface WindowService {
 
     List<WindowDto> getMatches(WindowDto windowDto);
 
-    List<WindowDto> getByType(String type);
+    List<WindowDto> getByType(String windowType);
 
 }

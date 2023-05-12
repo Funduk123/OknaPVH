@@ -9,12 +9,22 @@ import java.util.UUID;
 
 public interface UserService extends UserDetailsService {
 
-    void saveUser(UserDto user);
+    void saveUser(UserDto userDto);
 
     List<UserDto> getAll();
 
-    UserEntity getByLogin(String login);
-
     void deleteUser(UUID userId);
+
+    void updateAuthById(UUID userId, String auth);
+
+    UserEntity getById(UUID userId);
+
+    UserEntity getByEmail(String email);
+
+    boolean checkEmailExists(String email);
+
+    void updatePassword(String email, String password);
+
+    void changePassword(String username, String oldPassword, String newPassword);
 
 }

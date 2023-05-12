@@ -2,7 +2,7 @@
 
 <main class="flex-grow-1">
     <div class="container">
-        <div class="row">
+        <div class="row table-responsive">
 
             <table class="table table-dark table-striped text-center">
                 <thead>
@@ -11,6 +11,8 @@
                     <th>Логин</th>
                     <th>Телефон</th>
                     <th>Email</th>
+                    <th sec:authorize="hasRole('SUPER_ADMIN')">Статус</th>
+                    <th sec:authorize="hasRole('SUPER_ADMIN')">Сменить статус</th>
                     <th>Личный кабинет</th>
                     <th>Удалить</th>
                 </tr>
@@ -21,6 +23,21 @@
                     <td th:text="${user.username}"></td>
                     <td th:text="${user.phone}"></td>
                     <td th:text="${user.email}"></td>
+                    <td sec:authorize="hasRole('SUPER_ADMIN')">
+                        <div th:if="${user.auth} == 'ROLE_USER'" th:text="'Пользователь'"></div>
+                        <div th:if="${user.auth} == 'ROLE_ADMIN'" th:text="'Администратор'"></div>
+                        <div th:if="${user.auth} == 'ROLE_SUPER_ADMIN'" th:text="'Главный администратор'"></div>
+                    </td>
+                    <td sec:authorize="hasRole('SUPER_ADMIN')">
+                        <form th:action="@{/store/user/updateAuth/{id}(id=${user.id})}" method="post">
+                            <select name="auth">
+                                <option th:each="auth : ${T(com.tms.oknapvh.entity.UserRole).values()}"
+                                        th:value="${auth}" th:text="${auth}">
+                                </option>
+                            </select>
+                            <button type="submit" class="btn btn-warning">Изменить статус</button>
+                        </form>
+                    </td>
                     <td>
                         <form method="get" th:action="@{/store/profile/{username}(username=${user.username})}">
                             <button type="submit" class="btn btn-primary">Войти</button>

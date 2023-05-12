@@ -20,7 +20,10 @@ import java.util.UUID;
 @Builder
 
 @Entity
-@Table(name = "persons", indexes = @Index(unique = true, columnList = "username"))
+@Table(name = "persons", indexes = {
+        @Index(unique = true, columnList = "username"),
+        @Index(unique = true, columnList = "email")
+})
 public class UserEntity implements UserDetails {
 
     @Id

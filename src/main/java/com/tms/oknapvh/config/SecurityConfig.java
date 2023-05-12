@@ -9,42 +9,39 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import java.io.IOException;
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private final UserServiceImpl service;
+    private final UserServiceImpl userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/store", "/store/search", "/store/register", "/store/sign-in", "/store/window-details/**", "store/profile/*").permitAll()
                 .antMatchers("/store/orders/**", "/store/profile/").authenticated()
-                .antMatchers("/store/redactor/**").hasRole("ADMIN")
+                .antMatchers("/store/redactor/**", "/store/users-list").hasAnyRole("ADMIN", "SUPER_ADMIN")
                 .and()
+                .csrf().disable()
                 .formLogin()
-                .loginPage("/store/sign-in").loginProcessingUrl("/store/sign-in")
+                .loginPage("/store/sign-in")
+                .loginProcessingUrl("/store/sign-in")
+                .failureUrl("/store/sign-in?error=true")
                 .successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
                 .defaultSuccessUrl("/store", false)
                 .and()
                 .logout()
                 .logoutUrl("/store/logout")
-                .addLogoutHandler((request, response, authentication) -> {
-                    try {
-                        response.sendRedirect("/store");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
+                .and()
+                .rememberMe()
+                .key("uniqueAndSecret")
+                .tokenValiditySeconds(86400) // 1 день
                 .and()
                 .httpBasic();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(service)
+        auth.userDetailsService(userService)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 

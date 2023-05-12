@@ -1,6 +1,7 @@
 package com.tms.oknapvh.web;
 
 import com.tms.oknapvh.dto.WindowDto;
+import com.tms.oknapvh.entity.OrderStatus;
 import com.tms.oknapvh.entity.UserEntity;
 import com.tms.oknapvh.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class OrderController {
     }
 
     @PostMapping("/orders/status/{id}")
-    public String updateStatus(@PathVariable UUID id, @RequestParam String status) {
+    public String updateStatus(@PathVariable UUID id, @RequestParam OrderStatus status) {
         service.updateStatusById(id, status);
         return "redirect:/store/orders";
     }
