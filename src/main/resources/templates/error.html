@@ -5,20 +5,20 @@
         <div class="row">
             <div class="d-flex align-items-center justify-content-center">
                 <div class="text-center">
-                    <h4 class="display-1 fw-bold">Ошибка</h4>
+                    <h2>Ошибка</h2>
                     <p class="fs-3"> <span class="text-danger">Ой!</span> Что-то пошло не так!</p>
 
                     <p class="fs-3" th:text="${userNotFoundException}"></p>
-                    <p sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')" class="fs-3" th:text="'ID пользователя: ' + ${userId}"></p>
 
+                    <p class="fs-3" th:text="${usernameNotFoundException}"></p>
 
                     <p class="fs-3" th:text="${invalidOrderStatusException}"></p>
 
                     <p class="fs-3" th:text="${orderNotFoundException}"></p>
-                    <p sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')" class="fs-3" th:text="'ID заказа: ' + ${orderId}"></p>
 
                     <p class="fs-3" th:text="${windowNotFoundException}"></p>
-                    <p sec:authorize="hasAnyRole('ADMIN', 'SUPER_ADMIN')" class="fs-3" th:text="'ID окна: ' + ${windowId}"></p>
+
+                    <p class="fs-3" th:text="${userNotFoundByEmailException}"></p>
 
                     <p class="lead">
                         Пожалуйста, вернитесь на главную страницу.

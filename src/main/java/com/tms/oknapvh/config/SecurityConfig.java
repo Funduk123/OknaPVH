@@ -9,13 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import java.io.IOException;
-
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-    private final UserServiceImpl service;
+    private final UserServiceImpl userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(service)
+        auth.userDetailsService(userService)
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 

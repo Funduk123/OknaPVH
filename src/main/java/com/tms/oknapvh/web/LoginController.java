@@ -14,11 +14,10 @@ public class LoginController {
 
     @GetMapping("/sign-in")
     public ModelAndView signIn(@RequestParam(value = "error", required = false) String error) {
-        var modelAndView = new ModelAndView();
+        var modelAndView = new ModelAndView("sign-in.html");
         if (error != null) {
             modelAndView.addObject("error", "Неверный логин или пароль");
         }
-        modelAndView.setViewName("sign-in.html");
         return modelAndView;
     }
 

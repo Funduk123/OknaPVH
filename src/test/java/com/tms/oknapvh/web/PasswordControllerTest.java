@@ -18,10 +18,10 @@ import javax.transaction.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -38,7 +38,6 @@ public class PasswordControllerTest {
     private PasswordEncoder passwordEncoder;
 
     @Test
-    @WithMockUser(roles = "ANONYMOUS")
     public void testShowResetPasswordForm() throws Exception {
         mockMvc.perform(get("/store/forgot-password"))
                 .andExpect(status().isOk())
@@ -78,7 +77,7 @@ public class PasswordControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"USER", "ADMIN", "SUPER_ADMIN"})
+    @WithMockUser
     public void testShowChangePasswordForm() throws Exception {
         mockMvc.perform(get("/store/change-password"))
                 .andExpect(status().isOk())
@@ -87,7 +86,7 @@ public class PasswordControllerTest {
 
     @Test
     @Transactional
-    @WithMockUser(roles = {"USER", "ADMIN", "SUPER_ADMIN"})
+    @WithMockUser
     public void testChangePassword_Success() throws Exception {
 
         var oldPassword = "oldPassword";
@@ -99,13 +98,12 @@ public class PasswordControllerTest {
         userRepository.save(user);
 
         var passwordForm = new PasswordForm();
-        passwordForm.setUsername(user.getUsername());
         passwordForm.setOldPassword(oldPassword);
         passwordForm.setNewPassword(newPassword);
 
         mockMvc.perform(post("/store/change-password").flashAttr("passwordForm", passwordForm))
                 .andExpect(status().isOk())
-                .andExpect(view().name("success-change.html"));
+                .andExpect(view().name("change.html"));
 
         var updatedUser = userRepository.findByUsername(user.getUsername()).orElseThrow();
         assertTrue(passwordEncoder.matches(newPassword, updatedUser.getPassword()));
@@ -113,7 +111,7 @@ public class PasswordControllerTest {
 
     @Test
     @Transactional
-    @WithMockUser(roles = {"USER", "ADMIN", "SUPER_ADMIN"})
+    @WithMockUser
     void testChangePassword_ThrowInvalidUserPasswordException() throws Exception {
 
         var user = new UserEntity();
@@ -122,7 +120,6 @@ public class PasswordControllerTest {
         userRepository.save(user);
 
         var passwordForm = new PasswordForm();
-        passwordForm.setUsername("test");
         passwordForm.setOldPassword("testOldPassword");
         passwordForm.setNewPassword("testNewPassword");
 
@@ -134,14 +131,65 @@ public class PasswordControllerTest {
     }
 
     @Test
-    public void testShowHelpForm() {
-
-
+    @WithMockUser
+    public void testShowSupportPage_LoggedIn() throws Exception {
+        mockMvc.perform(get("/store/support"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("support.html"));
     }
 
     @Test
-    public void testHelp() {
-
-
+    public void testShowSupportPage_Anonymous() throws Exception {
+        mockMvc.perform(get("/store/support"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("support-anonymous.html"));
     }
+
+    @Test
+    public void testSendLoggedInMessage_Success() throws Exception {
+
+        var message = "test";
+        var attribute = "Ваше сообщение успешно отправлено!";
+
+        var user = new UserEntity();
+        user.setEmail("test@example.com");
+        user.setUsername("test");
+        user.setPhone("+375332221100");
+
+        mockMvc.perform(post("/store/support").with(user(user)).param("message", message))
+                .andExpect(status().isOk())
+                .andExpect(view().name("support.html"))
+                .andExpect(model().attribute("successMessage", attribute));
+    }
+
+//    @Test
+//    public void testsendAnonymousMessage_Success() throws Exception {
+//
+//        @PostMapping("/support-anonymous")
+//        public ModelAndView sendAnonymousMessage(@RequestParam String message, @RequestParam String email) {
+//            var modelAndView = new ModelAndView("support-anonymous.html");
+//            boolean emailExists = userService.checkEmailExists(email);
+//            if (!emailExists) {
+//                modelAndView.addObject("emailNotFound", true);
+//                return modelAndView;
+//            }
+//            customMailSender.sendAnonymousSupportEmail(email, message);
+//            modelAndView.addObject("successMessage", "Ваше сообщение успешно отправлено!");
+//            return modelAndView;
+//        }
+//
+//        var message = "test";
+//        var attribute = "Ваше сообщение успешно отправлено!";
+//
+//        var user = new UserEntity();
+//        user.setEmail("test@example.com");
+//        user.setUsername("test");
+//        user.setPhone("+375332221100");
+//
+//        mockMvc.perform(post("/store/support").with(user(user)).param("message", message))
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("support.html"))
+//                .andExpect(model().attribute("successMessage", attribute));
+//    }
+
 }

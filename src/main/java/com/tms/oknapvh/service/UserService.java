@@ -17,9 +17,11 @@ public interface UserService extends UserDetailsService {
 
     void updateAuthById(UUID userId, String auth);
 
-    boolean check(String username, String currentUsername);
-
     UserEntity getById(UUID userId);
+
+    UserEntity getByEmail(String email);
+
+    boolean checkEmailExists(String email);
 
     void updatePassword(String email, String password);
 

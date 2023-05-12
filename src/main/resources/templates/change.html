@@ -1,0 +1,21 @@
+<div th:replace="fragment/header :: header"></div>
+
+<main class="flex-grow-1">
+  <div class="container d-flex justify-content-center h-75 align-items-center">
+    <div class="col-md-4">
+
+      <div class="text-center">
+        <h1>Пароль успешно изменен</h1>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+  setTimeout(function() {
+    window.location.href = '/store/logout';
+  }, 3000);
+</script>
+
+<div th:replace="fragment/footer :: footer"></div>

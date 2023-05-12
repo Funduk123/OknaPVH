@@ -13,6 +13,7 @@ import com.tms.oknapvh.repositories.UserRepository;
 import com.tms.oknapvh.repositories.WindowRepository;
 import com.tms.oknapvh.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -46,17 +47,17 @@ public class OrderServiceImpl implements OrderService {
 
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         var username = authentication.getName();
+
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
 
-        var windowEntity = windowRepository.findById(windowDto.getId())
-                .orElseThrow(() -> new WindowNotFoundException(windowDto.getId()));
+        var windowEntity = findBy(windowRepository, windowDto.getId(), "Окно не найдено");
 
         var orderEntity = OrderEntity.builder()
                 .user(user)
                 .dateAndTime(LocalDateTime.now())
                 .price(windowDto.getPrice())
-                .status(OrderStatus.NEW.name())
+                .status(OrderStatus.NEW)
                 .window(windowEntity)
                 .build();
 
@@ -65,24 +66,24 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrder(UUID orderId) {
-        var orderEntity = orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderNotFoundException(orderId));
-        var status = orderEntity.getStatus();
+        var orderEntity = findBy(orderRepository, orderId, "Заказ " + orderId + " не найден");
+        var orderStatus = orderEntity.getStatus();
         var window = orderEntity.getWindow();
-        switch (status) {
-            case "COMPLETED" -> {
+
+        switch (orderStatus) {
+            case COMPLETED -> {
                 orderRepository.delete(orderEntity);
                 windowRepository.delete(window);
             }
-            case "CANCELLED" -> orderRepository.delete(orderEntity);
-            case "NEW", "ACCEPTED", "IN_PROGRESS" -> throw new InvalidOrderStatusException(status);
+            case CANCELLED -> orderRepository.delete(orderEntity);
+            case NEW, ACCEPTED, IN_PROGRESS ->
+                    throw new InvalidOrderStatusException("Нельзя удалить заказ со статусом: " + orderStatus);
         }
     }
 
     @Override
-    public void updateStatusById(UUID orderId, String orderStatus) {
-        var order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderNotFoundException(orderId));
+    public void updateStatusById(UUID orderId, OrderStatus orderStatus) {
+        var order = findBy(orderRepository, orderId, "Заказ " + orderId + " не найден");
         order.setStatus(orderStatus);
         orderRepository.save(order);
     }
@@ -95,9 +96,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void cancellationOrder(UUID orderId) {
-        var order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new OrderNotFoundException(orderId));
-        order.setStatus(OrderStatus.CANCELLED.name());
+        var order = findBy(orderRepository, orderId, "Заказ " + orderId + " не найден");
+        order.setStatus(OrderStatus.CANCELLED);
+    }
+
+    private <T> T findBy(JpaRepository<T, UUID> repository, UUID id, String errorMessage) {
+        if (repository.equals(orderRepository)) {
+            return repository.findById(id)
+                    .orElseThrow(() -> new OrderNotFoundException(errorMessage));
+        }
+        if (repository.equals(windowRepository)) {
+            return repository.findById(id)
+                    .orElseThrow(() -> new WindowNotFoundException(errorMessage));
+        }
+        throw new IllegalArgumentException("Неподдерживаемый тип репозитория: " + repository.getClass());
     }
 
 }

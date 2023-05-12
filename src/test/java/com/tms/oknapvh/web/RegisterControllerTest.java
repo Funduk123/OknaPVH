@@ -50,7 +50,7 @@ public class RegisterControllerTest {
     @Test
     @WithAnonymousUser
     void testRegistration_WithErrors() throws Exception {
-        UserDto user = new UserDto();
+        var user = new UserDto();
         user.setUsername("");
 
         mockMvc.perform(post("/store/register")

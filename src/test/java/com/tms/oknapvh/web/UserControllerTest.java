@@ -1,6 +1,7 @@
 package com.tms.oknapvh.web;
 
 import com.tms.oknapvh.entity.UserEntity;
+import com.tms.oknapvh.exception.UserNotFoundException;
 import com.tms.oknapvh.mapper.UserMapper;
 import com.tms.oknapvh.repositories.UserRepository;
 import com.tms.oknapvh.service.UserService;
@@ -13,10 +14,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -86,7 +87,6 @@ public class UserControllerTest {
                 .andExpect(view().name("user-profile.html"))
                 .andExpect(model().attributeExists("user"))
                 .andExpect(model().attribute("user", user));
-
     }
 
     @Test

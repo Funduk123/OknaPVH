@@ -31,7 +31,7 @@ public class OrderEntity {
 
     private LocalDateTime dateAndTime;
 
-    private String status;
+    private OrderStatus status;
 
     @OneToOne
     @JoinColumn(name = "window_id")

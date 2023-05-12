@@ -9,9 +9,9 @@ public interface WindowService {
 
     void saveWindow(WindowDto windowDto);
 
-    void deleteWindow(UUID windowId);
+    void deleteWindow(UUID id);
 
-    WindowDto getById(UUID windowId);
+    WindowDto getById(UUID id);
 
     List<WindowDto> getMatches(WindowDto windowDto);
 

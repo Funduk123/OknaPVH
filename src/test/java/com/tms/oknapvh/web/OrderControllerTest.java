@@ -167,7 +167,7 @@ public class OrderControllerTest {
     @Transactional
     public void testUpdateStatus_Success() throws Exception {
         var order = new OrderEntity();
-        order.setStatus("NEW");
+        order.setStatus(OrderStatus.NEW);
 
         orderRepository.save(order);
 
@@ -176,7 +176,7 @@ public class OrderControllerTest {
                 .andExpect(redirectedUrl("/store/orders"));
 
         var status = order.getStatus();
-        assertEquals("COMPLETED", status);
+        assertEquals(OrderStatus.COMPLETED, status);
 
     }
 
@@ -199,7 +199,7 @@ public class OrderControllerTest {
         windowRepository.save(window);
 
         var order = new OrderEntity();
-        order.setStatus("COMPLETED");
+        order.setStatus(OrderStatus.COMPLETED);
         order.setWindow(window);
 
         orderRepository.save(order);
@@ -221,7 +221,7 @@ public class OrderControllerTest {
         windowRepository.save(window);
 
         var order = new OrderEntity();
-        order.setStatus("CANCELLED");
+        order.setStatus(OrderStatus.CANCELLED);
         order.setWindow(window);
 
         orderRepository.save(order);
@@ -239,7 +239,7 @@ public class OrderControllerTest {
     @Transactional
     public void testDeleteOrder_ThrowInvalidOrderStatusException() throws Exception {
 
-        var testStatus = OrderStatus.NEW.name();
+        var testStatus = OrderStatus.NEW;
 
         var window = new WindowEntity();
         windowRepository.save(window);
@@ -262,13 +262,13 @@ public class OrderControllerTest {
     @Transactional
     public void testCancellationOrder_Success() throws Exception {
         var order = new OrderEntity();
-        order.setStatus("CANCELLED");
+        order.setStatus(OrderStatus.CANCELLED);
 
         orderRepository.save(order);
 
         mockMvc.perform(post("/store/orders/cancellation/{id}", order.getId()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/store/my-orders"));
-        assertEquals("CANCELLED", order.getStatus());
+        assertEquals(OrderStatus.CANCELLED, order.getStatus());
     }
 }

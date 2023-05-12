@@ -52,6 +52,7 @@ dependencies {
     // Others
     implementation 'org.apache.commons:commons-lang3'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'org.jeasy:easy-random-core:4.0.0'
 
     // Mokito
     testImplementation 'org.mockito:mockito-core:4.8.1'

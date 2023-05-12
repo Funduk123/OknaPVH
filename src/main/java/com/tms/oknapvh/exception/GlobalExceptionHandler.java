@@ -1,8 +1,12 @@
 package com.tms.oknapvh.exception;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -11,7 +15,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleUserNotFoundException(UserNotFoundException exc) {
         var modelAndView = new ModelAndView("error.html");
         modelAndView.addObject("userNotFoundException", exc.getMessage());
-        modelAndView.addObject("userId", exc.getUserId());
         return modelAndView;
     }
 
@@ -19,7 +22,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleUserNotFoundByEmailException(UserNotFoundByEmailException exc) {
         var modelAndView = new ModelAndView("error.html");
         modelAndView.addObject("userNotFoundByEmailException", exc.getMessage());
-        modelAndView.addObject("email", exc.getEmail());
         return modelAndView;
     }
 
@@ -34,7 +36,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleOrderNotFoundException(OrderNotFoundException exc) {
         var modelAndView = new ModelAndView("error.html");
         modelAndView.addObject("orderNotFoundException", exc.getMessage());
-        modelAndView.addObject("orderId", exc.getOrderId());
         return modelAndView;
     }
 
@@ -42,7 +43,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleWindowNotFoundException(WindowNotFoundException exc) {
         var modelAndView = new ModelAndView("error.html");
         modelAndView.addObject("windowNotFoundException", exc.getMessage());
-        modelAndView.addObject("userId", exc.getWindowId());
         return modelAndView;
     }
 
@@ -54,12 +54,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ModelAndView handleConstraintViolationException(ConstraintViolationException ex) {
-        ModelAndView modelAndView = new ModelAndView("change-password.html");
-        String message = ex.getConstraintViolations().stream()
+    public ModelAndView handleConstraintViolationException(ConstraintViolationException exc) {
+        var modelAndView = new ModelAndView("change-password.html");
+        var message = exc.getConstraintViolations().stream()
                 .map(ConstraintViolation::getMessage)
                 .findFirst()
-                .orElse(ex.getMessage());
+                .orElse(exc.getMessage());
         modelAndView.addObject("invalidNewPasswordException", message);
         return modelAndView;
     }

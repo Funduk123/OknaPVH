@@ -30,7 +30,7 @@ public class WindowServiceImpl implements WindowService {
     public WindowDto getById(UUID windowId) {
         return repository.findById(windowId)
                 .map(mapper::entityToDto)
-                .orElseThrow(() -> new WindowNotFoundException(windowId));
+                .orElseThrow(() -> new WindowNotFoundException("Окно не найдено"));
     }
 
     @Override
@@ -44,17 +44,18 @@ public class WindowServiceImpl implements WindowService {
         repository.deleteById(windowId);
     }
 
-    public List<WindowDto> getMatches(WindowDto windowDto) {
-        var specification = createSpecification(windowDto);
-        return mapper.windowsEntityToDto(repository.findAll(specification));
-    }
-
     @Override
     public List<WindowDto> getByType(String windowType) {
         return mapper.windowsEntityToDto(repository.findByType(windowType));
     }
 
-    private Specification<WindowEntity> createSpecification(WindowDto windowDto) {
+    @Override
+    public List<WindowDto> getMatches(WindowDto windowDto) {
+        var specification = createSpecification(windowDto);
+        return mapper.windowsEntityToDto(repository.findAll(specification));
+    }
+
+    public Specification<WindowEntity> createSpecification(WindowDto windowDto) {
         var windowEntity = mapper.dtoToEntity(windowDto);
         return (root, query, builder) -> {
 

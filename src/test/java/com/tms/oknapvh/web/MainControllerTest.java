@@ -8,6 +8,7 @@ import com.tms.oknapvh.mapper.ReviewMapper;
 import com.tms.oknapvh.mapper.WindowMapper;
 import com.tms.oknapvh.repositories.ReviewRepository;
 import com.tms.oknapvh.repositories.WindowRepository;
+import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -38,10 +39,10 @@ public class MainControllerTest {
     private WindowRepository windowRepository;
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    private WindowMapper windowMapper;
 
     @Autowired
-    private WindowMapper windowMapper;
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private ReviewMapper reviewMapper;
@@ -51,29 +52,12 @@ public class MainControllerTest {
     @WithMockUser
     public void testShowMainPage() throws Exception {
 
-        var windowDto = new WindowDto();
-        windowDto.setHeight(200);
-        windowDto.setWidth(500);
-        windowDto.setType("Одностворчатое глухое");
-        windowDto.setLamination("Нет");
-        windowDto.setMountingWidth(50);
-        windowDto.setCameras(3);
-        windowDto.setPrice(100);
-        windowDto.setManufacturer("Беларусь");
-        windowDto.setAvailability("В наличии");
+        var generator = new EasyRandom();
 
-        var windowEntity1 = new WindowEntity();
-        windowEntity1.setHeight(200);
-        windowEntity1.setWidth(500);
-        windowEntity1.setType("Одностворчатое глухое");
-        windowEntity1.setLamination("Нет");
-        windowEntity1.setMountingWidth(50);
-        windowEntity1.setCameras(3);
-        windowEntity1.setPrice(100);
-        windowEntity1.setManufacturer("Беларусь");
-        windowEntity1.setAvailability("В наличии");
+        var windowDto = generator.nextObject(WindowDto.class);
+        var windowEntity1 = generator.nextObject(WindowEntity.class);
+        var windowEntity2 = generator.nextObject(WindowEntity.class);
 
-        var windowEntity2 = new WindowEntity();
         windowEntity2.setHeight(100);
         windowEntity2.setWidth(100);
 
@@ -89,6 +73,7 @@ public class MainControllerTest {
                 .andExpect(view().name("main-page.html"))
                 .andExpect(model().attribute("windowsWithoutOrder", hasSize(windowDtoList.size())))
                 .andExpect(model().attribute("windowsWithoutOrder", equalTo(windowDtoList)));
+
     }
 
     @Test

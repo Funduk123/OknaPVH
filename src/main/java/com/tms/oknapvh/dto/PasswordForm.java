@@ -11,11 +11,9 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class PasswordForm {
 
-    private String username;
-
     private String oldPassword;
 
-    @Size(min = 8, message = "Пароль должен быть длиннее 8 символов")
+    @Size(min = 8, message = "Пароль должен включать не менее 8 символов")
     private String newPassword;
 
 }
