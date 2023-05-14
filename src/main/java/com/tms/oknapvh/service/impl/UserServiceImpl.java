@@ -92,12 +92,12 @@ public class UserServiceImpl implements UserService {
     }
 
     private <SC> UserEntity findBy(SC searchCriteria, String errorMessage) {
-        if (searchCriteria.equals(String.class)) {
-            repository.findByEmail((String) searchCriteria)
+        if (searchCriteria instanceof String) {
+            return repository.findByEmail((String) searchCriteria)
                     .orElseThrow(() -> new UserNotFoundByEmailException(errorMessage));
         }
         if (searchCriteria instanceof UUID) {
-            repository.findById((UUID) searchCriteria)
+            return repository.findById((UUID) searchCriteria)
                     .orElseThrow(() -> new UserNotFoundException(errorMessage));
         }
         throw new IllegalArgumentException("Неподдерживаемый тип репозитория: " + repository.getClass());

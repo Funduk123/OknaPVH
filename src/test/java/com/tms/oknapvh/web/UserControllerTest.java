@@ -58,7 +58,6 @@ public class UserControllerTest {
     @Test
     @WithMockUser(roles = {"USER", "ADMIN", "SUPER_ADMIN"})
     public void testShowProfile() throws Exception {
-
         var user = new UserEntity();
         user.setUsername("test");
         user.setPassword("test");
@@ -138,11 +137,12 @@ public class UserControllerTest {
     @Test
     @WithMockUser(roles = {"SUPER_ADMIN"})
     public void testUpdateStatus_ThrowUserNotFoundException() throws Exception {
-        mockMvc.perform(post("/store/user/updateAuth/{id}", UUID.randomUUID()).param("auth", "ROLE_ADMIN"))
+        var testId = UUID.randomUUID();
+        mockMvc.perform(post("/store/user/updateAuth/{id}", testId).param("auth", "ROLE_ADMIN"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error.html"))
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof UserNotFoundException))
-                .andExpect(result -> assertEquals("Пользователь не найден", result.getResolvedException().getMessage()));
+                .andExpect(result -> assertEquals("Пользователь с id: " + testId + " не найден", result.getResolvedException().getMessage()));
     }
 
     @Test

@@ -183,11 +183,12 @@ public class OrderControllerTest {
     @Test
     @WithMockUser(roles = {"ADMIN", "SUPER_ADMIN"})
     public void testUpdateStatus_ThrowOrderNotFoundException() throws Exception {
-        mockMvc.perform(post("/store/orders/status/{id}", UUID.randomUUID()).param("status", "COMPLETED"))
+        var testId = UUID.randomUUID();
+        mockMvc.perform(post("/store/orders/status/{id}", testId).param("status", "COMPLETED"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error.html"))
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof OrderNotFoundException))
-                .andExpect(result -> assertEquals("Заказ не найден", result.getResolvedException().getMessage()));
+                .andExpect(result -> assertEquals("Заказ " + testId + " не найден", result.getResolvedException().getMessage()));
     }
 
     @Test

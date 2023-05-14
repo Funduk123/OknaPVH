@@ -45,12 +45,8 @@ public class PasswordController {
     public ModelAndView changePassword(@ModelAttribute("passwordForm") @Valid PasswordForm passwordForm, BindingResult result) {
         var modelAndView = new ModelAndView();
         var username = getContext().getAuthentication().getName();
-        if (result.hasErrors()) {
-            modelAndView.setViewName("change-password.html");
-        } else {
-            userService.changePassword(username, passwordForm.getOldPassword(), passwordForm.getNewPassword());
-            modelAndView.setViewName("change.html");
-        }
+        userService.changePassword(username, passwordForm.getOldPassword(), passwordForm.getNewPassword());
+        modelAndView.setViewName("change.html");
         return modelAndView;
     }
 
