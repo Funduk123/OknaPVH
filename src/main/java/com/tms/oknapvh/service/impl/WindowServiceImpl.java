@@ -1,9 +1,9 @@
 package com.tms.oknapvh.service.impl;
 
 import com.tms.oknapvh.dto.WindowDto;
-import com.tms.oknapvh.entity.OrderEntity;
 import com.tms.oknapvh.entity.WindowEntity;
 import com.tms.oknapvh.entity.WindowEntity_;
+import com.tms.oknapvh.entity.WindowFilter;
 import com.tms.oknapvh.exception.WindowNotFoundException;
 import com.tms.oknapvh.mapper.WindowMapper;
 import com.tms.oknapvh.repositories.WindowRepository;
@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +33,23 @@ public class WindowServiceImpl implements WindowService {
     }
 
     @Override
+    public List<WindowDto> getAllWithoutOrder() {
+        var specification = createSpecificationWithoutOrder();
+        return mapper.windowsEntityToDto(repository.findAll(specification));
+    }
+
+    public Specification<WindowEntity> createSpecificationWithoutOrder() {
+        return (root, query, builder) -> {
+            var predicate = builder.conjunction();
+            var orderJoin = root.join("order", JoinType.LEFT);
+            return builder.and(
+                    predicate,
+                    builder.isNull(orderJoin.get("id"))
+            );
+        };
+    }
+
+    @Override
     public void saveWindow(WindowDto windowDto) {
         var windowEntity = mapper.dtoToEntity(windowDto);
         repository.save(windowEntity);
@@ -50,54 +66,53 @@ public class WindowServiceImpl implements WindowService {
     }
 
     @Override
-    public List<WindowDto> getMatches(WindowDto windowDto) {
-        var specification = createSpecification(windowDto);
+    public List<WindowDto> getByWindowFilter(WindowFilter windowFilter) {
+        var specification = createSpecificationForFilter(windowFilter);
         return mapper.windowsEntityToDto(repository.findAll(specification));
     }
 
-    public Specification<WindowEntity> createSpecification(WindowDto windowDto) {
-        var windowEntity = mapper.dtoToEntity(windowDto);
+    public Specification<WindowEntity> createSpecificationForFilter(WindowFilter windowFilter) {
         return (root, query, builder) -> {
 
             var predicate = builder.conjunction();
 
-            if (windowEntity.getWidth() != null) {
-                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.WIDTH), windowEntity.getWidth()));
+            var minPrice = windowFilter.getMinPrice() != null ? windowFilter.getMinPrice() : Integer.MIN_VALUE;
+            var maxPrice = windowFilter.getMaxPrice() != null ? windowFilter.getMaxPrice() : Integer.MAX_VALUE;
+            predicate = builder.and(predicate, builder.between(root.get(WindowEntity_.PRICE), minPrice, maxPrice));
+
+            if (windowFilter.getWidth() != null) {
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.WIDTH), windowFilter.getWidth()));
             }
 
-            if (windowEntity.getHeight() != null) {
-                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.HEIGHT), windowEntity.getHeight()));
+            if (windowFilter.getHeight() != null) {
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.HEIGHT), windowFilter.getHeight()));
             }
 
-            if (StringUtils.isNotBlank(windowEntity.getType())) {
-                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.TYPE), windowEntity.getType()));
+            if (StringUtils.isNotBlank(windowFilter.getType())) {
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.TYPE), windowFilter.getType()));
             }
 
-            if (StringUtils.isNotBlank(windowEntity.getLamination())) {
-                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.LAMINATION), windowEntity.getLamination()));
+            if (StringUtils.isNotBlank(windowFilter.getLamination())) {
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.LAMINATION), windowFilter.getLamination()));
             }
 
-            if (windowEntity.getMountingWidth() != null) {
-                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.MOUNTING_WIDTH), windowEntity.getMountingWidth()));
+            if (windowFilter.getMountingWidth() != null) {
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.MOUNTING_WIDTH), windowFilter.getMountingWidth()));
             }
 
-            if (windowEntity.getCameras() != null) {
-                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.CAMERAS), windowEntity.getCameras()));
+            if (windowFilter.getCameras() != null) {
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.CAMERAS), windowFilter.getCameras()));
             }
 
-            if (windowEntity.getPrice() != null) {
-                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.PRICE), windowEntity.getPrice()));
+            if (StringUtils.isNotBlank(windowFilter.getManufacturer())) {
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.MANUFACTURER), windowFilter.getManufacturer()));
             }
 
-            if (StringUtils.isNotBlank(windowEntity.getManufacturer())) {
-                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.MANUFACTURER), windowEntity.getManufacturer()));
+            if (StringUtils.isNotBlank(windowFilter.getAvailability())) {
+                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.AVAILABILITY), windowFilter.getAvailability()));
             }
 
-            if (StringUtils.isNotBlank(windowEntity.getAvailability())) {
-                predicate = builder.and(predicate, builder.equal(root.get(WindowEntity_.AVAILABILITY), windowEntity.getAvailability()));
-            }
-
-            Join<WindowEntity, OrderEntity> orderJoin = root.join("order", JoinType.LEFT);
+            var orderJoin = root.join("order", JoinType.LEFT);
             return builder.and(
                     predicate,
                     builder.isNull(orderJoin.get("id"))

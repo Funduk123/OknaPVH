@@ -17,10 +17,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -54,26 +52,21 @@ public class MainControllerTest {
 
         var generator = new EasyRandom();
 
-        var windowDto = generator.nextObject(WindowDto.class);
+        var windowDto = new WindowDto();
         var windowEntity1 = generator.nextObject(WindowEntity.class);
         var windowEntity2 = generator.nextObject(WindowEntity.class);
+        windowEntity2.setOrder(null);
 
-        windowEntity2.setHeight(100);
-        windowEntity2.setWidth(100);
+        var size = windowRepository.findAll().size();
 
         windowRepository.save(windowEntity1);
         windowRepository.save(windowEntity2);
-
-        var windowEntityList = List.of(windowEntity1);
-        var windowDtoList = windowMapper.windowsEntityToDto(windowEntityList);
 
         mockMvc.perform(get("/store").flashAttr("window", windowDto))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("main-page.html"))
-                .andExpect(model().attribute("windowsWithoutOrder", hasSize(windowDtoList.size())))
-                .andExpect(model().attribute("windowsWithoutOrder", equalTo(windowDtoList)));
-
+                .andExpect(model().attribute("windowsWithoutOrder", hasSize(size + 1)));
     }
 
     @Test

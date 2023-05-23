@@ -18,9 +18,9 @@ public class WindowController {
 
     @GetMapping
     public ModelAndView showRedactorPage(@ModelAttribute(name = "newWindow") WindowDto windowDto) {
-        var allWindows = service.getMatches(windowDto);
+        var allWindowsWithoutOrder = service.getAllWithoutOrder();
         var modelAndView = new ModelAndView("redactor.html");
-        modelAndView.addObject("windowsWithoutOrder", allWindows);
+        modelAndView.addObject("windowsWithoutOrder", allWindowsWithoutOrder);
         return modelAndView;
     }
 

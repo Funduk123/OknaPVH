@@ -91,9 +91,9 @@
                         <input type="password" class="form-control" id="password" th:field="*{password}"
                                placeholder="Не менее 8 символов" required>
                         <div class="input-group-append">
-                            <span th:if="${#fields.hasErrors('phone')}" class="input-group-text text-danger"><i
+                            <span th:if="${#fields.hasErrors('password')}" class="input-group-text text-danger"><i
                                     class="fa fa-times"></i></span>
-                            <span th:if="${!#fields.hasErrors('phone') and #fields.hasAnyErrors()}"
+                            <span th:if="${!#fields.hasErrors('password') and #fields.hasAnyErrors()}"
                                   class="input-group-text text-success"><i class="fa fa-check"></i></span>
                         </div>
                     </div>

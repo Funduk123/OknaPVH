@@ -1,6 +1,7 @@
 package com.tms.oknapvh.service;
 
 import com.tms.oknapvh.dto.WindowDto;
+import com.tms.oknapvh.entity.WindowFilter;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,9 @@ public interface WindowService {
 
     WindowDto getById(UUID id);
 
-    List<WindowDto> getMatches(WindowDto windowDto);
+    List<WindowDto> getAllWithoutOrder();
+
+    List<WindowDto> getByWindowFilter(WindowFilter windowFilter);
 
     List<WindowDto> getByType(String windowType);
 

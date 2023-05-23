@@ -5,6 +5,7 @@ import com.tms.oknapvh.entity.UserEntity;
 import com.tms.oknapvh.exception.InvalidUserPasswordException;
 import com.tms.oknapvh.exception.UserNotFoundByEmailException;
 import com.tms.oknapvh.repositories.UserRepository;
+import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +15,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import javax.transaction.Transactional;
+import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,27 +50,27 @@ public class PasswordControllerTest {
     @Transactional
     public void testResetPassword_Success() throws Exception {
 
-        var user = new UserEntity();
-        user.setPassword("oldPassword");
-        user.setEmail("test@example.com");
+        var generator = new EasyRandom();
 
+        var user = generator.nextObject(UserEntity.class);
+        user.setEmail("test@example.com");
         userRepository.save(user);
 
         var userPassword = user.getPassword();
+        var userEmail = user.getEmail();
 
-        mockMvc.perform(post("/store/reset-password").param("email", "test@example.com"))
-                .andExpect(status().isOk());
+        mockMvc.perform(post("/store/reset-password").param("email", userEmail))
+                .andExpect(status().isOk())
+                .andExpect(view().name("reset.html"));
 
-        var updatedUser = userRepository.findByEmail("test@example.com").orElseThrow();
+        var updatedUser = userRepository.findByEmail(userEmail).orElseThrow();
         assertThat(updatedUser.getPassword()).isNotEqualTo(userPassword);
     }
 
     @Test
     @Transactional
     public void testResetPassword_ThrowUserNotFoundByEmailException() throws Exception {
-
         var testEmail = "test@example.com";
-
         mockMvc.perform(post("/store/reset-password").param("email", testEmail))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error.html"))
@@ -86,15 +88,17 @@ public class PasswordControllerTest {
 
     @Test
     @Transactional
-    @WithMockUser
+    @WithMockUser(username = "testUser")
     public void testChangePassword_Success() throws Exception {
 
-        var oldPassword = "oldPassword";
+        var generator = new EasyRandom();
+
+        var user = generator.nextObject(UserEntity.class);
+        var oldPassword = user.getPassword();
         var newPassword = "newPassword";
 
-        var user = new UserEntity();
-        user.setUsername("test");
-        user.setPassword(passwordEncoder.encode(oldPassword));
+        user.setUsername("testUser");
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
         var passwordForm = new PasswordForm();
@@ -112,11 +116,10 @@ public class PasswordControllerTest {
     @Test
     @Transactional
     @WithMockUser
-    void testChangePassword_ThrowInvalidUserPasswordException() throws Exception {
+    void testChangePassword_ThrowInvalidOldUserPasswordException() throws Exception {
 
         var user = new UserEntity();
         user.setUsername("test");
-        user.setPassword("test");
         userRepository.save(user);
 
         var passwordForm = new PasswordForm();
@@ -128,6 +131,25 @@ public class PasswordControllerTest {
                 .andExpect(view().name("change-password.html"))
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof InvalidUserPasswordException))
                 .andExpect(result -> assertEquals("Неверный старый пароль", result.getResolvedException().getMessage()));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser
+    void testChangePassword_ThrowConstraintViolationException() throws Exception {
+
+        var user = new UserEntity();
+        user.setUsername("test");
+        userRepository.save(user);
+
+        var passwordForm = new PasswordForm();
+        passwordForm.setNewPassword("123");
+
+        mockMvc.perform(post("/store/change-password").flashAttr("passwordForm", passwordForm))
+                .andExpect(status().isOk())
+                .andExpect(view().name("change-password.html"))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ConstraintViolationException))
+                .andExpect(result -> assertEquals("changePassword.passwordForm.newPassword: Пароль должен включать не менее 8 символов", result.getResolvedException().getMessage()));
     }
 
     @Test
@@ -162,34 +184,35 @@ public class PasswordControllerTest {
                 .andExpect(model().attribute("successMessage", attribute));
     }
 
-//    @Test
-//    public void testsendAnonymousMessage_Success() throws Exception {
-//
-//        @PostMapping("/support-anonymous")
-//        public ModelAndView sendAnonymousMessage(@RequestParam String message, @RequestParam String email) {
-//            var modelAndView = new ModelAndView("support-anonymous.html");
-//            boolean emailExists = userService.checkEmailExists(email);
-//            if (!emailExists) {
-//                modelAndView.addObject("emailNotFound", true);
-//                return modelAndView;
-//            }
-//            customMailSender.sendAnonymousSupportEmail(email, message);
-//            modelAndView.addObject("successMessage", "Ваше сообщение успешно отправлено!");
-//            return modelAndView;
-//        }
-//
-//        var message = "test";
-//        var attribute = "Ваше сообщение успешно отправлено!";
-//
-//        var user = new UserEntity();
-//        user.setEmail("test@example.com");
-//        user.setUsername("test");
-//        user.setPhone("+375332221100");
-//
-//        mockMvc.perform(post("/store/support").with(user(user)).param("message", message))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("support.html"))
-//                .andExpect(model().attribute("successMessage", attribute));
-//    }
+    @Test
+    @Transactional
+    public void testSendAnonymousMessage_Success() throws Exception {
+
+        var generator = new EasyRandom();
+
+        var message = "test";
+        var email = "test@example.com";
+        var attribute = "Ваше сообщение успешно отправлено!";
+
+        var user = generator.nextObject(UserEntity.class);
+        user.setEmail(email);
+        userRepository.save(user);
+
+        mockMvc.perform(post("/store/support-anonymous").param("message", message).param("email", email))
+                .andExpect(status().isOk())
+                .andExpect(view().name("support-anonymous.html"))
+                .andExpect(model().attribute("successMessage", attribute));
+    }
+
+    @Test
+    @Transactional
+    public void testSendAnonymousMessage_ThrowEmailNotFoundException() throws Exception {
+        var message = "test";
+        var email = "test@example.com";
+        mockMvc.perform(post("/store/support-anonymous").param("message", message).param("email", email))
+                .andExpect(status().isOk())
+                .andExpect(view().name("support-anonymous.html"))
+                .andExpect(model().attribute("emailNotFound", true));
+    }
 
 }

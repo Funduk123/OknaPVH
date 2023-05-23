@@ -11,7 +11,7 @@
                 <div class="form-group">
                     <label for="email2">Адрес электронной почты (вашего аккаунта)</label>
                     <input type="email" class="form-control" id="email2" name="email" required>
-                    <p th:if="${emailNotFound}" class="alert alert-danger py-0">Неверный адрес электронной почты</p>
+                    <p th:if="${emailNotFound}" class="alert alert-danger py-0">Пользователя с таким адресом не существует</p>
                     <label for="message2">Сообщение</label>
                     <textarea class="form-control" id="message2" name="message" rows="3"></textarea>
                 </div>
