@@ -1,5 +1,6 @@
 package com.tms.oknapvh.service.impl;
 
+import com.tms.oknapvh.dto.ContactForm;
 import com.tms.oknapvh.entity.UserEntity;
 import com.tms.oknapvh.service.MailSenderService;
 import com.tms.oknapvh.service.UserService;
@@ -74,6 +75,25 @@ public class MailSenderServiceImpl implements MailSenderService {
         var phone = user.getPhone();
 
         sender(message, username, userEmail, phone);
+    }
+
+    @Override
+    public void sendContactForm(ContactForm contactForm) {
+        CompletableFuture.runAsync(() -> {
+            var mailSenderMimeMessage = mailSender.createMimeMessage();
+            var mimeMessageHelper = new MimeMessageHelper(mailSenderMimeMessage);
+            try {
+                mimeMessageHelper.setFrom(SUPPORT_EMAIL);
+                mimeMessageHelper.setTo(SUPPORT_EMAIL);
+                mimeMessageHelper.setSubject(SUPPORT_SUBJECT);
+                mimeMessageHelper.setText("Email пользователя: <b>" + contactForm.getEmail() + "</b><br>" +
+                        "Номер телефона: " + contactForm.getPhone() + "<br><br>" +
+                        "<b>Текст сообщения: </b>" + contactForm.getMessage(), true);
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+            mailSender.send(mailSenderMimeMessage);
+        });
     }
 
     private void sender(String message, String username, String userEmail, String phone) {

@@ -1,3 +1,26 @@
+<div th:fragment="window-form-fields-search">
+
+    <div class="form-group">
+        <label for="minPrice">Цена, руб</label>
+        <div class="row">
+            <div class="col">
+                <input th:field="*{minPrice}" th:value="${window.minPrice}" type="number" class="form-control"
+                       id="minPrice"
+                       placeholder="от">
+            </div>
+            <div class="col">
+                <input th:field="*{maxPrice}" th:value="${window.maxPrice}" type="number" class="form-control"
+                       id="maxPrice"
+                       placeholder="до">
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="fragment/window-form-fields :: window-form"></div>
+
+</div>
+
+
 <div th:fragment="window-form-fields">
 
     <div class="form-group">
@@ -7,6 +30,11 @@
                placeholder="Введите стоимость окна">
     </div>
 
+    <div th:replace="fragment/window-form-fields :: window-form"></div>
+
+</div>
+
+<div th:fragment="window-form">
     <div class="form-group">
         <label for="width">Ширина</label>
         <input th:field="*{width}" th:value="${window.width}" type="number" class="form-control"
@@ -82,5 +110,4 @@
             <option value="Россия">Россия</option>
         </select>
     </div>
-
 </div>
