@@ -81,4 +81,9 @@ public class MainController {
         return modelAndView;
     }
 
+    @GetMapping("/about-us")
+    public String showAboutUsInfo() {
+        return "about-us";
+    }
+
 }
