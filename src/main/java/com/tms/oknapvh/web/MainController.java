@@ -1,7 +1,6 @@
 package com.tms.oknapvh.web;
 
 import com.tms.oknapvh.dto.ContactForm;
-import com.tms.oknapvh.dto.WindowDto;
 import com.tms.oknapvh.entity.WindowFilter;
 import com.tms.oknapvh.service.MailSenderService;
 import com.tms.oknapvh.service.ReviewService;
@@ -50,14 +49,6 @@ public class MainController {
         var windowType = windowDto.getType();
         var reviewsByWindowType = reviewService.getReviewsByWindowType(windowType);
         modelAndView.addObject("reviewsByWindowType", reviewsByWindowType);
-        return modelAndView;
-    }
-
-    @GetMapping("/search/{windowType}")
-    public ModelAndView searchByType(@ModelAttribute(name = "window") WindowDto windowDto, @PathVariable String windowType) {
-        var windowsByType = windowService.getByType(windowType);
-        var modelAndView = new ModelAndView("search.html");
-        modelAndView.addObject("foundWindows", windowsByType);
         return modelAndView;
     }
 

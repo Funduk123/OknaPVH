@@ -109,7 +109,7 @@ public class WindowControllerTest {
 
         mockMvc.perform(post("/store/redactor/update/{id}", windowEntity.getId()).flashAttr("windowDto", windowDto))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/store/redactor"));
+                .andExpect(redirectedUrl("/store/redactor/update/" + windowEntity.getId()));
 
         assertEquals(windowEntity.getPrice(), windowDto.getPrice());
 

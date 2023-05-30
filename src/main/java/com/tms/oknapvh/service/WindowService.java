@@ -18,6 +18,4 @@ public interface WindowService {
 
     List<WindowDto> getByWindowFilter(WindowFilter windowFilter);
 
-    List<WindowDto> getByType(String windowType);
-
 }

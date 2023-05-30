@@ -47,7 +47,7 @@ public class WindowController {
     @PostMapping("/update/{id}")
     public String update(WindowDto windowDto) {
         service.saveWindow(windowDto);
-        return "redirect:/store/redactor";
+        return "redirect:/store/redactor/update/{id}";
     }
 
 }

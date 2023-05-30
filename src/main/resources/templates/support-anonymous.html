@@ -1,21 +1,23 @@
 <div th:replace="fragment/header :: header"></div>
 
-<main class="flex-grow-1">
-    <div class="container d-flex justify-content-center">
-        <div class="col-md-6">
+<main class="flex-grow-1" style="background-color:#ECE9F2">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="col-md-6 card mt-lg-5 p-5">
 
-            <h1>Поддержка</h1>
+            <h3 class="text-center">Служба поддержки</h3>
             <p th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success"></p>
 
             <form th:action="@{/store/support-anonymous}" method="post">
                 <div class="form-group">
-                    <label for="email2">Адрес электронной почты (вашего аккаунта)</label>
+                    <label for="email2" class="mt-3">Адрес электронной почты (вашего аккаунта)</label>
                     <input type="email" class="form-control" id="email2" name="email" required>
-                    <p th:if="${emailNotFound}" class="alert alert-danger py-0">Пользователя с таким адресом не существует</p>
-                    <label for="message2">Сообщение</label>
-                    <textarea class="form-control" id="message2" name="message" rows="3"></textarea>
+                    <p th:if="${emailNotFound}" class="alert alert-danger py-0">Пользователя с таким адресом не
+                        существует</p>
+                    <label for="message2" class="mt-3">Ваше сообщение:</label>
+                    <textarea class="form-control" id="message2" name="message" rows="3"
+                              placeholder="Введите сообщение..." required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">Отправить</button>
+                <button type="submit" class="btn btn-primary mt-3">Отправить</button>
             </form>
 
         </div>

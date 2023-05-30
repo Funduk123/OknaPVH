@@ -61,11 +61,6 @@ public class WindowServiceImpl implements WindowService {
     }
 
     @Override
-    public List<WindowDto> getByType(String windowType) {
-        return mapper.windowsEntityToDto(repository.findByType(windowType));
-    }
-
-    @Override
     public List<WindowDto> getByWindowFilter(WindowFilter windowFilter) {
         var specification = createSpecificationForFilter(windowFilter);
         return mapper.windowsEntityToDto(repository.findAll(specification));

@@ -5,6 +5,7 @@ import com.tms.oknapvh.service.MailSenderService;
 import com.tms.oknapvh.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,11 +42,15 @@ public class PasswordController {
     }
 
     @PostMapping("/change-password")
-    public ModelAndView changePassword(@ModelAttribute("passwordForm") @Valid PasswordForm passwordForm) {
+    public ModelAndView changePassword(@ModelAttribute("passwordForm") @Valid PasswordForm passwordForm, BindingResult result) {
         var modelAndView = new ModelAndView();
         var username = getContext().getAuthentication().getName();
-        userService.changePassword(username, passwordForm.getOldPassword(), passwordForm.getNewPassword());
-        modelAndView.setViewName("change.html");
+        if (result.hasErrors()) {
+            modelAndView.setViewName("change-password.html");
+        } else {
+            userService.changePassword(username, passwordForm.getOldPassword(), passwordForm.getNewPassword());
+            modelAndView.setViewName("change.html");
+        }
         return modelAndView;
     }
 

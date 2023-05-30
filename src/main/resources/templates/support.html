@@ -1,22 +1,23 @@
 <div th:replace="fragment/header :: header"></div>
 
-<main class="flex-grow-1">
-  <div class="container d-flex justify-content-center">
-    <div class="col-md-6">
+<main class="flex-grow-1" style="background-color:#ECE9F2">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="col-md-6 card mt-lg-5 p-5">
 
-      <h1>Поддержка</h1>
-      <p th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success"></p>
+            <h3 class="text-center">Служба поддержки</h3>
+            <p th:if="${successMessage}" th:text="${successMessage}" class="alert alert-success"></p>
 
-      <form th:action="@{/store/support}" method="post">
-        <div class="form-group">
-          <label for="message1">Сообщение</label>
-          <textarea class="form-control" id="message1" name="message" rows="3"></textarea>
+            <form th:action="@{/store/support}" method="post">
+                <div class="form-group">
+                    <label for="message1">Ваше сообщение:</label>
+                    <textarea class="form-control" id="message1" name="message" rows="3"
+                              placeholder="Введите сообщение..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Отправить</button>
+            </form>
+
         </div>
-        <button type="submit" class="btn btn-primary">Отправить</button>
-      </form>
-
     </div>
-  </div>
 </main>
 
 <div th:replace="fragment/footer :: footer"></div>
