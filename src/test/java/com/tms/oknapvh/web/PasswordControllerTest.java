@@ -135,7 +135,7 @@ public class PasswordControllerTest {
 
     @Test
     @Transactional
-    @WithMockUser
+    @WithMockUser(username = "test")
     void testChangePassword_ThrowConstraintViolationException() throws Exception {
 
         var user = new UserEntity();

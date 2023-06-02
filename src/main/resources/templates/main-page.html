@@ -49,6 +49,9 @@
 
             <div class="col-md-3">
                 <div class="card border">
+
+                    <h4 class="mb-2 mt-3 text-center">Фильтр</h4>
+
                     <form method="get" th:action="@{/store/search}" th:object="${window}" class="m-3">
 
                         <div th:replace="fragment/window-form-fields :: window-form-fields-search"></div>
