@@ -34,6 +34,20 @@ public class RegisterController {
     @PostMapping("/register")
     public ModelAndView registration(@ModelAttribute("user") @Valid UserDto user, BindingResult result) {
         var modelAndView = new ModelAndView();
+
+        boolean emailExists = service.checkEmailExists(user.getEmail());
+        boolean usernameExists = service.checkUsernameExists(user.getUsername());
+
+        // Проверка, существует ли пользователь с указанным username
+        if (usernameExists) {
+            result.rejectValue("username", "error.user", "Пользователь с таким логином уже зарегистрирован");
+        }
+
+        // Проверка, существует ли пользователь с указанным email
+        if (emailExists) {
+            result.rejectValue("email", "error.user", "Пользователь с таким email уже зарегистрирован");
+        }
+
         if (result.hasErrors()) {
             modelAndView.setViewName("registration.html");
             modelAndView.addObject("user", user);

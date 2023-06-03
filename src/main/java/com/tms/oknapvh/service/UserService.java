@@ -23,6 +23,8 @@ public interface UserService extends UserDetailsService {
 
     boolean checkEmailExists(String email);
 
+    boolean checkUsernameExists(String username);
+
     void updatePassword(String email, String password);
 
     void changePassword(String username, String oldPassword, String newPassword);
