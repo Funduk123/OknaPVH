@@ -38,7 +38,7 @@ public class WindowServiceImpl implements WindowService {
         return mapper.windowsEntityToDto(repository.findAll(specification));
     }
 
-    public Specification<WindowEntity> createSpecificationWithoutOrder() {
+    private Specification<WindowEntity> createSpecificationWithoutOrder() {
         return (root, query, builder) -> {
             var predicate = builder.conjunction();
             var orderJoin = root.join("order", JoinType.LEFT);
@@ -66,7 +66,7 @@ public class WindowServiceImpl implements WindowService {
         return mapper.windowsEntityToDto(repository.findAll(specification));
     }
 
-    public Specification<WindowEntity> createSpecificationForFilter(WindowFilter windowFilter) {
+    private Specification<WindowEntity> createSpecificationForFilter(WindowFilter windowFilter) {
         return (root, query, builder) -> {
 
             var predicate = builder.conjunction();

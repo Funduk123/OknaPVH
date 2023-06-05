@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     private final UserServiceImpl userService;
 
     @Override
@@ -21,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/store/orders/**", "/store/profile/").authenticated()
                 .antMatchers("/store/redactor/**", "/store/users-list").hasAnyRole("ADMIN", "SUPER_ADMIN")
                 .and()
-                .csrf().disable()
+                .csrf().disable() // позволяет отсылать запросы от авторизированного пользователя
                 .formLogin()
                 .loginPage("/store/sign-in")
                 .loginProcessingUrl("/store/sign-in")
@@ -32,9 +33,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl("/store/logout")
                 .and()
-                .rememberMe()
-                .key("uniqueAndSecret")
-                .tokenValiditySeconds(86400) // 1 день
+
+                // Функция "Запомнить меня"
+                .rememberMe() // Включение функции
+                .key("uniqueAndSecret") // Установка секретного ключа
+                .tokenValiditySeconds(86400) // Срок действия ключа в секундах
+
                 .and()
                 .httpBasic();
     }
