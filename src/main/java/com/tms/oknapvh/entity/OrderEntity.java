@@ -20,7 +20,6 @@ import java.util.UUID;
 public class OrderEntity {
 
     @Id
-    // Изменения...
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
             name = "UUID",
